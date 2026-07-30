@@ -1,0 +1,5 @@
+cache/
+songbook.zip
+__pycache__/
+*.pyc
+.claude/
