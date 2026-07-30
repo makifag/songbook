@@ -21,6 +21,7 @@ CACHE_DIR = ROOT / "cache"
 OUT_DIR = ROOT / "songbook"
 SONGS_DIR = OUT_DIR / "songs"
 RAW_DIR = OUT_DIR / "raw"
+REPORTS_DIR = OUT_DIR / "reports"
 SOURCES_FILE = ROOT / "sources.json"
 ZIP_FILE = ROOT / "songbook.zip"
 CACHE_MAX_AGE_SECONDS = 30 * 86400
@@ -436,6 +437,8 @@ h1 {{ margin: 0 0 0.2em; font-size: 1.4em; }}
 .meta {{ font-size: 0.85em; color: #888; margin-bottom: 1em; }}
 .meta span {{ margin-right: 1em; }}
 .back {{ font-size: 0.9em; }}
+.zoom-controls {{ display: inline-flex; gap: 0.4em; margin-left: 1em; }}
+.zoom-controls button {{ font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }}
 pre {{ font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
        background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }}
 @media print {{
@@ -446,13 +449,40 @@ pre {{ font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; o
 }}
 </style>
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a></p>
+<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
+<button type="button" id="fontDec" title="Меньше">A&minus;</button>
+<button type="button" id="fontReset" title="По ширине окна">авто</button>
+<button type="button" id="fontInc" title="Больше">A&plus;</button>
+</span></p>
 <header>
 <h1>{title_esc}</h1>
 <p class="artist">{artist_esc}</p>
 <p class="meta">{meta_html}</p>
 </header>
-<pre>{body_esc}</pre>
+<pre id="body">{body_esc}</pre>
+<script>
+(function() {{
+  var pre = document.getElementById('body');
+  var baseSize = 14;
+  var size = baseSize;
+  function apply() {{ pre.style.fontSize = size + 'px'; }}
+  function fitWidth() {{
+    size = baseSize;
+    apply();
+    var guard = 0;
+    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {{
+      size -= 0.5;
+      apply();
+      guard++;
+    }}
+  }}
+  window.addEventListener('load', fitWidth);
+  window.addEventListener('resize', fitWidth);
+  document.getElementById('fontDec').addEventListener('click', function() {{ size = Math.max(size - 1, 6); apply(); }});
+  document.getElementById('fontInc').addEventListener('click', function() {{ size = Math.min(size + 1, 32); apply(); }});
+  document.getElementById('fontReset').addEventListener('click', fitWidth);
+}})();
+</script>
 </body></html>
 """
 
@@ -575,17 +605,22 @@ th {{ position: sticky; top: 0; background: Canvas; }}
 .manual {{ color: #1565c0; }}
 .gap {{ color: #c62828; }}
 h2 {{ margin-top: 2em; }}
+.back {{ font-size: 0.9em; }}
+.history {{ margin-top: 2em; font-size: 0.9em; }}
+.history ul {{ padding-left: 1.2em; }}
 </style>
 </head><body>
+<p class="back"><a href="index.html">&larr; к песеннику</a></p>
 <h1>Отчёт сборки песенника</h1>
 <p>Собрано: {generated_at}</p>
 <p>Всего источников: {total} — ok: {n_ok}, из Wayback: {n_wayback}, вручную: {n_manual}, gap: {n_gap}</p>
 {sections}
+{history}
 </body></html>
 """
 
 
-def render_report(results):
+def render_report(results, history_html=""):
     from collections import defaultdict
     groups = defaultdict(list)
     for r in results:
@@ -633,7 +668,42 @@ def render_report(results):
         n_manual=len(groups.get("manual", [])),
         n_gap=len(groups.get("gap", [])),
         sections="\n".join(sections),
+        history=history_html,
     )
+
+
+def archive_previous_report():
+    """Move the previous report.html into reports/{timestamp}.html before overwriting it."""
+    old_path = OUT_DIR / "report.html"
+    if not old_path.exists():
+        return
+    old_text = old_path.read_text(encoding="utf-8")
+    m = re.search(r"Собрано: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}) UTC", old_text)
+    if m:
+        stamp = m.group(1).replace(" ", "_").replace(":", "")
+    else:
+        stamp = datetime.fromtimestamp(old_path.stat().st_mtime, tz=timezone.utc).strftime("%Y-%m-%d_%H%M")
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    dest = REPORTS_DIR / f"{stamp}.html"
+    n = 2
+    while dest.exists():
+        dest = REPORTS_DIR / f"{stamp}-{n}.html"
+        n += 1
+    archived_text = old_text.replace('href="index.html"', 'href="../index.html"')
+    dest.write_text(archived_text, encoding="utf-8")
+
+
+def build_history_html():
+    if not REPORTS_DIR.exists():
+        return ""
+    archived = sorted(REPORTS_DIR.glob("*.html"), reverse=True)
+    if not archived:
+        return ""
+    items = "".join(
+        f'<li><a href="reports/{f.name}">{html_mod.escape(f.stem.replace("_", " "))}</a></li>'
+        for f in archived
+    )
+    return f'<div class="history"><h2>История сборок</h2><ul>{items}</ul></div>'
 
 
 def zip_songbook():
@@ -677,7 +747,8 @@ def main():
     index_html = INDEX_TEMPLATE.format(songs_json=json.dumps(songs_for_index, ensure_ascii=False))
     (OUT_DIR / "index.html").write_text(index_html, encoding="utf-8")
 
-    report_html = render_report(results)
+    archive_previous_report()
+    report_html = render_report(results, history_html=build_history_html())
     (OUT_DIR / "report.html").write_text(report_html, encoding="utf-8")
 
     zip_songbook()
