@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<title>Джонни-прыжок</title>
+<style>
+:root { color-scheme: light dark; }
+body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
+header { margin-bottom: 1em; }
+h1 { margin: 0 0 0.2em; font-size: 1.4em; }
+.artist { color: #888; margin: 0 0 0.8em; }
+.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
+.meta span { margin-right: 1em; }
+.back { font-size: 0.9em; }
+.downloads { margin: -0.4em 0 1em; }
+.downloads a { font-size: 0.9em; }
+.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
+.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
+pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
+       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
+@media print {
+  :root { color-scheme: light; }
+  body { color: #000; background: #fff; }
+  .back, .no-print { display: none; }
+  pre { background: none; padding: 0; }
+}
+</style>
+</head><body>
+<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
+<button type="button" id="fontDec" title="Меньше">A&minus;</button>
+<button type="button" id="fontReset" title="По ширине окна">авто</button>
+<button type="button" id="fontInc" title="Больше">A&plus;</button>
+</span></p>
+<header>
+<h1>Джонни-прыжок</h1>
+<p class="artist">Puck &amp; Piper</p>
+<p class="meta"><span>аккорды</span><span>источник: добавлено вручную (VK topic Puck &amp; Piper — под авторизацией, не скачивается)</span></p>
+</header>
+<pre id="body">----Em
+Я вам расскажу, что случилось со мной.
+-----D
+Однажды к себе возвращался домой.
+-------Em-----------------------G---------D
+Был жаркий денек, и решил я тогда –
+-----Em
+От пинты пивка мне не будет вреда.
+
+----Em
+Бармену сказал: «Дай мне пиво одно».
+-----D
+Ответил он честно, что пиво – говно.
+-------Em--------------------------G------------D
+«А может быть джин, или водку возьмешь?»
+--------Em
+«Попробую сидр – говорят, он хорош».
+
+Пр.
+----Em
+О, нет, ни за что, ни за что больше, нет!
+-----D
+Живи я хоть сто или сто десять лет!
+-----Em-------------------G------------D
+Меня зарубило, и встать я не мог
+--Em--D-----Hm--------Em
+Уже после пинты «Джонни-прыжок».
+
+После третей очнулся на заднем дворе.
+Я с копом столкнулся, и вякнул он мне:
+«Ты хочешь, чтоб я тебя щас засудил?»
+А я ему в челюсть в ответ зарядил.
+
+Он сразу обмяк и на землю он лег.
+Не я его вырубил, а «Джонни-прыжок».
+Потом был провал, а потом инвалид
+Какой-то мне встретился и говорит:
+
+«Стремаюсь дорогу я сам перейти.
+Ты мне не поможешь до паба дойти?»
+Но сидра попробовав пинт эдак пять,
+Забыл о протезах и начал плясать.
+
+Я решил прогуляться – друзей навестить -
+К дурдому, что в Корке на улице Ли.
+Я только вошел, и тут, чтоб не соврать,
+На входе меня попытались принять.
+
+«А ну, повтори-ка, - охранник сказал, -
+А Клара у Карла украла коралл».
+В ответ, - «Я не псих. Я немного зажег
+С шестой пинты сидра «Джонни-прыжок».
+
+А был тут мужик один, звали МакНабб.
+Недавно он помер – здоровьем был слаб.
+Обмыли-обмеряли, и, в гроб положив,
+Вернули жене для помина души.
+
+Но в полночь, когда лилось пиво рекой,
+МакНабб вдруг поднялся и сел как живой.
+«В раю попросили, чтоб я им помог –
+С собой прихватил пинту «Джонни-прыжок».</pre>
+<script>
+(function() {
+  var pre = document.getElementById('body');
+  var baseSize = 14;
+  var size = baseSize;
+  function apply() { pre.style.fontSize = size + 'px'; }
+  function fitWidth() {
+    size = baseSize;
+    apply();
+    var guard = 0;
+    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
+      size -= 0.5;
+      apply();
+      guard++;
+    }
+  }
+  window.addEventListener('load', fitWidth);
+  window.addEventListener('resize', fitWidth);
+  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
+  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
+  document.getElementById('fontReset').addEventListener('click', fitWidth);
+})();
+</script>
+</body></html>

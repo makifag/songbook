@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<title>Шотландец</title>
+<style>
+:root { color-scheme: light dark; }
+body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
+header { margin-bottom: 1em; }
+h1 { margin: 0 0 0.2em; font-size: 1.4em; }
+.artist { color: #888; margin: 0 0 0.8em; }
+.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
+.meta span { margin-right: 1em; }
+.back { font-size: 0.9em; }
+.downloads { margin: -0.4em 0 1em; }
+.downloads a { font-size: 0.9em; }
+.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
+.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
+pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
+       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
+@media print {
+  :root { color-scheme: light; }
+  body { color: #000; background: #fff; }
+  .back, .no-print { display: none; }
+  pre { background: none; padding: 0; }
+}
+</style>
+</head><body>
+<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
+<button type="button" id="fontDec" title="Меньше">A&minus;</button>
+<button type="button" id="fontReset" title="По ширине окна">авто</button>
+<button type="button" id="fontInc" title="Больше">A&plus;</button>
+</span></p>
+<header>
+<h1>Шотландец</h1>
+<p class="artist">Puck &amp; Piper</p>
+<p class="meta"><span>аккорды</span><span>источник: добавлено вручную (VK topic Puck &amp; Piper — под авторизацией, не скачивается)</span></p>
+</header>
+<pre id="body">-------D-----------------------------------G-----------------D
+Шотландец в килте вечерком из паба путь держал.
+----- D--------------------------------------------A
+Он был пьяней, чем тот предмет, что споран прикрывал.
+-----D-------------------------G----------------D
+Он описал кривую, и ногам настал конец:
+-----D--------------------------------------A------------- D
+Асфальт поднялся резко вверх и дал ему в торец.
+--G------------------------- D-----------------------A
+Ring ding diddle diddle I de oh ring di diddly I oh,
+---- D------------------------------------- A--------------D
+Асфальт поднялся резко вверх и дал ему в торец.
+
+А в это время две девчонки мимо шли домой.
+Решили, да, чувак бухой, зато хорош собой.
+«А, интересно, правда ли,- говорит одна другой,-
+Что у шотландцев под килтом одежды никакой?»
+Ring ding diddle diddle I de oh ring di diddly I oh,
+Что у шотландцев под килтом одежды никакой.
+
+И, вот, подкравшись к парню, так тихо, как могли,
+И приподнявши край на пару дюймов от земли,
+Они тотчас увидели, взглянув ему под килт
+Лишь то, чем Бог с рождения шотландца наградил.
+Ring ding diddle diddle I de oh ring di diddly I oh,
+Лишь то, чем Бог с рождения шотландца наградил.
+
+Глядели с восхищением минуту или две.
+«Давай оставим что-нибудь на память о себе»,-
+Одна из них сказала и то, что под килтом,
+Из шелка синей ленточкой украсила бантом.
+Ring ding diddle diddle I de oh ring di diddly I oh,
+Из шелка синей ленточкой украсила бантом.
+
+С утра, на зов природы откликнувшись, он встал,
+И у ближайших кустиков он килт свой вверх задрал,
+Пробормотал задумчиво он, глядя прямо вниз:
+«Не знаю, парень, где ты был, но ты взял первый приз».
+Ring ding diddle diddle I de oh ring di diddly I oh,
+«Не знаю, парень, где ты был, но ты взял первый приз».</pre>
+<script>
+(function() {
+  var pre = document.getElementById('body');
+  var baseSize = 14;
+  var size = baseSize;
+  function apply() { pre.style.fontSize = size + 'px'; }
+  function fitWidth() {
+    size = baseSize;
+    apply();
+    var guard = 0;
+    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
+      size -= 0.5;
+      apply();
+      guard++;
+    }
+  }
+  window.addEventListener('load', fitWidth);
+  window.addEventListener('resize', fitWidth);
+  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
+  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
+  document.getElementById('fontReset').addEventListener('click', fitWidth);
+})();
+</script>
+</body></html>

@@ -23,6 +23,7 @@ SONGS_DIR = OUT_DIR / "songs"
 RAW_DIR = OUT_DIR / "raw"
 REPORTS_DIR = OUT_DIR / "reports"
 SOURCES_FILE = ROOT / "sources.json"
+MANUAL_FILE = ROOT / "manual_entries.json"
 ZIP_FILE = ROOT / "songbook.zip"
 CACHE_MAX_AGE_SECONDS = 30 * 86400
 
@@ -437,6 +438,8 @@ h1 {{ margin: 0 0 0.2em; font-size: 1.4em; }}
 .meta {{ font-size: 0.85em; color: #888; margin-bottom: 1em; }}
 .meta span {{ margin-right: 1em; }}
 .back {{ font-size: 0.9em; }}
+.downloads {{ margin: -0.4em 0 1em; }}
+.downloads a {{ font-size: 0.9em; }}
 .zoom-controls {{ display: inline-flex; gap: 0.4em; margin-left: 1em; }}
 .zoom-controls button {{ font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }}
 pre {{ font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
@@ -459,7 +462,7 @@ pre {{ font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; o
 <p class="artist">{artist_esc}</p>
 <p class="meta">{meta_html}</p>
 </header>
-<pre id="body">{body_esc}</pre>
+{downloads_html}<pre id="body">{body_esc}</pre>
 <script>
 (function() {{
   var pre = document.getElementById('body');
@@ -487,15 +490,20 @@ pre {{ font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; o
 """
 
 
-def render_song_html(slug, title, artist, kind, meta, body):
+def render_song_html(slug, title, artist, kind, meta, body, downloads=None):
     meta_bits = [f"<span>{kind_ru(kind)}</span>"]
     for k, v in meta.items():
         meta_bits.append(f"<span>{html_mod.escape(k)}: {html_mod.escape(str(v))}</span>")
+    downloads_html = ""
+    if downloads:
+        links = " · ".join(f'<a href="{html_mod.escape(href)}">{html_mod.escape(label)}</a>' for label, href in downloads)
+        downloads_html = f'<p class="downloads">{links}</p>\n'
     return SONG_TEMPLATE.format(
         title_esc=html_mod.escape(title),
         artist_esc=html_mod.escape(artist),
         meta_html="".join(meta_bits),
         body_esc=html_mod.escape(body),
+        downloads_html=downloads_html,
     )
 
 
@@ -637,6 +645,7 @@ def render_report(results, history_html=""):
     order = [
         ("ok", "OK — извлечено", "ok"),
         ("wayback", "Из Wayback (Кино)", "wayback"),
+        ("manual_added", "Добавлено вручную (контент есть)", "ok"),
         ("manual", "Вручную (не автоматизировано)", "manual"),
         ("gap", "Gap — не удалось", "gap"),
     ]
@@ -663,13 +672,53 @@ def render_report(results, history_html=""):
     return REPORT_TEMPLATE.format(
         generated_at=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         total=len(results),
-        n_ok=len(groups.get("ok", [])),
+        n_ok=len(groups.get("ok", [])) + len(groups.get("manual_added", [])),
         n_wayback=len(groups.get("wayback", [])),
         n_manual=len(groups.get("manual", [])),
         n_gap=len(groups.get("gap", [])),
         sections="\n".join(sections),
         history=history_html,
     )
+
+
+def load_manual_entries():
+    """manual_entries.json holds hand-typed/hand-supplied songs the scraper
+    can't reach (VK-authenticated topics, Songsterr's JS-rendered tab, a
+    google search that isn't a source at all). Rendered the same way as
+    scraped songs so they show up in the index/search like everything else."""
+    if not MANUAL_FILE.exists():
+        return []
+    return json.loads(MANUAL_FILE.read_text(encoding="utf-8"))
+
+
+def process_manual_entry(entry):
+    downloads = None
+    asset = entry.get("asset")
+    if asset:
+        src_path = ROOT / asset["src"]
+        if not src_path.exists():
+            return {"result": "gap", "src": _manual_src(entry), "reason": f"asset not found: {asset['src']}"}
+        dest = RAW_DIR / asset["filename"]
+        dest.write_bytes(src_path.read_bytes())
+        downloads = [(asset.get("label", "Скачать"), f"../raw/{asset['filename']}")]
+    return {
+        "result": "manual_added",
+        "src": _manual_src(entry),
+        "slug": entry["slug"],
+        "data": {
+            "title": entry["title"], "artist": entry["artist"], "kind": entry["kind"],
+            "meta": entry.get("meta", {}), "body": entry["body"], "downloads": downloads,
+        },
+    }
+
+
+def _manual_src(entry):
+    return {
+        "title_raw": entry["title"],
+        "domain": entry["artist"],
+        "url_norm": f"songs/{entry['slug']}.html",
+        "note": (entry.get("meta") or {}).get("источник", "добавлено вручную"),
+    }
 
 
 def archive_previous_report():
@@ -744,6 +793,26 @@ def main():
             })
             r["slug"] = slug
 
+    manual_entries = load_manual_entries()
+    for entry in manual_entries:
+        print(f"[manual] {entry['title']} ({entry['artist']})", file=sys.stderr)
+        _used_slugs.add(entry["slug"])
+        r = process_manual_entry(entry)
+        results.append(r)
+        if r["result"] == "manual_added":
+            data = r["data"]
+            slug = r["slug"]
+            song_html = render_song_html(
+                slug, data["title"], data["artist"], data["kind"], data["meta"], data["body"],
+                downloads=data.get("downloads"),
+            )
+            (SONGS_DIR / f"{slug}.html").write_text(song_html, encoding="utf-8")
+            (RAW_DIR / f"{slug}.txt").write_text(data["body"], encoding="utf-8")
+            songs_for_index.append({
+                "slug": slug, "title": data["title"], "artist": data["artist"], "kind": data["kind"],
+                "domain": r["src"]["domain"],
+            })
+
     index_html = INDEX_TEMPLATE.format(songs_json=json.dumps(songs_for_index, ensure_ascii=False))
     (OUT_DIR / "index.html").write_text(index_html, encoding="utf-8")
 
@@ -755,9 +824,10 @@ def main():
 
     n_ok = sum(1 for r in results if r["result"] == "ok")
     n_wb = sum(1 for r in results if r["result"] == "wayback")
+    n_added = sum(1 for r in results if r["result"] == "manual_added")
     n_manual = sum(1 for r in results if r["result"] == "manual")
     n_gap = sum(1 for r in results if r["result"] == "gap")
-    print(f"\nГотово: {n_ok} ok, {n_wb} wayback, {n_manual} manual, {n_gap} gap", file=sys.stderr)
+    print(f"\nГотово: {n_ok} ok, {n_wb} wayback, {n_added} добавлено вручную, {n_manual} manual, {n_gap} gap", file=sys.stderr)
     print(f"songbook/ -> {OUT_DIR}", file=sys.stderr)
     print(f"zip -> {ZIP_FILE}", file=sys.stderr)
     if n_gap:
