@@ -3,3 +3,4 @@ songbook.zip
 __pycache__/
 *.pyc
 .claude/
+node_modules/

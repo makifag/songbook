@@ -13,8 +13,10 @@ import argparse
 import re
 import sys
 
-CHORD = r"[A-H](?:#|b)?(?:m|maj|min|dim|aug|sus)?\d*(?:sus\d|add\d|maj\d)?(?:/[A-H](?:#|b)?)?"
-CHORD_LINE = re.compile(rf"^\s*(?:{CHORD})(?:\s+(?:{CHORD}))*\s*$")
+CHORD = r"[A-H](?:#|b)?(?:m|maj|min|dim|aug|sus)?\d*(?:sus\d|add\d|maj\d)?(?:/[A-H](?:#|b)?)?(?:\([IVX]+\))?"
+# строка аккордов: аккорды плюс служебные значки ("|", "*", "x2", "}x2")
+_TOK = rf"(?:{CHORD}|\||\*|\}}?x\d|\(x\d\))"
+CHORD_LINE = re.compile(rf"^\s*(?:{CHORD})(?:\s+{_TOK})*\s*$|^\s*(?:{_TOK}\s+)+(?:{CHORD})(?:\s+{_TOK})*\s*$")
 TAB_LINE = re.compile(r"^\s*[A-Ga-g][#b]?\s*\|?-[-\d|hpbrsx/\\~()]*\|?\s*$")
 # подпись секции: с начала строки, короткая, без запятых ("Припев:", "Вступление: Am | C")
 LABEL = re.compile(r"^([А-ЯЁA-Z][^:,.!?]{1,20}):\s*(.*)$")
@@ -57,8 +59,33 @@ def split_back(line):
     return "".join(chords).rstrip(), "".join(lyric).rstrip()
 
 
+DASH_CHORDS = re.compile(rf"^[-\s]*(?:{CHORD}[-\s]*)+$")
+
+
+def normalize(lines):
+    """Свести местные варианты к "строка аккордов над строкой текста",
+    не сдвигая колонки:
+      "[Куплет]:G(III)    Em"  -> "Куплет:" + строка аккордов с отступом
+      "-------D--------G"      -> дефисы-заполнители превращаются в пробелы
+    """
+    out = []
+    for line in lines:
+        m = re.match(r"^\[([^\]]{1,30})\]:?", line)
+        if m:
+            out.append(f"{m.group(1)}:")
+            rest = line[m.end():]
+            if rest.strip():
+                # аккорды, прилепленные к метке, на деле относятся к началу строки
+                out.append(rest)
+            continue
+        if "-" in line and DASH_CHORDS.match(line) and re.search(CHORD, line):
+            line = line.replace("-", " ")
+        out.append(line)
+    return out
+
+
 def convert(text, title, artist):
-    lines = text.replace("\r", "").splitlines()
+    lines = normalize(text.replace("\r", "").expandtabs(8).splitlines())
     out = [f"{{title: {title}}}", f"{{artist: {artist}}}", ""]
     checks = []
     open_env = None

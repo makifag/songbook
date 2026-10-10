@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Все идет по плану</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Все идет по плану — Гражданская Оборона</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Все идет по плану</h1>
-<p class="artist">Гражданская Оборона</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">[Вступление]:Am F C E  (x2)
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Все идет по плану</h1><div class="by">Гражданская Оборона</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">[Вступление]:Am F C E  (x2)
 
 [Куплет]:   Am     F       C          E
 Границы ключ переломлен пополам,
@@ -121,28 +100,78 @@ pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; ov
     E          Am    F C
 И всё идет по плану,
   E           Am     F C
-Всё идет по плану.</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+Всё идет по плану.</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Все идет по плану}
+{artist: Гражданская Оборона}
+
+{comment: Вступление}
+[Am] [F] [C] [E] [(x2)]
+
+{comment: Куплет}
+Гра[Am]ницы кл[F]юч перел[C]омлен попол[E]ам,
+А наш б[Am]атюшка Л[F]енин совсе[C]м усо[E]п.
+Он разлож[Am]ился на пл[F]есень и на л[C]иповый м[E]ед,
+А перестр[Am]ойка все ид[F]ет, и ид[C]ет по пл[E]ану.
+И вся гр[Am]язь преврат[F]илась в голый л[C]ед,
+
+{start_of_chorus: Припев}
+И вс[E]ё идет по п[Am]лану, [F]  [C]
+Вс[E]ё идет по пл[Am]ану.   [F]  [C]
+{end_of_chorus}
+
+{comment: Куплет}
+А мо[Am]я судь[F]ба захот[C]ела на поко[E]й,
+Я обещ[Am]ал ей не уч[F]аствовать в во[C]енной игр[E]е.
+Но на фур[Am]ажке на мо[F]ей - серп и м[C]олот, и звезд[E]а.
+Как это тр[Am]огательно - с[F]ерп и м[C]олот, и звезд[E]а.
+Лихой фон[Am]арь ожид[F]ания мот[C]ается,
+
+{start_of_chorus: Припев}
+И вс[E]ё идет по п[Am]лану, [F]  [C]
+Вс[E]ё идет по пл[Am]ану.   [F]  [C]
+{end_of_chorus}
+
+{comment: Куплет}
+А мо[Am]ей жен[F]ой накорм[C]или толп[E]у,
+Миро[Am]вым кулак[F]ом растопт[C]али ей гр[E]удь.
+Всенар[Am]одной своб[F]одой растерз[C]али ей пл[E]оть.
+Так закоп[Am]айте ж е[F]е во Христ[C]е,
+
+{start_of_chorus: Припев}
+И вс[E]ё идет по п[Am]лану, [F]  [C]
+Вс[E]ё идет по пл[Am]ану.   [F]  [C]
+{end_of_chorus}
+
+{comment: Куплет}
+Один лишь д[Am]едушка Л[F]енин хор[C]оший был в[E]ождь,
+А все друг[Am]ие, остальн[F]ые - так[C]ое дерьм[E]о,
+А все друг[Am]ие - враг[F]и и так[C]ие мудак[E]и.
+Над родн[Am]ою над отч[F]изной беснов[C]атый снег ш[E]ел.
+Я куп[Am]ил журнал "Кор[F]ея" - там т[C]оже хорош[E]о.
+Там тов[Am]арищ Ким Ир С[F]ен, там т[C]оже, что у н[E]ас.
+Я увер[Am]ен, что у н[F]их тоже [C]самое,
+
+{start_of_chorus: Припев}
+И вс[E]ё идет по п[Am]лану, [F]  [C]
+Вс[E]ё идет по пл[Am]ану.   [F]  [C]
+{end_of_chorus}
+
+{comment: Куплет}
+А при к[Am]оммун[F]изме все б[C]удет заеб[E]ись,
+Он наст[Am]упит ск[F]оро - надо т[C]олько жд[E]ать.
+Там все б[Am]удет беспл[F]атно, там вс[C]е будет в к[E]айф.
+Там, нав[Am]ерное, вообщ[F]е не надо б[C]удет умир[E]ать
+Я просн[Am]улся среди н[F]очи и п[C]онял, что
+
+{start_of_chorus: Припев}
+И вс[E]ё идет по п[Am]лану, [F]  [C]
+Вс[E]ё идет по пл[Am]ану.   [F]  [C]
+И вс[E]ё идет по п[Am]лану, [F]  [C]
+Вс[E]ё идет по пл[Am]ану.   [F]  [C]
+{end_of_chorus}
 </script>
+<script src="../assets/song.js"></script>
 </body></html>

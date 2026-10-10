@@ -1,0 +1,8 @@
+{
+  "name": "songbook",
+  "private": true,
+  "description": "Только для tools/verify_alphatex.mjs (проверка конвертации) и копирования alphaTab в songbook/vendor",
+  "devDependencies": {
+    "@coderline/alphatab": "1.8.4"
+  }
+}

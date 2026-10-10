@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Спам</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Спам — Дайте танк (!)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Спам</h1>
-<p class="artist">Дайте танк (!)</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">Соло: x4 (подобрал пользователь Ea1)
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Спам</h1><div class="by">Дайте танк (!)</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">Соло: x4 (подобрал пользователь Ea1)
 e|-15-15-15--14-14-14--12-12-12---10-7---7-10-5--7-
 
 e|-15-15-15--14-14-14--12-12-12--10--7-7--10-10--12-12--14-14-
@@ -157,28 +136,88 @@ e|-15-15-15--14-14-14--12-12-12--10--7-7--10-10--12-12--14-14-
  Am                   C
 Ты так ждал этот знак свыше.  
  C                 Dm
-Но отметил его как спам.</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+Но отметил его как спам.</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Спам}
+{artist: Дайте танк (!)}
+
+{comment: Соло}
+x4 (подобрал пользователь Ea1)
+{start_of_tab}
+e|-15-15-15--14-14-14--12-12-12---10-7---7-10-5--7-
+
+e|-15-15-15--14-14-14--12-12-12--10--7-7--10-10--12-12--14-14-
+{end_of_tab}
+Ч[Am]то с тобой, мой дорогой человек?
+Э[Em]то такие синяки или тени для век?
+В[Am]ек живи, век учись – помрёшь дураком.
+Р[Em]усскую тоску мы все впитали с грудным молоком.
+Н[Am]а шёлковом пути нашёл тебя наш караван.
+В[Em]от ароматические свечи и пена для ванн.
+Д[Am]авай реветь. Ведь, кто слабее, тот и прав.
+Д[Em]авай бояться вместе, я котёнок по имени Гав.
+П[Am]рипевы прилипают, будто к зубам ириска.
+М[Em]ы шампанское пьём безо всякого риска.
+Д[Am]еньги – брызги, мы на небо их не унесём.
+Н[Em]е о чем жалеть, кроме привычки жалеть обо всём.
+В[Am]есь мир – театр, но актёры не выйдут на бис.
+Ч[Em]то на барабане револьвера? Ура! Сектор «Приз»!
+П[Am]ока слова упитанных теряют вес,
+Д[Em]авай играть в преферанс на интерес.
+
+{start_of_chorus: Припев}
+Б[Dm]ез нулей нет ед[G]иниц,
+А[G] без единиц нет [Am]нулей.
+Н[Am]ам пора отпустить [C]синиц.
+Н[C]ам пора ловить жур[Dm]авлей.
+З[Dm]вёзды лучше видны [G]с крыши.
+П[G]олезай и провер[Am]ь сам.
+Т[Am]ы так ждал этот зна[C]к свыше.
+Н[C]о отметил его как[Dm] спам.
+{end_of_chorus}
+
+В[Am]сё это время ты прожил по образцу.
+Н[Em]о теперь шкуру волка пора надевать на овцу.
+К[Am]ак по канату ты шагаешь по линии старта.
+В[Em]ыберем финиш наугад. Зачем тебе карта?
+З[Am]а дверью вся Земля без законов и правил!
+С[Em]егодня нам повезёт – сказал Глоба Павел.
+П[Am]оложи телефон. Встречи дороже звонков.
+Х[Em]олод придумали продавцы пуховиков.
+П[Am]роизводители пилюль придумали боль.
+Н[Em]е переживай, мы сто раз делили на ноль.
+В[Am] правой руке держали вилки, в левой – ножи.
+Н[Em]аперегонки бежали на последние этажи.
+Ж[Am]ёнам чужим задирали юбки.
+Н[Em]аши планы ничего не стоят. Нужны поступки.
+[Am]
+{comment: Ты пойми}
+кто-то должен встречать рассвет.
+[Em]
+{comment: Ты представь}
+он придёт, и никого нет.
+
+{start_of_chorus: Припев}
+Б[Dm]ез нулей нет е[G]диниц,
+А[G] без единиц нет н[Am]улей.
+Н[Am]ам пора отпустить [C]синиц.
+Н[C]ам пора ловить жур[Dm]авлей.
+З[Dm]вёзды лучше видны [G]с крыши.
+П[G]олезай и провер[Am]ь сам.
+Т[Am]ы так ждал этот знак [C]свыше.
+Н[C]о отметил его как [Dm]спам.
+{end_of_chorus}
+
+Б[Dm]ез нулей нет е[G]диниц,
+А[G] без единиц нет н[Am]улей.
+Н[Am]ам пора отпустить [C]синиц.
+Н[C]ам пора ловить жур[Dm]авлей.
+З[Dm]вёзды лучше видны [G]с крыши.
+П[G]олезай и провер[Am]ь сам.
+Т[Am]ы так ждал этот знак [C]свыше.
+Н[C]о отметил его как [Dm]спам.
 </script>
+<script src="../assets/song.js"></script>
 </body></html>

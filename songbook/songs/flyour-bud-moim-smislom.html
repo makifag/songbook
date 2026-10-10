@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Будь моим смыслом</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Будь моим смыслом — Flёur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Будь моим смыслом</h1>
-<p class="artist">Flёur</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">[Вступление]:Am | F
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Будь моим смыслом</h1><div class="by">Flёur</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">[Вступление]:Am | F
 
 [Куплет]:     Am        C                 F
 Я рисую желтых ящериц, розовых змей,
@@ -153,28 +132,99 @@ Dm | F | Am | Am
 
 [Кода]:Dm | Dm | Am | Am
 Dm | Dm | Am | Am
-Am | Am /*↓*/</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+Am | Am /*↓*/</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Будь моим смыслом}
+{artist: Flёur}
+
+{comment: Вступление}
+[Am] [|] [F]
+
+{comment: Куплет}
+Я рис[Am]ую желтых [C]ящериц, розовых зм[F]ей,
+Без[F]умные облак[Dm]а,
+В н[Dm]их поющих с[F]ирен
+За ок[Am]ном стан[C]овится небо темн[F]ей
+Но н[F]ебо в моих рук[Dm]ах,
+На гл[Dm]адкой поверхност[F]и стен
+
+{comment: Проигрыш}
+[Am] [|] [F] [|] [Am] [|] [F]
+
+{comment: Куплет}
+Эти г[Am]оры, эти р[C]еки, покрытые льд[F]ом,
+Я [F]их назвала в твою[Dm] честь,
+Н[Dm]ебо закрыла[F] метель
+Раскал[Am]ённое в[C]ыйдет солнце пот[F]ом,
+Здесь буд[F]ут цветы и л[Dm]ес,
+Ск[Dm]оро начнется [F]апрель.
+
+{start_of_chorus: Припев}
+Пож[Am]алуйста, будь моим,
+Пож[C]алуйста будь моим см[F]ыслом,
+Мы одн[F]и на целой земл[Dm]е,
+В самом с[Dm]ердце моих карт[F]ин
+Целый м[Am]ир придуман,
+Целый м[C]ир придуманных [F]истин,
+Я нужд[F]аюсь в твоем тепл[Dm]е
+И я хо[Dm]чу быть смыслом тво[F]им...
+{end_of_chorus}
+
+{comment: Проигрыш}
+[Dm] [|] [F] [|] [Am] [|] [Am]
+[Dm] [|] [F] [|] [Am] [|] [Am]
+
+{comment: Куплет}
+За окн[Am]ом кто-то пл[C]ачет, кого-то зов[F]ут,
+Торопл[F]ивы чьи-то шаг[Dm]и,
+Д[Dm]ождь как шорох стран[F]иц.
+Я рис[Am]ую пр[C]аздничный яркий сал[F]ют
+Цвет[F]ы, шары и флажк[Dm]и,
+Т[Dm]ысячи радостных л[F]иц.
+
+{start_of_chorus: Припев}
+Пож[Am]алуйста, будь моим,
+Пож[C]алуйста будь моим см[F]ыслом,
+Мы одн[F]и на целой земл[Dm]е,
+В самом с[Dm]ердце моих карт[F]ин
+Целый м[Am]ир придуман,
+Целый м[C]ир придуманных [F]истин,
+Я нужд[F]аюсь в твоем тепл[Dm]е
+И я хо[Dm]чу быть смыслом тво[F]им...
+{end_of_chorus}
+
+{comment: Проигрыш}
+[Dm] [|] [Dm] [|] [Am] [|] [Am]
+[Dm] [|] [Dm] [|] [Am] [|] [Am]
+
+{comment: Куплет}
+За окн[Am]ом кто-то пл[C]ачет, кого-то зов[F]ут,
+Торопл[F]ивы чьи-то шаг[Dm]и,
+Д[Dm]ождь как шорох [F]страниц.
+Без теб[Am]я бессм[C]ыслен и весь мой тр[F]уд
+М[F]узыка и стих[Dm]и,
+Шум дожд[Dm]я и пение[F] птиц.
+
+{comment: Проигрыш}
+[Dm] [|] [F] [|] [Am] [|] [Am]
+[Dm] [|] [F] [|] [Am] [|] [Am]
+
+{start_of_chorus: Припев}
+Пож[Am]алуйста, будь моим,
+Пож[C]алуйста будь моим см[F]ыслом,
+Мы одн[F]и на целой земл[Dm]е,
+В самом с[Dm]ердце моих карт[F]ин
+Целый м[Am]ир придуман,
+Целый м[C]ир придуманных [F]истин,
+Я нужд[F]аюсь в твоем тепл[Dm]е
+И я хо[Dm]чу быть смыслом тво[F]им...
+{end_of_chorus}
+
+{comment: Кода}
+[Dm] [|] [Dm] [|] [Am] [|] [Am]
+[Dm]Am [|]| [Dm]Am [|]/*[Am]↓*/[|]  [Am]
 </script>
+<script src="../assets/song.js"></script>
 </body></html>

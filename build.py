@@ -25,6 +25,11 @@ REPORTS_DIR = OUT_DIR / "reports"
 SOURCES_FILE = ROOT / "sources.json"
 MANUAL_FILE = ROOT / "manual_entries.json"
 ZIP_FILE = ROOT / "songbook.zip"
+FORMATS_DIR = ROOT / "formats"          # .atex/.cho из tools/convert_all.py (проверенные)
+ASSETS_SRC = ROOT / "assets"            # общий css/js страниц песен
+VENDOR_SRC = ROOT / "vendor"            # alphaTab (движок нот/табов + шрифт + звук)
+SONGS_META = OUT_DIR / "songs.json"     # метаданные песен — для сборки без сети (--offline)
+GP_EXT = (".gp", ".gp3", ".gp4", ".gp5", ".gpx")
 CACHE_MAX_AGE_SECONDS = 30 * 86400
 
 # gametabs.net reshuffles game/song slugs over time; these bookmarks drifted since capture.
@@ -428,82 +433,85 @@ def process_source(src, refetch):
 SONG_TEMPLATE = """<!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>{title_esc}</title>
-<style>
-:root {{ color-scheme: light dark; }}
-body {{ font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }}
-header {{ margin-bottom: 1em; }}
-h1 {{ margin: 0 0 0.2em; font-size: 1.4em; }}
-.artist {{ color: #888; margin: 0 0 0.8em; }}
-.meta {{ font-size: 0.85em; color: #888; margin-bottom: 1em; }}
-.meta span {{ margin-right: 1em; }}
-.back {{ font-size: 0.9em; }}
-.downloads {{ margin: -0.4em 0 1em; }}
-.downloads a {{ font-size: 0.9em; }}
-.zoom-controls {{ display: inline-flex; gap: 0.4em; margin-left: 1em; }}
-.zoom-controls button {{ font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }}
-pre {{ font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }}
-@media print {{
-  :root {{ color-scheme: light; }}
-  body {{ color: #000; background: #fff; }}
-  .back, .no-print {{ display: none; }}
-  pre {{ background: none; padding: 0; }}
-}}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{title_esc} — {artist_esc}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>{title_esc}</h1>
-<p class="artist">{artist_esc}</p>
-<p class="meta">{meta_html}</p>
-</header>
-{downloads_html}<pre id="body">{body_esc}</pre>
-<script>
-(function() {{
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() {{ pre.style.fontSize = size + 'px'; }}
-  function fitWidth() {{
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {{
-      size -= 0.5;
-      apply();
-      guard++;
-    }}
-  }}
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() {{ size = Math.max(size - 1, 6); apply(); }});
-  document.getElementById('fontInc').addEventListener('click', function() {{ size = Math.min(size + 1, 32); apply(); }});
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-}})();
-</script>
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>{title_esc}</h1><div class="by">{artist_esc}</div></div>
+<div class="meta">{chips_html}</div></div>
+{notes_html}{downloads_html}<div class="controls" id="controls"></div>
+<div id="view"></div>
+{source_html}
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="{fmt}" data-file="{file_attr}">
+{src_text}</script>
+{alphatab_tag}<script src="../assets/song.js"></script>
 </body></html>
 """
 
+FORMAT_LABEL = {"alphatex": "ноты + таб", "chordpro": "аккорды", "gp": "Guitar Pro", "text": "текст"}
+
+
+def _script_safe(text):
+    """Текст внутри <script type=text/plain>: экранируем только закрывающий тег."""
+    return text.replace("</script", "<\\/script")
+
+
+def song_format(slug, downloads=None):
+    """-> (format, содержимое для страницы, файл для data-file)."""
+    atex = FORMATS_DIR / f"{slug}.atex"
+    cho = FORMATS_DIR / f"{slug}.cho"
+    if atex.exists():
+        return "alphatex", atex.read_text(encoding="utf-8"), ""
+    if cho.exists():
+        return "chordpro", cho.read_text(encoding="utf-8"), ""
+    for _, href in downloads or []:
+        if href.lower().endswith(GP_EXT):
+            return "gp", "", href
+    return "text", None, ""
+
 
 def render_song_html(slug, title, artist, kind, meta, body, downloads=None):
-    meta_bits = [f"<span>{kind_ru(kind)}</span>"]
+    fmt, content, file_attr = song_format(slug, downloads)
+    if content is None:
+        content = body
+    chips = [FORMAT_LABEL[fmt]]
+    notes = []
     for k, v in meta.items():
-        meta_bits.append(f"<span>{html_mod.escape(k)}: {html_mod.escape(str(v))}</span>")
+        v = str(v)
+        if k == "источник" or len(v) > 40:
+            notes.append(f"{k}: {v}")
+        else:
+            chips.append(f"{k}: {v}")
+    chips_html = "".join(f"<span>{html_mod.escape(c)}</span>" for c in chips)
+    notes_html = f'<p class="notes">{html_mod.escape(chr(10).join(notes))}</p>\n' if notes else ""
     downloads_html = ""
     if downloads:
         links = " · ".join(f'<a href="{html_mod.escape(href)}">{html_mod.escape(label)}</a>' for label, href in downloads)
         downloads_html = f'<p class="downloads">{links}</p>\n'
+    source_html = ""
+    if fmt in ("alphatex", "chordpro"):
+        source_html = (
+            '<details class="src"><summary>Исходный текст с сайта</summary>'
+            f'<pre class="rawtxt">{html_mod.escape(body)}</pre></details>'
+        )
     return SONG_TEMPLATE.format(
         title_esc=html_mod.escape(title),
         artist_esc=html_mod.escape(artist),
-        meta_html="".join(meta_bits),
-        body_esc=html_mod.escape(body),
+        chips_html=chips_html,
+        notes_html=notes_html,
         downloads_html=downloads_html,
+        source_html=source_html,
+        fmt=fmt,
+        file_attr=html_mod.escape(file_attr),
+        src_text=_script_safe(content),
+        alphatab_tag='<script src="../vendor/alphatab/alphaTab.min.js"></script>\n' if fmt in ("alphatex", "gp") else "",
     )
 
 
@@ -514,81 +522,76 @@ def kind_ru(kind):
 INDEX_TEMPLATE = """<!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Песенник</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="assets/song.css">
 <style>
-:root {{ color-scheme: light dark; }}
-body {{ font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; }}
-h1 {{ margin-bottom: 0.3em; }}
-.controls {{ display: flex; gap: 0.5em; flex-wrap: wrap; margin-bottom: 1em; position: sticky; top: 0;
-             background: Canvas; padding: 0.5em 0; }}
-input[type=search] {{ flex: 1; min-width: 200px; padding: 0.5em; font-size: 1em; }}
-select {{ padding: 0.5em; }}
-ul {{ list-style: none; padding: 0; margin: 0; }}
-li {{ padding: 0.6em 0; border-bottom: 1px solid rgba(128,128,128,0.25); }}
-a {{ text-decoration: none; }}
-a:hover {{ text-decoration: underline; }}
-.song-artist {{ color: #888; font-size: 0.9em; }}
-.badge {{ font-size: 0.75em; padding: 0.1em 0.5em; border-radius: 4px; background: rgba(128,128,128,0.2); margin-left: 0.4em; }}
-.count {{ color: #888; font-size: 0.9em; margin-bottom: 0.5em; }}
-.report-link {{ font-size: 0.85em; }}
+h1 {{ margin: 0; font: 600 clamp(1.8rem, 5vw, 2.6rem)/1.1 var(--f-text); }}
+.bar {{ display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; }}
+.bar a {{ font: 500 .8rem var(--f-mono); text-decoration: none; }}
+.filters {{ display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: env(safe-area-inset-top, 0px);
+  background: var(--bg); padding: .6rem 0; z-index: 2; }}
+.filters input, .filters select {{ font: 1rem var(--f-text); padding: .55rem .7rem; border-radius: 6px;
+  border: 1px solid var(--rule); background: var(--paper); color: var(--ink); }}
+.filters input {{ flex: 1 1 14rem; min-width: 0; }}
+.filters select {{ font: .85rem var(--f-mono); }}
+.count {{ font: .8rem var(--f-mono); color: var(--muted); margin: 0; }}
+ul.songs {{ list-style: none; margin: 0; padding: 0; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; }}
+ul.songs li + li {{ border-top: 1px solid var(--rule); }}
+ul.songs a {{ display: flex; align-items: baseline; justify-content: space-between; gap: .3rem 1rem; flex-wrap: wrap;
+  padding: .75rem 1rem; color: var(--ink); text-decoration: none; }}
+ul.songs a:hover .t {{ color: var(--accent); }}
+.t {{ font-size: 1.05rem; }}
+.a {{ color: var(--muted); font-size: .9rem; margin-left: .5rem; }}
+.f {{ font: 500 .7rem/1 var(--f-mono); padding: .3rem .45rem; border-radius: 4px; background: var(--chip); color: var(--muted); white-space: nowrap; }}
+.f.alphatex, .f.gp {{ color: var(--accent); }}
+.f.chordpro {{ color: var(--chord); }}
 </style>
 </head><body>
-<h1>Песенник</h1>
-<p class="report-link"><a href="report.html">Отчёт о сборке</a></p>
-<div class="controls">
-  <input type="search" id="q" placeholder="Поиск по названию/исполнителю...">
-  <select id="kindFilter"><option value="">Все виды</option><option value="tab">Табы</option><option value="chords">Аккорды</option></select>
-  <select id="artistFilter"><option value="">Все исполнители</option></select>
+<div class="wrap">
+<div class="bar"><h1>Песенник</h1><a href="report.html">отчёт о сборке</a></div>
+<div class="filters">
+  <input type="search" id="q" placeholder="Название или исполнитель" aria-label="Поиск">
+  <select id="kindFilter" aria-label="Вид"><option value="">все виды</option><option value="tab">табы</option><option value="chords">аккорды</option></select>
+  <select id="artistFilter" aria-label="Исполнитель"><option value="">все исполнители</option></select>
 </div>
 <p class="count" id="count"></p>
-<ul id="list"></ul>
+<ul class="songs" id="list"></ul>
+</div>
 <script>
 var SONGS = {songs_json};
+var LABEL = {{ alphatex: "ноты + таб", gp: "Guitar Pro", chordpro: "аккорды", text: "текст" }};
 var list = document.getElementById('list');
 var q = document.getElementById('q');
 var kindFilter = document.getElementById('kindFilter');
 var artistFilter = document.getElementById('artistFilter');
 var countEl = document.getElementById('count');
-
-var artists = Array.from(new Set(SONGS.map(function(s){{ return s.artist; }}))).filter(Boolean).sort();
-artists.forEach(function(a){{
-  var opt = document.createElement('option');
-  opt.value = a; opt.textContent = a;
-  artistFilter.appendChild(opt);
+Array.from(new Set(SONGS.map(function(s){{ return s.artist; }}))).filter(Boolean).sort().forEach(function(a){{
+  var opt = document.createElement('option'); opt.value = a; opt.textContent = a; artistFilter.appendChild(opt);
 }});
-
 function norm(s) {{ return (s || '').toLowerCase(); }}
-
 function render() {{
-  var query = norm(q.value);
-  var kind = kindFilter.value;
-  var artist = artistFilter.value;
+  var query = norm(q.value), kind = kindFilter.value, artist = artistFilter.value;
   var filtered = SONGS.filter(function(s) {{
     if (kind && s.kind !== kind) return false;
     if (artist && s.artist !== artist) return false;
-    if (query && norm(s.title).indexOf(query) === -1 && norm(s.artist).indexOf(query) === -1) return false;
-    return true;
+    return !query || norm(s.title).indexOf(query) !== -1 || norm(s.artist).indexOf(query) !== -1;
   }});
   list.innerHTML = '';
   filtered.forEach(function(s) {{
-    var li = document.createElement('li');
-    var a = document.createElement('a');
+    var li = document.createElement('li'), a = document.createElement('a');
     a.href = 'songs/' + s.slug + '.html';
-    a.textContent = s.title;
-    var badge = document.createElement('span');
-    badge.className = 'badge';
-    badge.textContent = s.kind === 'tab' ? 'таб' : 'аккорды';
-    li.appendChild(a);
-    li.appendChild(badge);
-    var artistDiv = document.createElement('div');
-    artistDiv.className = 'song-artist';
-    artistDiv.textContent = s.artist;
-    li.appendChild(artistDiv);
-    list.appendChild(li);
+    var left = document.createElement('span');
+    var t = document.createElement('span'); t.className = 't'; t.textContent = s.title;
+    var ar = document.createElement('span'); ar.className = 'a'; ar.textContent = s.artist;
+    left.appendChild(t); left.appendChild(ar);
+    var f = document.createElement('span'); f.className = 'f ' + s.format; f.textContent = LABEL[s.format] || s.format;
+    a.appendChild(left); a.appendChild(f); li.appendChild(a); list.appendChild(li);
   }});
   countEl.textContent = filtered.length + ' из ' + SONGS.length;
 }}
-
 q.addEventListener('input', render);
 kindFilter.addEventListener('change', render);
 artistFilter.addEventListener('change', render);
@@ -764,9 +767,30 @@ def zip_songbook():
                 zf.write(f, arcname=str(Path("songbook") / f.relative_to(OUT_DIR)))
 
 
+def copy_static():
+    """Общий css/js и alphaTab — в собранный сайт."""
+    import shutil
+    for src_dir, name in ((ASSETS_SRC, "assets"), (VENDOR_SRC, "vendor")):
+        dest = OUT_DIR / name
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(src_dir, dest)
+
+
+def write_song(slug, data, downloads=None):
+    song_html = render_song_html(
+        slug, data["title"], data["artist"], data["kind"], data["meta"], data["body"], downloads=downloads,
+    )
+    (SONGS_DIR / f"{slug}.html").write_text(song_html, encoding="utf-8")
+    (RAW_DIR / f"{slug}.txt").write_text(data["body"], encoding="utf-8")
+    return song_format(slug, downloads)[0]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--refetch", action="store_true", help="force re-download, ignore cache age")
+    parser.add_argument("--offline", action="store_true",
+                        help="без сети: пересобрать страницы из songbook/raw + songs.json (отчёт не трогается)")
     args = parser.parse_args()
 
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -776,20 +800,33 @@ def main():
     sources = json.loads(SOURCES_FILE.read_text(encoding="utf-8"))
     results = []
     songs_for_index = []
+    known = {}
+    if args.offline:
+        if not SONGS_META.exists():
+            sys.exit("Нет songbook/songs.json — сначала нужна обычная сборка с сетью.")
+        known = {s["slug"]: s for s in json.loads(SONGS_META.read_text(encoding="utf-8"))}
 
     for i, src in enumerate(sources, 1):
-        print(f"[{i}/{len(sources)}] {src['title_raw']} ({src['handler']}, {src['status']})", file=sys.stderr)
-        r = process_source(src, refetch=args.refetch)
+        if args.offline:
+            slug = make_slug(src)
+            entry = known.get(slug)
+            raw = RAW_DIR / f"{slug}.txt"
+            if not entry or not raw.exists():
+                continue
+            data = {"title": entry["title"], "artist": entry["artist"], "kind": entry["kind"],
+                    "meta": entry.get("meta", {}), "body": raw.read_text(encoding="utf-8")}
+            r = {"result": "ok", "src": src, "data": data}
+        else:
+            print(f"[{i}/{len(sources)}] {src['title_raw']} ({src['handler']}, {src['status']})", file=sys.stderr)
+            r = process_source(src, refetch=args.refetch)
         results.append(r)
         if r["result"] in ("ok", "wayback"):
             data = r["data"]
-            slug = make_slug(src)
-            song_html = render_song_html(slug, data["title"], data["artist"], data["kind"], data["meta"], data["body"])
-            (SONGS_DIR / f"{slug}.html").write_text(song_html, encoding="utf-8")
-            (RAW_DIR / f"{slug}.txt").write_text(data["body"], encoding="utf-8")
+            slug = make_slug(src) if not args.offline else slug
+            fmt = write_song(slug, data)
             songs_for_index.append({
                 "slug": slug, "title": data["title"], "artist": data["artist"], "kind": data["kind"],
-                "domain": src["domain"],
+                "domain": src["domain"], "meta": data["meta"], "format": fmt,
             })
             r["slug"] = slug
 
@@ -802,26 +839,32 @@ def main():
         if r["result"] == "manual_added":
             data = r["data"]
             slug = r["slug"]
-            song_html = render_song_html(
-                slug, data["title"], data["artist"], data["kind"], data["meta"], data["body"],
-                downloads=data.get("downloads"),
-            )
-            (SONGS_DIR / f"{slug}.html").write_text(song_html, encoding="utf-8")
-            (RAW_DIR / f"{slug}.txt").write_text(data["body"], encoding="utf-8")
+            fmt = write_song(slug, data, downloads=data.get("downloads"))
             songs_for_index.append({
                 "slug": slug, "title": data["title"], "artist": data["artist"], "kind": data["kind"],
-                "domain": r["src"]["domain"],
+                "domain": r["src"]["domain"], "meta": data["meta"], "format": fmt, "manual": True,
             })
 
-    index_html = INDEX_TEMPLATE.format(songs_json=json.dumps(songs_for_index, ensure_ascii=False))
+    copy_static()
+    index_songs = [{k: s[k] for k in ("slug", "title", "artist", "kind", "domain", "format")} for s in songs_for_index]
+    index_html = INDEX_TEMPLATE.format(songs_json=json.dumps(index_songs, ensure_ascii=False))
     (OUT_DIR / "index.html").write_text(index_html, encoding="utf-8")
+    SONGS_META.write_text(json.dumps([s for s in songs_for_index if not s.get("manual")], ensure_ascii=False, indent=1),
+                          encoding="utf-8")
 
-    archive_previous_report()
-    report_html = render_report(results, history_html=build_history_html())
-    (OUT_DIR / "report.html").write_text(report_html, encoding="utf-8")
+    if not args.offline:
+        archive_previous_report()
+        report_html = render_report(results, history_html=build_history_html())
+        (OUT_DIR / "report.html").write_text(report_html, encoding="utf-8")
 
     zip_songbook()
 
+    from collections import Counter
+    fmts = Counter(s["format"] for s in songs_for_index)
+    print("\nФорматы: " + ", ".join(f"{k} {v}" for k, v in sorted(fmts.items())), file=sys.stderr)
+    if args.offline:
+        print(f"Офлайн-пересборка: {len(songs_for_index)} песен", file=sys.stderr)
+        return
     n_ok = sum(1 for r in results if r["result"] == "ok")
     n_wb = sum(1 for r in results if r["result"] == "wayback")
     n_added = sum(1 for r in results if r["result"] == "manual_added")

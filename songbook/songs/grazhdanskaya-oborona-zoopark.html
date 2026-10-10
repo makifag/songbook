@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Зоопарк</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Зоопарк — Гражданская Оборона</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Зоопарк</h1>
-<p class="artist">Гражданская Оборона</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">[Куплет]:G(III)    Em   C(III)    D(V)
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Зоопарк</h1><div class="by">Гражданская Оборона</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">[Куплет]:G(III)    Em   C(III)    D(V)
 Не надо помнить, не надо ждать,
 G(III)    Em   C(III)    D(V)
 Не надо верить, не надо лгать,
@@ -111,28 +90,63 @@ G(III)       Em
            G(III)  Em C(III) D(V)
 Мы уйдем из зоопарка
            G(III)  Em C(III) D(V) G
-Мы уйдем из зоопарка</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+Мы уйдем из зоопарка</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Зоопарк}
+{artist: Гражданская Оборона}
+
+{comment: Куплет}
+[G(III)]Не надо по[Em]мнить[C(III)], не надо [D(V)]ждать,
+[G(III)]Не надо ве[Em]рить,[C(III)] не надо л[D(V)]гать,
+[G(III)]Не надо па[Em]дать,[C(III)] не надо п[D(V)]ить,
+[G(III)]Не надо пл[Em]акать[C(III)], не надо [D(V)]жить.
+
+{start_of_chorus: Припев}
+[G(III)]Ведь я ищу та[Em]ких как я
+Сумасшедших[C(III)] и смешных,
+Сумасшедши[D(V)]х и больных,
+[G(III)]А когда я их [Em]найду
+Мы уйдем от сю[C(III)]да прочь,
+Мы уйдем от с[D(V)]юда в ночь.
+Мы уйдем из[G(III)] зоопарк[Em]а  [C(III)]       [D(V)]
+Мы уйдем из[G(III)] зоопарк[Em]а  [C(III)]       [D(V)]
+{end_of_chorus}
+
+{comment: Куплет}
+[G(III)]О, бэби-бэ[Em]би, т[C(III)]ы просто м[D(V)]ышь,
+[G(III)]Ты словно [Em]точка[C(III)], когда мо[D(V)]лчишь,
+[G(III)]Но вас так[Em] мног[C(III)]о, в глаза[D(V)]х темно,
+[G(III)]Я так хоте[Em]л бы [C(III)]разбить ок[D(V)]но.
+
+{start_of_chorus: Припев}
+[G(III)]Ведь я ищу та[Em]ких как я
+Сумасшедших[C(III)] и смешных,
+Сумасшедши[D(V)]х и больных,
+[G(III)]А когда я их [Em]найду
+Мы уйдем от сю[C(III)]да прочь,
+Мы уйдем от с[D(V)]юда в ночь.
+Мы уйдем из[G(III)] зоопарк[Em]а  [C(III)]       [D(V)]
+Мы уйдем из[G(III)] зоопарк[Em]а  [C(III)]       [D(V)]
+{end_of_chorus}
+
+{comment: Куплет}
+[G(III)]Пустые зву[Em]ки, п[C(III)]устые дни,[D(V)]
+[G(III)]Вас слишко[Em]м мно[C(III)]го, а мы о[D(V)]дни,
+[G(III)]В руках ре[Em]бенка[C(III)] сверкает [D(V)]нож,
+[G(III)]Но я надею[Em]сь, ч[C(III)]то это лож[D(V)]ь.
+
+{start_of_chorus: Припев}
+[G(III)]Ведь я ищу та[Em]ких как я
+Сумасшедших[C(III)] и смешных,
+Сумасшедши[D(V)]х и больных,
+[G(III)]А когда я их [Em]найду
+Мы уйдем от сю[C(III)]да прочь,
+Мы уйдем от с[D(V)]юда в ночь.
+Мы уйдем из[G(III)] зоопарк[Em]а  [C(III)]       [D(V)]
+Мы уйдем из[G(III)] зоопарк[Em]а  [C(III)]       [D(V)]     [G]
+{end_of_chorus}
 </script>
+<script src="../assets/song.js"></script>
 </body></html>

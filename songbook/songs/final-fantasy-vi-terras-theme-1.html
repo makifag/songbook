@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Terra&#x27;s Theme</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terra&#x27;s Theme — Final Fantasy VI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Terra&#x27;s Theme</h1>
-<p class="artist">Final Fantasy VI</p>
-<p class="meta"><span>таб</span><span>platform: Super Nintendo</span><span>composer: Nobuo Uematsu</span><span>style: Arrangement, Fingerstyle</span><span>instrument: Guitar</span><span>tuning: EADGBE</span><span>arranger: laoise</span></p>
-</header>
-<pre id="body">Terra&#x27;s Theme - Final Fantasy 6
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Terra&#x27;s Theme</h1><div class="by">Final Fantasy VI</div></div>
+<div class="meta"><span>ноты + таб</span><span>platform: Super Nintendo</span><span>composer: Nobuo Uematsu</span><span>style: Arrangement, Fingerstyle</span><span>instrument: Guitar</span><span>tuning: EADGBE</span><span>arranger: laoise</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">Terra&#x27;s Theme - Final Fantasy 6
 Arranged By Laoise Earle
 
 
@@ -152,28 +131,54 @@ X - 64th
 |-n-|  - n-tuplets
 
 
-</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="alphatex" data-file="">
+/*
+Terra's Theme - Final Fantasy 6
+Arranged By Laoise Earle
+
+
+BPM = 80
+                                                                                  |-3-|
+*/
+\title "Terra's Theme"
+\artist "Final Fantasy VI"
+\tempo 80
+.
+\track "Guitar"
+\staff {score tabs}
+\tuning e4 b3 g3 d3 a2 e2
+\ts 4 4 (2.4 0.5).16 2.3.16 1.2.8 2.4.16 2.3.16 1.2.16 2.3.16 (2.4 0.5).16 2.3.16 1.2.8 2.4.16 2.3.16 1.2.16 2.3.16 |
+(2.4 0.5).16 2.3.16 1.2.8 2.4.16 2.3.16 1.2.16 2.3.16 (2.4 0.5).16 2.3.16 1.2.8 r.8 2.3.16 0.2.16 |
+(1.2 0.5).16 0.1.16 (1.2 0.5).8 0.5.8 0.5.16{tu 3} 0.5.16{tu 3} 0.5.16{tu 3} 0.5.8 0.5.8 0.5.8 (0.2 0.5).16 2.3.16 |
+(0.2 0.6).8 0.6.8 (2.4 0.6).8 0.6.16{tu 3} 0.6.16{tu 3} 0.6.16{tu 3} 0.6.8 0.6.8 0.6.8 (2.3 0.6).16 0.2.16 |
+(1.2 0.5).16 0.1.16 (1.2 0.5).8 0.5.8 0.5.16{tu 3} 0.5.16{tu 3} 0.5.16{tu 3} 0.5.8 0.5.8 0.5.8 (0.2 0.5).16 2.3.16 |
+(0.2 0.6).8 0.6.8 (0.1 0.6).8 0.6.16{tu 3} 0.6.16{tu 3} 0.6.16{tu 3} 0.6.8 0.6.8 0.6.8 (1.2 0.6).16 3.2.16 |
+(0.1 3.5).16 3.1.16 (0.1 3.5).8 3.5.8 3.5.16{tu 3} 3.5.16{tu 3} 3.5.16{tu 3} 3.5.8 3.5.8 3.5.8 (3.2 3.5).16 1.2.16 |
+(3.2 3.6).8 3.6.8 (0.3 3.6).8 3.6.16{tu 3} 3.6.16{tu 3} 3.6.16{tu 3} 3.6.8 3.6.8 3.6.8 (1.2 3.6).16 0.2.16 |
+(2.3 3.4).8 3.4.8 3.4.8 3.4.16{tu 3} 3.4.16{tu 3} 3.4.16{tu 3} 0.4.8 0.4.8 0.4.8 (1.2 0.4).16 0.2.16 |
+\ts 9 8 (2.3 0.5).8 0.5.8 0.5.8 0.5.16{tu 3} 0.5.16{tu 3} 0.5.16{tu 3} 0.5.8 0.5.8 0.5.8 (2.3 0.5).8 0.2.8 |
+\ts 4 4 (2.3 0.5).8 0.5.8 0.5.8 0.5.16{tu 3} 0.5.16{tu 3} 0.5.16{tu 3} 0.5.8 0.5.8 0.5.8 (1.2 0.5).16 3.2.16 |
+(0.1 3.5).16 3.1.16 0.1.8 3.5.4 2.4.4 0.3.8 3.2.16 1.2.16 |
+(3.2 5.4).4 0.3.2 r.8 1.2.16 3.2.16 |
+(0.1 3.5).16 3.1.16 0.1.8 3.5.4 2.4.4 0.3.8 3.2.16 1.2.16 |
+(3.2 5.4).4 3.1.2 r.8 2.3.16 0.2.16 |
+(1.2 0.5).16 0.1.16 (1.2 0.5).8 0.5.8 0.5.16{tu 3} 0.5.16{tu 3} 0.5.16{tu 3} 0.5.8 0.5.8 0.5.8 (0.2 0.5).16 2.3.16 |
+(0.2 0.6).8 0.6.8 (2.4 0.6).8 0.6.16{tu 3} 0.6.16{tu 3} 0.6.16{tu 3} 0.6.8 0.6.8 0.6.8 (1.2 0.6).16 0.2.16 |
+(2.3 3.4).8 3.4.8 3.4.8 3.4.16{tu 3} 3.4.16{tu 3} 3.4.16{tu 3} 0.4.8 0.4.8 0.4.8 (1.2 0.4).16 0.2.16 |
+(2.3 0.5).8 0.5.8 0.5.8 0.5.16{tu 3} 0.5.16{tu 3} 0.5.16{tu 3} 0.5.8 0.5.8 0.5.4 |
+(1.2 3.5).8 0.3.8 1.2.8 0.3.8 (0.1 3.5).8 0.3.8 1.2.8 0.3.8 |
+(2.3 1.6).8 0.5.8 3.5.8 0.5.8 1.6.8 0.5.8 3.5.8 0.5.8 |
+(3.2 0.4).8 3.4.8 2.3.8 3.4.8 (1.1 0.4).8 3.4.8 (3.2 2.3).8 3.4.8 |
+(0.2 3.6).8 2.5.8 0.4.8 2.5.8 3.6.8 2.5.8 0.4.8 2.5.8 |
+(0.1 2.4).8 0.3.8 0.2.8 0.3.8 (3.1 2.4).8 0.3.8 (0.1 0.2).8 0.3.8 |
+(1.2 0.5).8 3.5.8 2.4.8 3.5.8 0.5.8 3.5.8 (3.2 2.4).8 (0.1 3.5).8 |
+(3.2 1.6).8 0.5.8 (2.3 0.4).8 0.5.8 1.6.8 0.5.8 (0.2 0.4).8 0.5.8 |
+(1.2 3.6).8 3.5.8 0.4.8 3.5.8 3.6.8 3.5.8 0.4.8 3.5.8 |
+(0.2 3.6).8 2.5.8 0.4.8 2.5.8 3.6.2
 </script>
+<script src="../vendor/alphatab/alphaTab.min.js"></script>
+<script src="../assets/song.js"></script>
 </body></html>

@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Про дурачка</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Про дурачка — Гражданская Оборона</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Про дурачка</h1>
-<p class="artist">Гражданская Оборона</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">Основной рифф: (подобрал пользователь max__core)
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Про дурачка</h1><div class="by">Гражданская Оборона</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">Основной рифф: (подобрал пользователь max__core)
 G|-------------------------------------4-3-1-3-4------|(4)
 D|-----------2-5-4--0--2-4-2-4-----4-5----------4-0-4-|(5)
 A|-2--5-4-0-4-----------------2-4-5-------------------|(6)
@@ -139,28 +118,94 @@ Bm       Em     F# *   Bm F# *
 Bm        A    D   F# *
 Ходит дурачок по лесу,
 Bm       Em     F# *    Bm
-Ищет дурачок глупее себя.</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+Ищет дурачок глупее себя.</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Про дурачка}
+{artist: Гражданская Оборона}
+
+{comment: Основной рифф}
+(подобрал пользователь max__core)
+{start_of_tab}
+G|-------------------------------------4-3-1-3-4------|(4)
+D|-----------2-5-4--0--2-4-2-4-----4-5----------4-0-4-|(5)
+A|-2--5-4-0-4-----------------2-4-5-------------------|(6)
+{end_of_tab}
+{comment: Вступление}
+[Bm] [A] [D] [F#] [*] [|] [Bm] [Em] [F#] [*] [Bm] [}x2]
+
+{start_of_chorus: Припев}
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себ[Bm]я. [F#]   [*]
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себя[Bm].
+{end_of_chorus}
+
+{comment: Куплет}
+И[Bm]дет смерть по [A]улице, нес[D]ет блины на б[F#]люд[*]це,
+[Bm]Кому вынет[Em]ся - то[F#]му [*]и сбудетс[Bm]я,
+Т[Bm]ронет за плечо[A] - поцелуе[D]т горя[F#]чо,[*]
+[Bm]Полетят ко[Em]пейки и[F#]з-з[*]а пазухи [Bm]долой.
+
+{start_of_chorus: Припев}
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себ[Bm]я. [F#]   [*]
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себя[Bm].
+{end_of_chorus}
+
+{comment: Куплет}
+З[Bm]убчатые колеса[A] завертели[D]сь в баш[F#]ке,[*]
+[Bm]В промокше[Em]й башке[F#] по[*]д бронебо[Bm]йным дождем.
+З[Bm]акипела ртуть,[A] замахнулс[D]я кула[F#]к, [*]
+[Bm]Да только [Em]если кр[F#]ест[*] на грудь[Bm], то на последний глаз - пятак.
+
+{start_of_chorus: Припев}
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себ[Bm]я. [F#]   [*]
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себя[Bm].
+{end_of_chorus}
+
+{comment: Куплет}
+М[Bm]оя мертвая мам[A]ка вчера к[D]о мне пр[F#]ишл[*]а -
+[Bm]Все грозил[Em]а кулак[F#]ом,[*] называла[Bm] дураком.
+П[Bm]редрассветный [A]комар опус[D]тился в [F#]мой[*] пожар,
+[Bm]Захлебнулс[Em]я кровь[F#]ю и[*]з моего в[Bm]иска.
+
+{start_of_chorus: Припев}
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себ[Bm]я. [F#]   [*]
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себя[Bm].
+{end_of_chorus}
+
+{comment: Куплет}
+А[Bm] сегодня я воз[A]душных шар[D]иков куп[F#]ил [*]-
+[Bm]Полечу на [Em]них над[F#] ра[*]счудесной[Bm] страной,
+Б[Bm]уду пух глотат[A]ь, буду в [D]землю ны[F#]рят[*]ь,
+[Bm]И на все в[Em]опросы [F#]отв[*]ечать: "В[Bm]сегда живой!"
+
+{start_of_chorus: Припев}
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себ[Bm]я. [F#]   [*]
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себя[Bm].
+{end_of_chorus}
+
+{comment: Куплет}
+С[Bm]ветило солнышк[A]о и ночью [D]и дн[F#]ем [*]-
+[Bm]Не бывает [Em]атеисто[F#]в в[*] окопах п[Bm]од огнем.
+Д[Bm]обежит слепой,[A] победит н[D]ичтожн[F#]ый,[*]
+[Bm]Такое вам [Em]и не сн[F#]ило[*]сь.[Bm]
+
+{start_of_chorus: Припев}
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себ[Bm]я. [F#]   [*]
+[Bm]Ходит дура[A]чок п[D]о ле[F#]су,[*]
+[Bm]Ищет дура[Em]чок глу[F#]пее[*] себя[Bm].
+{end_of_chorus}
 </script>
+<script src="../assets/song.js"></script>
 </body></html>

@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Розовый слон</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Розовый слон — Flёur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Розовый слон</h1>
-<p class="artist">Flёur</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">Intro: Am Em F C | Cm G Gm D
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Розовый слон</h1><div class="by">Flёur</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">Intro: Am Em F C | Cm G Gm D
 
 Am                  Em
 Зачем мне розовый слон?
@@ -163,28 +142,86 @@ Cm                     Gm        A        D
 C            G
 Всё разрушит удар судьбы.
 Cm                     Gm        A    D
-Если хочешь что-нибудь потерять - полюби.</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+Если хочешь что-нибудь потерять - полюби.</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Розовый слон}
+{artist: Flёur}
+
+{comment: Intro}
+[Am] [Em] [F] [C] | [Cm] [G] [Gm] [D]
+
+[Am]Зачем мне розовый сл[Em]он?
+[F]Уверена, знаю впол[C]не,
+[Cm]Объективно со всех стор[G]он,
+[Gm]Абсолютно не нужен мн[D]е.
+Но он х[Am]одит за мной всё вр[Em]емя,
+И [F]уже надоел мне стр[C]ашно.
+Ведь [Cm]люблю я других звер[G]ей,
+Ч[Gm]ёрных и камуфл[D]яжных.
+
+[Am] [D] [G] [C]
+
+[Am]Ни к чему мне розовы[Em]й слон,
+[F]Но жалко его прог[C]нать.
+[Cm]И к тому, что всегда мы[G] вдвоём
+[Gm]Стала я привыкат[D]ь.
+[Am]Уже беспокоюсь о н[Em]ём,
+[F]Он со мной на кажд[C]ом шагу.
+[Cm]В жизнь мою влился розо[G]вый слон,
+[Gm]Я уже без него не мог[D]у.
+
+Каждый д[C]олжен об этом з[G]нать,
+[C]Так устроена [G]жизнь.
+[Cm]Если хочешь что-нибудь [Gm]потерять -[A] привяжис[D]ь.
+И как то[C]лько поверишь в[G] Эдем, в благодать
+[C]Всё разрушит [G]удар судьбы.
+[Cm]Если хочешь что-нибудь [Gm]потерять -[A] полю[D]би.
+
+{comment: Bridge}
+[Am] [E] [A] [Am] | [D] [Am] [D] [F]
+
+[Am]И как только стал ну[Em]жен мне он,
+[F]Неотъемлем, необхо[C]дим,
+[Cm]Почему-то стал розовый [G]слон
+[Gm]Замкнут и нелюд[D]им.
+[Am]Не стремится розовый[Em] слон
+[F]Быть со мной кажду[C]ю минуту,
+[Cm]Как-то странно он отстр[G]анён,
+[Gm]Избегает меня почему[D]-то.
+
+[Am]Для меня это страшна[Em]я драма -
+[F]Его нет со мной це[C]лый миг.
+[Cm]Тут приходит мне телегр[G]амма,
+[Gm]Слон нашёл хозяев дру[D]гих.
+[Am]Как же мне это всё п[Em]ережить,
+[F]Я умру, я сойду с [C]ума.
+[Cm]Как вернуть м[G]не
+[Gm]Или как забыть розово[D]го слона?
+
+Каждый д[C]олжен об этом з[G]нать,
+[C]Так устроена [G]жизнь.
+[Cm]Если хочешь что-нибудь [Gm]потерять -[A] привяжис[D]ь.
+И как то[C]лько поверишь в[G] Эдем, в благодать
+[C]Всё разрушит [G]удар судьбы.
+[Cm]Если хочешь что-нибудь [Gm]потерять -[A] полю[D]би.
+
+[Am]Чтоб не плакать и не[Em] скорбить,
+[F]И любых избежать п[C]отерь,
+[Cm]Никогда никого не лю[G]би,
+[Gm]Никогда никому не вер[D]ь.
+[Am]Но сама я так вряд л[Em]и смогу,
+[F]Скоро новая будет [C]весна,
+[Cm]И опять я себе най[G]ду
+[Gm]Какого-нибудь слон[D]а.
+
+Каждый д[C]олжен об этом з[G]нать,
+[C]Так устроена [G]жизнь.
+[Cm]Если хочешь что-нибудь [Gm]потерять -[A] привяжис[D]ь.
+И как то[C]лько поверишь в[G] Эдем, в благодать
+[C]Всё разрушит [G]удар судьбы.
+[Cm]Если хочешь что-нибудь [Gm]потерять -[A] полю[D]би.
 </script>
+<script src="../assets/song.js"></script>
 </body></html>

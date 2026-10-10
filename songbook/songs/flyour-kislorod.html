@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Кислород</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кислород — Flёur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Кислород</h1>
-<p class="artist">Flёur</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">Intro: Gm  D  Cm  D#
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Кислород</h1><div class="by">Flёur</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">Intro: Gm  D  Cm  D#
 
 Gm 
 Наши мысли стерилизованы, 
@@ -172,28 +151,102 @@ Gm Cm Eb Gm
 Gm Cm Eb Gm
 Твой кислород! Твой кислород! 
 
-Outro: Gm A Bb Cm | Cm Eb D Gm</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+Outro: Gm A Bb Cm | Cm Eb D Gm</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Кислород}
+{artist: Flёur}
+
+{comment: Intro}
+[Gm] [D] [Cm] [D#]
+
+[Gm]Наши мысли стерилизованы,
+[Cm]Дезинфицированы - проследил санитар.
+[Gm]Постепенно мы забываем кто мы
+[Gm]И ходим по кругу под звуки гитар.
+[Gm]Всё на местах, но урезана суть,
+[Cm]Удалена аккуратно из наших естеств.
+[Gm]Нам дали поесть и отдохнуть перед тем,
+[Gm]как вводить ассорти ядовитых веществ.
+
+{comment: Проигрыш}
+[Gm] [D] [Cm] [Eb]
+
+[Gm]Наши мысли стандартизованы,
+[Cm]Сертифицированы, рассортированы на...
+[Gm]Чипы вшиты, настроены, каждому делу
+[Gm]Присвоены номера и имена.
+[Gm]В канцерогенном тумане в фойе на экране
+[Cm]Покажут другим образцам нашу смерть,
+[Gm]И наших детей принесут посмотреть,
+[Gm]Принесут из пробирок на нас посмотреть
+
+{start_of_chorus: Припев}
+[Gm]Это[D] последний твой кислород.
+[Bb]Ты [Cm]ещё жив, но это пройдёт.
+[Gm]Ско[Eb]ро иссякнет твой кислород
+[Cm]Дел[Eb]ай глубокий вдох и вперёд!
+[Gm]Тол[D]ько для избранных есть кислород,
+[Bb]Все[Cm]м остальным ни поблажек, ни льгот.
+[Gm]Ког[Eb]да ты не сможешь купить кислород,
+Сm Eb
+Что будет с тобой - никого не волнует!
+Сm Eb
+Никого не волнует! Твой кислород!
+{end_of_chorus}
+
+[Gm]Раньше были свободные, злые, голодные,
+[Cm]Раньше был кислород ничей.
+[Gm]А теперь наши души и органы
+[Gm]Отданы в руки садистов-врачей.
+[Gm]Нам оставила газ ядовитый горстка элиты -
+[Cm]Кислород теперь собственность их.
+[Gm]Хочешь дышать - придётся платить,
+[Gm]Но у нас ничего нет, кроме себя самих.
+
+{start_of_chorus: Припев}
+[Gm]Это[D] последний твой кислород.
+[Bb]Ты [Cm]ещё жив, но это пройдёт.
+[Gm]Ско[Eb]ро иссякнет твой кислород
+[Cm]Дел[Eb]ай глубокий вдох и вперёд!
+[Gm]Тол[D]ько для избранных есть кислород,
+[Bb]Все[Cm]м остальным ни поблажек, ни льгот.
+[Gm]Ког[Eb]да ты не сможешь купить кислород,
+Сm Eb
+Что будет с тобой - никого не волнует!
+Сm Eb
+Никого не волнует! Твой кислород!
+{end_of_chorus}
+
+[Gm]Кислорода иссякнут запасы, сгниют биомассы,
+[Cm]Наши дети останутся здесь,
+[Gm]Размножаться на этой планете, открыв глаз их третий,
+[Gm]Ни дышать им не нужно, ни есть.
+[Gm]Крепок панцирь - упругий. В электрических дугах
+[Cm]Сделала эволюция шаг вперед
+[Gm]Они наблюдали, как корчатся в муках
+[Gm]И душат друг друга те, кто отняли наш кислород.
+
+{start_of_chorus: Припев}
+[Gm]Это[D] последний твой кислород.
+[Bb]Ты [Cm]ещё жив, но это пройдёт.
+[Gm]Ско[Eb]ро иссякнет твой кислород
+[Cm]Дел[Eb]ай глубокий вдох и вперёд!
+[Gm]Тол[D]ько для избранных есть кислород,
+[Bb]Все[Cm]м остальным ни поблажек, ни льгот.
+[Gm]Ког[Eb]да ты не сможешь купить кислород,
+Сm Eb
+Что будет с тобой - никого не волнует!
+Сm Eb
+Никого не волнует! Твой кислород!
+{end_of_chorus}
+
+[Gm]Тво[Cm]й к[Eb]исл[Gm]ород! Твой кислород!
+[Gm]Тво[Cm]й к[Eb]исл[Gm]ород! Твой кислород!
+
+{comment: Outro}
+[Gm] [A] [Bb] [Cm] | [Cm] [Eb] [D] [Gm]
 </script>
+<script src="../assets/song.js"></script>
 </body></html>

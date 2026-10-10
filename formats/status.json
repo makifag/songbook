@@ -1,0 +1,219 @@
+{
+ "a-short-hike-hello": {
+  "format": null,
+  "reason": "таб не разобран: строка 266, колонка 22: цифра без доли (4 шт. в системе)"
+ },
+ "cave-story-heros-end-0": {
+  "bars": 28,
+  "checked_notes": 276,
+  "format": "alphatex"
+ },
+ "dayte-tank-drug": {
+  "checked_lines": 62,
+  "format": "chordpro"
+ },
+ "dayte-tank-spam": {
+  "checked_lines": 54,
+  "format": "chordpro"
+ },
+ "dayte-tank-volna": {
+  "checked_lines": 32,
+  "format": "chordpro"
+ },
+ "dayte-tank-vualya": {
+  "checked_lines": 44,
+  "format": "chordpro"
+ },
+ "elder-scrolls-iii-morrowind-call-of-magic-main-theme": {
+  "format": null,
+  "reason": "таб не разобран: строка 155, колонка 48: цифра без доли (10 шт. в системе)"
+ },
+ "elder-scrolls-v-skyrim-sons-skyrim": {
+  "bars": 95,
+  "checked_notes": 1469,
+  "format": "alphatex"
+ },
+ "final-fantasy-vi-aria-de-mezzo-caraterre": {
+  "bars": 49,
+  "checked_notes": 512,
+  "format": "alphatex"
+ },
+ "final-fantasy-vi-aria-di-mezzo-carattere": {
+  "bars": 60,
+  "checked_notes": 818,
+  "format": "alphatex"
+ },
+ "final-fantasy-vi-kefkas-theme-1": {
+  "bars": 53,
+  "checked_notes": 236,
+  "format": "alphatex"
+ },
+ "final-fantasy-vi-lockes-theme": {
+  "format": null,
+  "reason": "таб не разобран: строка 11, колонка 61: цифра без доли (10 шт. в системе)"
+ },
+ "final-fantasy-vi-phantom-forest-2": {
+  "bars": 66,
+  "checked_notes": 283,
+  "format": "alphatex"
+ },
+ "final-fantasy-vi-terras-theme-1": {
+  "bars": 28,
+  "checked_notes": 323,
+  "format": "alphatex"
+ },
+ "flyour-bud-moim-smislom": {
+  "checked_lines": 49,
+  "format": "chordpro"
+ },
+ "flyour-kislorod": {
+  "checked_lines": 55,
+  "format": "chordpro"
+ },
+ "flyour-nastoyaschee-chto-nibud": {
+  "checked_lines": 29,
+  "format": "chordpro"
+ },
+ "flyour-remont": {
+  "checked_lines": 30,
+  "format": "chordpro"
+ },
+ "flyour-rozoviy-slon": {
+  "checked_lines": 58,
+  "format": "chordpro"
+ },
+ "flyour-sinie-teni": {
+  "checked_lines": 31,
+  "format": "chordpro"
+ },
+ "flyour-tancuyschiy-bog": {
+  "checked_lines": 9,
+  "format": "chordpro"
+ },
+ "grazhdanskaya-oborona-pro-durachka": {
+  "checked_lines": 44,
+  "format": "chordpro"
+ },
+ "grazhdanskaya-oborona-vse-idet-po-planu": {
+  "checked_lines": 38,
+  "format": "chordpro"
+ },
+ "grazhdanskaya-oborona-zoopark": {
+  "checked_lines": 36,
+  "format": "chordpro"
+ },
+ "kino-viktor-tsoy-gruppa-krovi": {
+  "checked_lines": 24,
+  "format": "chordpro"
+ },
+ "kino-viktor-tsoy-kukushka": {
+  "checked_lines": 35,
+  "format": "chordpro"
+ },
+ "kino-viktor-tsoy-pachka-sigaret": {
+  "checked_lines": 16,
+  "format": "chordpro"
+ },
+ "kino-viktor-tsoy-spokoynaya-noch": {
+  "checked_lines": 30,
+  "format": "chordpro"
+ },
+ "kino-viktor-tsoy-vosmiklassnica": {
+  "checked_lines": 23,
+  "format": "chordpro"
+ },
+ "kino-viktor-tsoy-zvezda-po-imeni-solnce": {
+  "checked_lines": 30,
+  "format": "chordpro"
+ },
+ "laertskiy-hui-govno-i-muravey": {
+  "format": null,
+  "reason": "нет строк с аккордами"
+ },
+ "lil-gator-game-forest-main": {
+  "format": null,
+  "reason": "таб не разобран: строка 1: система из 20 струн"
+ },
+ "minecraft-wet-hands": {
+  "format": null,
+  "reason": "таб не разобран: строка 35: нет строки длительностей над системой"
+ },
+ "naruto-shippuuden-samidare-early-summer-rain": {
+  "format": null,
+  "reason": "таб не разобран: такт 18: длительность 3960 тиков не ложится в размер"
+ },
+ "neon-genesis-evangelion-cruel-angels-thesis": {
+  "bars": 46,
+  "checked_notes": 707,
+  "format": "alphatex"
+ },
+ "neverhood-southern-front-porch-whistler": {
+  "bars": 34,
+  "checked_notes": 327,
+  "format": "alphatex"
+ },
+ "orkestr-che-gorod": {
+  "checked_lines": 7,
+  "format": "chordpro"
+ },
+ "puck-piper-dzhonni-pryzhok": {
+  "checked_lines": 11,
+  "format": "chordpro"
+ },
+ "puck-piper-shotlandec": {
+  "checked_lines": 6,
+  "format": "chordpro"
+ },
+ "shadow-of-the-colossus-the-farthest-land": {
+  "bars": 67,
+  "checked_notes": 442,
+  "format": "alphatex"
+ },
+ "tales-from-earthsea-tasogare": {
+  "bars": 119,
+  "checked_notes": 1045,
+  "format": "alphatex"
+ },
+ "traditional-greensleeves": {
+  "format": null,
+  "reason": "таб не разобран: строка 5: нет строки длительностей над системой"
+ },
+ "undertale-battle-with-true-hero": {
+  "bars": 62,
+  "checked_notes": 401,
+  "format": "alphatex"
+ },
+ "undertale-home": {
+  "bars": 56,
+  "checked_notes": 354,
+  "format": "alphatex"
+ },
+ "undertale-megalovania": {
+  "format": null,
+  "reason": "таб не разобран: такт 30: длительность 5040 тиков не ложится в размер"
+ },
+ "undertale-sans-0": {
+  "bars": 28,
+  "checked_notes": 127,
+  "format": "alphatex"
+ },
+ "undertale-snowdin-town": {
+  "bars": 32,
+  "checked_notes": 318,
+  "format": "alphatex"
+ },
+ "undertale-spider-dance-muffet-theme": {
+  "bars": 93,
+  "checked_notes": 658,
+  "format": "alphatex"
+ },
+ "warcraft-ii-tides-darkness-human-theme": {
+  "bars": 33,
+  "checked_notes": 364,
+  "format": "alphatex"
+ },
+ "yann-tiersen-la-valse-damelie": {
+  "format": null,
+  "reason": "таб не разобран: не найдено ни одной системы"
+ }
+}

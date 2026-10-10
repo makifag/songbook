@@ -1,81 +1,76 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Песенник</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="assets/song.css">
 <style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; }
-h1 { margin-bottom: 0.3em; }
-.controls { display: flex; gap: 0.5em; flex-wrap: wrap; margin-bottom: 1em; position: sticky; top: 0;
-             background: Canvas; padding: 0.5em 0; }
-input[type=search] { flex: 1; min-width: 200px; padding: 0.5em; font-size: 1em; }
-select { padding: 0.5em; }
-ul { list-style: none; padding: 0; margin: 0; }
-li { padding: 0.6em 0; border-bottom: 1px solid rgba(128,128,128,0.25); }
-a { text-decoration: none; }
-a:hover { text-decoration: underline; }
-.song-artist { color: #888; font-size: 0.9em; }
-.badge { font-size: 0.75em; padding: 0.1em 0.5em; border-radius: 4px; background: rgba(128,128,128,0.2); margin-left: 0.4em; }
-.count { color: #888; font-size: 0.9em; margin-bottom: 0.5em; }
-.report-link { font-size: 0.85em; }
+h1 { margin: 0; font: 600 clamp(1.8rem, 5vw, 2.6rem)/1.1 var(--f-text); }
+.bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; }
+.bar a { font: 500 .8rem var(--f-mono); text-decoration: none; }
+.filters { display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: env(safe-area-inset-top, 0px);
+  background: var(--bg); padding: .6rem 0; z-index: 2; }
+.filters input, .filters select { font: 1rem var(--f-text); padding: .55rem .7rem; border-radius: 6px;
+  border: 1px solid var(--rule); background: var(--paper); color: var(--ink); }
+.filters input { flex: 1 1 14rem; min-width: 0; }
+.filters select { font: .85rem var(--f-mono); }
+.count { font: .8rem var(--f-mono); color: var(--muted); margin: 0; }
+ul.songs { list-style: none; margin: 0; padding: 0; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; }
+ul.songs li + li { border-top: 1px solid var(--rule); }
+ul.songs a { display: flex; align-items: baseline; justify-content: space-between; gap: .3rem 1rem; flex-wrap: wrap;
+  padding: .75rem 1rem; color: var(--ink); text-decoration: none; }
+ul.songs a:hover .t { color: var(--accent); }
+.t { font-size: 1.05rem; }
+.a { color: var(--muted); font-size: .9rem; margin-left: .5rem; }
+.f { font: 500 .7rem/1 var(--f-mono); padding: .3rem .45rem; border-radius: 4px; background: var(--chip); color: var(--muted); white-space: nowrap; }
+.f.alphatex, .f.gp { color: var(--accent); }
+.f.chordpro { color: var(--chord); }
 </style>
 </head><body>
-<h1>Песенник</h1>
-<p class="report-link"><a href="report.html">Отчёт о сборке</a></p>
-<div class="controls">
-  <input type="search" id="q" placeholder="Поиск по названию/исполнителю...">
-  <select id="kindFilter"><option value="">Все виды</option><option value="tab">Табы</option><option value="chords">Аккорды</option></select>
-  <select id="artistFilter"><option value="">Все исполнители</option></select>
+<div class="wrap">
+<div class="bar"><h1>Песенник</h1><a href="report.html">отчёт о сборке</a></div>
+<div class="filters">
+  <input type="search" id="q" placeholder="Название или исполнитель" aria-label="Поиск">
+  <select id="kindFilter" aria-label="Вид"><option value="">все виды</option><option value="tab">табы</option><option value="chords">аккорды</option></select>
+  <select id="artistFilter" aria-label="Исполнитель"><option value="">все исполнители</option></select>
 </div>
 <p class="count" id="count"></p>
-<ul id="list"></ul>
+<ul class="songs" id="list"></ul>
+</div>
 <script>
-var SONGS = [{"slug": "neverhood-southern-front-porch-whistler", "title": "Southern Front Porch Whistler", "artist": "The Neverhood", "kind": "tab", "domain": "gametabs.net"}, {"slug": "elder-scrolls-v-skyrim-sons-skyrim", "title": "Sons of Skyrim", "artist": "The Elder Scrolls V: Skyrim", "kind": "tab", "domain": "gametabs.net"}, {"slug": "elder-scrolls-iii-morrowind-call-of-magic-main-theme", "title": "Call of Magic (Main Theme)", "artist": "The Elder Scrolls III: Morrowind", "kind": "tab", "domain": "gametabs.net"}, {"slug": "neon-genesis-evangelion-cruel-angels-thesis", "title": "Cruel Angel's Thesis", "artist": "Neon Genesis Evangelion", "kind": "tab", "domain": "gametabs.net"}, {"slug": "undertale-snowdin-town", "title": "Snowdin Town", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net"}, {"slug": "minecraft-wet-hands", "title": "Wet Hands", "artist": "Minecraft", "kind": "tab", "domain": "gametabs.net"}, {"slug": "warcraft-ii-tides-darkness-human-theme", "title": "Human Theme", "artist": "Warcraft II: Tides of Darkness", "kind": "tab", "domain": "gametabs.net"}, {"slug": "grazhdanskaya-oborona-vse-idet-po-planu", "title": "Все идет по плану", "artist": "Гражданская Оборона", "kind": "chords", "domain": "amdm.ru"}, {"slug": "grazhdanskaya-oborona-zoopark", "title": "Зоопарк", "artist": "Гражданская Оборона", "kind": "chords", "domain": "amdm.ru"}, {"slug": "grazhdanskaya-oborona-pro-durachka", "title": "Про дурачка", "artist": "Гражданская Оборона", "kind": "chords", "domain": "amdm.ru"}, {"slug": "kino-viktor-tsoy-kukushka", "title": "Кукушка", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru"}, {"slug": "kino-viktor-tsoy-gruppa-krovi", "title": "Группа крови", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru"}, {"slug": "kino-viktor-tsoy-vosmiklassnica", "title": "Восьмиклассница", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru"}, {"slug": "kino-viktor-tsoy-pachka-sigaret", "title": "Пачка сигарет", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru"}, {"slug": "kino-viktor-tsoy-zvezda-po-imeni-solnce", "title": "Звезда по имени Солнце", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru"}, {"slug": "kino-viktor-tsoy-spokoynaya-noch", "title": "Спокойная ночь", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru"}, {"slug": "shadow-of-the-colossus-the-farthest-land", "title": "The Farthest Land", "artist": "Shadow of the Colossus", "kind": "tab", "domain": "gametabs.net"}, {"slug": "naruto-shippuuden-samidare-early-summer-rain", "title": "Samidare (Early Summer Rain)", "artist": "Naruto Shippuuden", "kind": "tab", "domain": "gametabs.net"}, {"slug": "undertale-megalovania", "title": "Megalovania", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net"}, {"slug": "undertale-battle-with-true-hero", "title": "Battle With True Hero", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net"}, {"slug": "undertale-home", "title": "Home", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net"}, {"slug": "undertale-sans-0", "title": "Sans", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net"}, {"slug": "undertale-spider-dance-muffet-theme", "title": "Spider Dance (Muffet Theme)", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net"}, {"slug": "cave-story-heros-end-0", "title": "Hero's End", "artist": "Cave Story", "kind": "tab", "domain": "gametabs.net"}, {"slug": "tales-from-earthsea-tasogare", "title": "Tasogare", "artist": "Tales from Earthsea", "kind": "tab", "domain": "gametabs.net"}, {"slug": "final-fantasy-vi-terras-theme-1", "title": "Terra's Theme", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net"}, {"slug": "final-fantasy-vi-phantom-forest-2", "title": "Phantom Forest", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net"}, {"slug": "final-fantasy-vi-kefkas-theme-1", "title": "Kefka's Theme", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net"}, {"slug": "final-fantasy-vi-aria-di-mezzo-carattere", "title": "Aria Di Mezzo Carattere", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net"}, {"slug": "final-fantasy-vi-aria-de-mezzo-caraterre", "title": "Aria De Mezzo Caraterre", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net"}, {"slug": "flyour-bud-moim-smislom", "title": "Будь моим смыслом", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru"}, {"slug": "flyour-remont", "title": "Ремонт", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru"}, {"slug": "final-fantasy-vi-lockes-theme", "title": "Locke's Theme", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net"}, {"slug": "flyour-rozoviy-slon", "title": "Розовый слон", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru"}, {"slug": "flyour-sinie-teni", "title": "Синие тени", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru"}, {"slug": "flyour-nastoyaschee-chto-nibud", "title": "Настоящее что-нибудь", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru"}, {"slug": "laertskiy-hui-govno-i-muravey", "title": "Хуй, говно и муравей", "artist": "Лаэртский", "kind": "chords", "domain": "gitaristu.ru"}, {"slug": "orkestr-che-gorod", "title": "Город", "artist": "Оркестр Че", "kind": "chords", "domain": "mychords.net"}, {"slug": "dayte-tank-spam", "title": "Спам", "artist": "Дайте танк (!)", "kind": "chords", "domain": "amdm.ru"}, {"slug": "dayte-tank-drug", "title": "Друг", "artist": "Дайте танк (!)", "kind": "chords", "domain": "amdm.ru"}, {"slug": "dayte-tank-vualya", "title": "Вуаля", "artist": "Дайте танк (!)", "kind": "chords", "domain": "amdm.ru"}, {"slug": "flyour-tancuyschiy-bog", "title": "Танцующий бог", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru"}, {"slug": "flyour-kislorod", "title": "Кислород", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru"}, {"slug": "dayte-tank-volna", "title": "Волна", "artist": "Дайте танк (!)", "kind": "chords", "domain": "amdm.ru"}, {"slug": "a-short-hike-hello", "title": "Hello?", "artist": "A Short Hike", "kind": "tab", "domain": "gametabs.net"}, {"slug": "lil-gator-game-forest-main", "title": "Lil Gator Game - Forest Main", "artist": "Misc Computer Games", "kind": "tab", "domain": "tabs.ultimate-guitar.com"}, {"slug": "puck-piper-shotlandec", "title": "Шотландец", "artist": "Puck & Piper", "kind": "chords", "domain": "Puck & Piper"}, {"slug": "puck-piper-dzhonni-pryzhok", "title": "Джонни-прыжок", "artist": "Puck & Piper", "kind": "chords", "domain": "Puck & Piper"}, {"slug": "traditional-greensleeves", "title": "Greensleeves", "artist": "Traditional", "kind": "tab", "domain": "Traditional"}, {"slug": "yann-tiersen-la-valse-damelie", "title": "La Valse d'Amélie (Piano Version)", "artist": "Yann Tiersen", "kind": "tab", "domain": "Yann Tiersen"}];
+var SONGS = [{"slug": "neverhood-southern-front-porch-whistler", "title": "Southern Front Porch Whistler", "artist": "The Neverhood", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "elder-scrolls-v-skyrim-sons-skyrim", "title": "Sons of Skyrim", "artist": "The Elder Scrolls V: Skyrim", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "elder-scrolls-iii-morrowind-call-of-magic-main-theme", "title": "Call of Magic (Main Theme)", "artist": "The Elder Scrolls III: Morrowind", "kind": "tab", "domain": "gametabs.net", "format": "text"}, {"slug": "neon-genesis-evangelion-cruel-angels-thesis", "title": "Cruel Angel's Thesis", "artist": "Neon Genesis Evangelion", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "undertale-snowdin-town", "title": "Snowdin Town", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "minecraft-wet-hands", "title": "Wet Hands", "artist": "Minecraft", "kind": "tab", "domain": "gametabs.net", "format": "text"}, {"slug": "warcraft-ii-tides-darkness-human-theme", "title": "Human Theme", "artist": "Warcraft II: Tides of Darkness", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "grazhdanskaya-oborona-vse-idet-po-planu", "title": "Все идет по плану", "artist": "Гражданская Оборона", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "grazhdanskaya-oborona-zoopark", "title": "Зоопарк", "artist": "Гражданская Оборона", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "grazhdanskaya-oborona-pro-durachka", "title": "Про дурачка", "artist": "Гражданская Оборона", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "kino-viktor-tsoy-kukushka", "title": "Кукушка", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "kino-viktor-tsoy-gruppa-krovi", "title": "Группа крови", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "kino-viktor-tsoy-vosmiklassnica", "title": "Восьмиклассница", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "kino-viktor-tsoy-pachka-sigaret", "title": "Пачка сигарет", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "kino-viktor-tsoy-zvezda-po-imeni-solnce", "title": "Звезда по имени Солнце", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "kino-viktor-tsoy-spokoynaya-noch", "title": "Спокойная ночь", "artist": "Виктор Цой", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "shadow-of-the-colossus-the-farthest-land", "title": "The Farthest Land", "artist": "Shadow of the Colossus", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "naruto-shippuuden-samidare-early-summer-rain", "title": "Samidare (Early Summer Rain)", "artist": "Naruto Shippuuden", "kind": "tab", "domain": "gametabs.net", "format": "text"}, {"slug": "undertale-megalovania", "title": "Megalovania", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net", "format": "text"}, {"slug": "undertale-battle-with-true-hero", "title": "Battle With True Hero", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "undertale-home", "title": "Home", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "undertale-sans-0", "title": "Sans", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "undertale-spider-dance-muffet-theme", "title": "Spider Dance (Muffet Theme)", "artist": "Undertale", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "cave-story-heros-end-0", "title": "Hero's End", "artist": "Cave Story", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "tales-from-earthsea-tasogare", "title": "Tasogare", "artist": "Tales from Earthsea", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "final-fantasy-vi-terras-theme-1", "title": "Terra's Theme", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "final-fantasy-vi-phantom-forest-2", "title": "Phantom Forest", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "final-fantasy-vi-kefkas-theme-1", "title": "Kefka's Theme", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "final-fantasy-vi-aria-di-mezzo-carattere", "title": "Aria Di Mezzo Carattere", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "final-fantasy-vi-aria-de-mezzo-caraterre", "title": "Aria De Mezzo Caraterre", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net", "format": "alphatex"}, {"slug": "flyour-bud-moim-smislom", "title": "Будь моим смыслом", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "flyour-remont", "title": "Ремонт", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "final-fantasy-vi-lockes-theme", "title": "Locke's Theme", "artist": "Final Fantasy VI", "kind": "tab", "domain": "gametabs.net", "format": "text"}, {"slug": "flyour-rozoviy-slon", "title": "Розовый слон", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "flyour-sinie-teni", "title": "Синие тени", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "flyour-nastoyaschee-chto-nibud", "title": "Настоящее что-нибудь", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "laertskiy-hui-govno-i-muravey", "title": "Хуй, говно и муравей", "artist": "Лаэртский", "kind": "chords", "domain": "gitaristu.ru", "format": "text"}, {"slug": "orkestr-che-gorod", "title": "Город", "artist": "Оркестр Че", "kind": "chords", "domain": "mychords.net", "format": "chordpro"}, {"slug": "dayte-tank-spam", "title": "Спам", "artist": "Дайте танк (!)", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "dayte-tank-drug", "title": "Друг", "artist": "Дайте танк (!)", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "dayte-tank-vualya", "title": "Вуаля", "artist": "Дайте танк (!)", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "flyour-tancuyschiy-bog", "title": "Танцующий бог", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "flyour-kislorod", "title": "Кислород", "artist": "Flёur", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "dayte-tank-volna", "title": "Волна", "artist": "Дайте танк (!)", "kind": "chords", "domain": "amdm.ru", "format": "chordpro"}, {"slug": "a-short-hike-hello", "title": "Hello?", "artist": "A Short Hike", "kind": "tab", "domain": "gametabs.net", "format": "text"}, {"slug": "lil-gator-game-forest-main", "title": "Lil Gator Game - Forest Main", "artist": "Misc Computer Games", "kind": "tab", "domain": "tabs.ultimate-guitar.com", "format": "text"}, {"slug": "puck-piper-shotlandec", "title": "Шотландец", "artist": "Puck & Piper", "kind": "chords", "domain": "Puck & Piper", "format": "chordpro"}, {"slug": "puck-piper-dzhonni-pryzhok", "title": "Джонни-прыжок", "artist": "Puck & Piper", "kind": "chords", "domain": "Puck & Piper", "format": "chordpro"}, {"slug": "traditional-greensleeves", "title": "Greensleeves", "artist": "Traditional", "kind": "tab", "domain": "Traditional", "format": "text"}, {"slug": "yann-tiersen-la-valse-damelie", "title": "La Valse d'Amélie (Piano Version)", "artist": "Yann Tiersen", "kind": "tab", "domain": "Yann Tiersen", "format": "gp"}];
+var LABEL = { alphatex: "ноты + таб", gp: "Guitar Pro", chordpro: "аккорды", text: "текст" };
 var list = document.getElementById('list');
 var q = document.getElementById('q');
 var kindFilter = document.getElementById('kindFilter');
 var artistFilter = document.getElementById('artistFilter');
 var countEl = document.getElementById('count');
-
-var artists = Array.from(new Set(SONGS.map(function(s){ return s.artist; }))).filter(Boolean).sort();
-artists.forEach(function(a){
-  var opt = document.createElement('option');
-  opt.value = a; opt.textContent = a;
-  artistFilter.appendChild(opt);
+Array.from(new Set(SONGS.map(function(s){ return s.artist; }))).filter(Boolean).sort().forEach(function(a){
+  var opt = document.createElement('option'); opt.value = a; opt.textContent = a; artistFilter.appendChild(opt);
 });
-
 function norm(s) { return (s || '').toLowerCase(); }
-
 function render() {
-  var query = norm(q.value);
-  var kind = kindFilter.value;
-  var artist = artistFilter.value;
+  var query = norm(q.value), kind = kindFilter.value, artist = artistFilter.value;
   var filtered = SONGS.filter(function(s) {
     if (kind && s.kind !== kind) return false;
     if (artist && s.artist !== artist) return false;
-    if (query && norm(s.title).indexOf(query) === -1 && norm(s.artist).indexOf(query) === -1) return false;
-    return true;
+    return !query || norm(s.title).indexOf(query) !== -1 || norm(s.artist).indexOf(query) !== -1;
   });
   list.innerHTML = '';
   filtered.forEach(function(s) {
-    var li = document.createElement('li');
-    var a = document.createElement('a');
+    var li = document.createElement('li'), a = document.createElement('a');
     a.href = 'songs/' + s.slug + '.html';
-    a.textContent = s.title;
-    var badge = document.createElement('span');
-    badge.className = 'badge';
-    badge.textContent = s.kind === 'tab' ? 'таб' : 'аккорды';
-    li.appendChild(a);
-    li.appendChild(badge);
-    var artistDiv = document.createElement('div');
-    artistDiv.className = 'song-artist';
-    artistDiv.textContent = s.artist;
-    li.appendChild(artistDiv);
-    list.appendChild(li);
+    var left = document.createElement('span');
+    var t = document.createElement('span'); t.className = 't'; t.textContent = s.title;
+    var ar = document.createElement('span'); ar.className = 'a'; ar.textContent = s.artist;
+    left.appendChild(t); left.appendChild(ar);
+    var f = document.createElement('span'); f.className = 'f ' + s.format; f.textContent = LABEL[s.format] || s.format;
+    a.appendChild(left); a.appendChild(f); li.appendChild(a); list.appendChild(li);
   });
   countEl.textContent = filtered.length + ' из ' + SONGS.length;
 }
-
 q.addEventListener('input', render);
 kindFilter.addEventListener('change', render);
 artistFilter.addEventListener('change', render);

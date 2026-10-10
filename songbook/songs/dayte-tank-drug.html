@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Друг</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Друг — Дайте танк (!)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Друг</h1>
-<p class="artist">Дайте танк (!)</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">Am            
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Друг</h1><div class="by">Дайте танк (!)</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">Am            
 Мой друг пел, как соловей, 
 G
 Да ещё и на слух подбирал аккорды. 
@@ -165,28 +144,82 @@ G
     F               Dm
 Я жду на качелях, тебя на качелях. 
     F               Dm
-Я жду на качелях тебя.</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+Я жду на качелях тебя.</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Друг}
+{artist: Дайте танк (!)}
+
+[Am]Мой друг пел, как соловей,
+[G]Да ещё и на слух подбирал аккорды.
+[Am]Одновременно носил сандали,
+[G]Носки и длинные шорты.
+[Am]Если голоден был, за минуту съедал
+[G]Целиком нарезной батон.
+[F]Он купил синтезатор, только
+[G]Чтобы себе сочинить рингтон.
+[Am]Мой друг говорил по-французски,
+[G]По крайней мере, «Pardon!» и «Merci!»
+[F]Он ездил на велосипеде
+[G]Под саундтрек из фильма «Такси».
+[Am]Воровал кукурузу на ферме
+[G]И от погони скрывался в полях.
+[F]Я всегда хохотал до слёз,
+[G]Когда он рассказывал байки в ролях.
+
+«Мой л[F]учший друг» –
+Для мен[G]я не просто зв[Am]ук.
+Помог[F]и понять, б[G]ыть или не б[Am]ыть.
+Если с[F]уета вокруг,
+И всё в[G]алится из р[Am]ук,
+Выход[F]и гулять, в[G]ынеси поп[Am]ить!
+
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на кач[G]елях теб[Am]я.
+
+[Am]Мой друг обожал футбол,
+[G]Разбирался в чемпионатах и клубах.
+[Am]По ночам охранял меховой магазин
+[G]И спал на норковых шубах.
+[Am]Ненавидел тупые ножи
+[G]И все до единого наточил.
+[F]Ах да, открывать зажигалкой пиво
+[G]Именно он меня научил.
+[Am]Мой друг поддержал бы любой диалог.
+[G]Мы могли проболтать до утра.
+[F]Я помню, как он улыбался,
+[G]И, кажется, видел его вчера.
+[Am]Хотя, уже несколько лет от него
+[G]Нет открыток на Новый год.
+[F]Я нечаянно стёр его номер
+[G]И даже не знаю, где он живёт.
+
+«Мой л[F]учший друг» –
+Для мен[G]я не просто зв[Am]ук.
+Помог[F]и понять, б[G]ыть или не б[Am]ыть.
+Если с[F]уета вокруг,
+И всё в[G]алится из р[Am]ук,
+Выход[F]и гулять, в[G]ынеси поп[Am]ить!
+
+«Мой л[F]учший друг» –
+Для мен[G]я не просто зв[Am]ук.
+Помог[F]и понять, б[G]ыть или не б[Am]ыть.
+Если с[F]уета вокруг,
+И всё в[G]алится из р[Am]ук,
+Выход[F]и гулять, в[G]ынеси поп[Am]ить!
+
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на качелях теб[Dm]я.
+
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на качелях, те[Dm]бя на качелях.
+Я жд[F]у на качелях теб[Dm]я.
 </script>
+<script src="../assets/song.js"></script>
 </body></html>

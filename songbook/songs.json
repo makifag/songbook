@@ -1,0 +1,592 @@
+[
+ {
+  "slug": "neverhood-southern-front-porch-whistler",
+  "title": "Southern Front Porch Whistler",
+  "artist": "The Neverhood",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Terry Scott Taylor",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "kenor"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "elder-scrolls-v-skyrim-sons-skyrim",
+  "title": "Sons of Skyrim",
+  "artist": "The Elder Scrolls V: Skyrim",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Jeremy Soule",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "Bhael"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "elder-scrolls-iii-morrowind-call-of-magic-main-theme",
+  "title": "Call of Magic (Main Theme)",
+  "artist": "The Elder Scrolls III: Morrowind",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Jeremy Soule",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "kenor"
+  },
+  "format": "text"
+ },
+ {
+  "slug": "neon-genesis-evangelion-cruel-angels-thesis",
+  "title": "Cruel Angel's Thesis",
+  "artist": "Neon Genesis Evangelion",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Anime",
+   "composer": "Shiro Sagisu",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "JordanVS"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "undertale-snowdin-town",
+  "title": "Snowdin Town",
+  "artist": "Undertale",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Toby Fox",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "quinndangle2"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "minecraft-wet-hands",
+  "title": "Wet Hands",
+  "artist": "Minecraft",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Daniel Rosenfeld",
+   "style": "Arrangement, Fingerstyle, Natural harmonics, Artificial harmonics",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "guitarsvd"
+  },
+  "format": "text"
+ },
+ {
+  "slug": "warcraft-ii-tides-darkness-human-theme",
+  "title": "Human Theme",
+  "artist": "Warcraft II: Tides of Darkness",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PlayStation",
+   "composer": "Glenn Stafford",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "KAT"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "grazhdanskaya-oborona-vse-idet-po-planu",
+  "title": "Все идет по плану",
+  "artist": "Гражданская Оборона",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "grazhdanskaya-oborona-zoopark",
+  "title": "Зоопарк",
+  "artist": "Гражданская Оборона",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "grazhdanskaya-oborona-pro-durachka",
+  "title": "Про дурачка",
+  "artist": "Гражданская Оборона",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "kino-viktor-tsoy-kukushka",
+  "title": "Кукушка",
+  "artist": "Виктор Цой",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {
+   "wayback_snapshot": "http://web.archive.org/web/20221013134337/https://amdm.ru/akkordi/kino/456/kukushka/"
+  },
+  "format": "chordpro"
+ },
+ {
+  "slug": "kino-viktor-tsoy-gruppa-krovi",
+  "title": "Группа крови",
+  "artist": "Виктор Цой",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {
+   "wayback_snapshot": "http://web.archive.org/web/20220819055547/https://amdm.ru/akkordi/kino/111076/gruppa_krovi/"
+  },
+  "format": "chordpro"
+ },
+ {
+  "slug": "kino-viktor-tsoy-vosmiklassnica",
+  "title": "Восьмиклассница",
+  "artist": "Виктор Цой",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {
+   "wayback_snapshot": "http://web.archive.org/web/20220814220921/https://amdm.ru/akkordi/kino/24188/vosmiklassnica/"
+  },
+  "format": "chordpro"
+ },
+ {
+  "slug": "kino-viktor-tsoy-pachka-sigaret",
+  "title": "Пачка сигарет",
+  "artist": "Виктор Цой",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {
+   "wayback_snapshot": "http://web.archive.org/web/20221003081913/https://amdm.ru/akkordi/kino/95023/pachka_sigaret/"
+  },
+  "format": "chordpro"
+ },
+ {
+  "slug": "kino-viktor-tsoy-zvezda-po-imeni-solnce",
+  "title": "Звезда по имени Солнце",
+  "artist": "Виктор Цой",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {
+   "wayback_snapshot": "http://web.archive.org/web/20200805015058/https://amdm.ru/akkordi/kino/170188/zvezda_po_imeni_solnce/"
+  },
+  "format": "chordpro"
+ },
+ {
+  "slug": "kino-viktor-tsoy-spokoynaya-noch",
+  "title": "Спокойная ночь",
+  "artist": "Виктор Цой",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {
+   "wayback_snapshot": "http://web.archive.org/web/20200805021609/https://amdm.ru/akkordi/kino/170073/spokoynaya_noch/"
+  },
+  "format": "chordpro"
+ },
+ {
+  "slug": "shadow-of-the-colossus-the-farthest-land",
+  "title": "The Farthest Land",
+  "artist": "Shadow of the Colossus",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PlayStation 2",
+   "composer": "Kow Otani",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "archard"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "naruto-shippuuden-samidare-early-summer-rain",
+  "title": "Samidare (Early Summer Rain)",
+  "artist": "Naruto Shippuuden",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Anime",
+   "composer": "Yasuharu Takanashi",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "DADGBE",
+   "arranger": "scarecrowlol"
+  },
+  "format": "text"
+ },
+ {
+  "slug": "undertale-megalovania",
+  "title": "Megalovania",
+  "artist": "Undertale",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Toby Fox",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "johnbie"
+  },
+  "format": "text"
+ },
+ {
+  "slug": "undertale-battle-with-true-hero",
+  "title": "Battle With True Hero",
+  "artist": "Undertale",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Toby Fox",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "johnbie"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "undertale-home",
+  "title": "Home",
+  "artist": "Undertale",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Toby Fox",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "DADGAD",
+   "arranger": "FeralCadence"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "undertale-sans-0",
+  "title": "Sans",
+  "artist": "Undertale",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Toby Fox",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "johnbie"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "undertale-spider-dance-muffet-theme",
+  "title": "Spider Dance (Muffet Theme)",
+  "artist": "Undertale",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Toby Fox",
+   "style": "Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "johnbie"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "cave-story-heros-end-0",
+  "title": "Hero's End",
+  "artist": "Cave Story",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Daisuke Amaya",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "JordanVS"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "tales-from-earthsea-tasogare",
+  "title": "Tasogare",
+  "artist": "Tales from Earthsea",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Anime",
+   "composer": "Tamiya Terashima",
+   "style": "Arrangement, Fingerstyle, Natural harmonics",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "diralark"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "final-fantasy-vi-terras-theme-1",
+  "title": "Terra's Theme",
+  "artist": "Final Fantasy VI",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Super Nintendo",
+   "composer": "Nobuo Uematsu",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "laoise"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "final-fantasy-vi-phantom-forest-2",
+  "title": "Phantom Forest",
+  "artist": "Final Fantasy VI",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Super Nintendo",
+   "composer": "Nobuo Uematsu",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "DADGBE",
+   "arranger": "laoise"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "final-fantasy-vi-kefkas-theme-1",
+  "title": "Kefka's Theme",
+  "artist": "Final Fantasy VI",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Super Nintendo",
+   "composer": "Nobuo Uematsu",
+   "style": "Transcription",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "Yamato"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "final-fantasy-vi-aria-di-mezzo-carattere",
+  "title": "Aria Di Mezzo Carattere",
+  "artist": "Final Fantasy VI",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Super Nintendo",
+   "composer": "Nobuo Uematsu",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "TheDoomOfAllFires"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "final-fantasy-vi-aria-de-mezzo-caraterre",
+  "title": "Aria De Mezzo Caraterre",
+  "artist": "Final Fantasy VI",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Super Nintendo",
+   "composer": "Nobuo Uematsu",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "laoise"
+  },
+  "format": "alphatex"
+ },
+ {
+  "slug": "flyour-bud-moim-smislom",
+  "title": "Будь моим смыслом",
+  "artist": "Flёur",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "flyour-remont",
+  "title": "Ремонт",
+  "artist": "Flёur",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "final-fantasy-vi-lockes-theme",
+  "title": "Locke's Theme",
+  "artist": "Final Fantasy VI",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Super Nintendo",
+   "composer": "Nobuo Uematsu",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "The Ripper"
+  },
+  "format": "text"
+ },
+ {
+  "slug": "flyour-rozoviy-slon",
+  "title": "Розовый слон",
+  "artist": "Flёur",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "flyour-sinie-teni",
+  "title": "Синие тени",
+  "artist": "Flёur",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "flyour-nastoyaschee-chto-nibud",
+  "title": "Настоящее что-нибудь",
+  "artist": "Flёur",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "laertskiy-hui-govno-i-muravey",
+  "title": "Хуй, говно и муравей",
+  "artist": "Лаэртский",
+  "kind": "chords",
+  "domain": "gitaristu.ru",
+  "meta": {},
+  "format": "text"
+ },
+ {
+  "slug": "orkestr-che-gorod",
+  "title": "Город",
+  "artist": "Оркестр Че",
+  "kind": "chords",
+  "domain": "mychords.net",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "dayte-tank-spam",
+  "title": "Спам",
+  "artist": "Дайте танк (!)",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "dayte-tank-drug",
+  "title": "Друг",
+  "artist": "Дайте танк (!)",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "dayte-tank-vualya",
+  "title": "Вуаля",
+  "artist": "Дайте танк (!)",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "flyour-tancuyschiy-bog",
+  "title": "Танцующий бог",
+  "artist": "Flёur",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "flyour-kislorod",
+  "title": "Кислород",
+  "artist": "Flёur",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "dayte-tank-volna",
+  "title": "Волна",
+  "artist": "Дайте танк (!)",
+  "kind": "chords",
+  "domain": "amdm.ru",
+  "meta": {},
+  "format": "chordpro"
+ },
+ {
+  "slug": "a-short-hike-hello",
+  "title": "Hello?",
+  "artist": "A Short Hike",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "PC",
+   "composer": "Mark Sparling",
+   "style": "Arrangement, Fingerstyle",
+   "instrument": "Guitar",
+   "tuning": "EADGBE",
+   "arranger": "Alleeelex"
+  },
+  "format": "text"
+ },
+ {
+  "slug": "lil-gator-game-forest-main",
+  "title": "Lil Gator Game - Forest Main",
+  "artist": "Misc Computer Games",
+  "kind": "tab",
+  "domain": "tabs.ultimate-guitar.com",
+  "meta": {
+   "key": "C",
+   "difficulty": "intermediate"
+  },
+  "format": "text"
+ }
+]

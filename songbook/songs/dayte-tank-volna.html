@@ -1,41 +1,20 @@
 <!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8">
-<title>Волна</title>
-<style>
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5em; line-height: 1.4; }
-header { margin-bottom: 1em; }
-h1 { margin: 0 0 0.2em; font-size: 1.4em; }
-.artist { color: #888; margin: 0 0 0.8em; }
-.meta { font-size: 0.85em; color: #888; margin-bottom: 1em; }
-.meta span { margin-right: 1em; }
-.back { font-size: 0.9em; }
-.downloads { margin: -0.4em 0 1em; }
-.downloads a { font-size: 0.9em; }
-.zoom-controls { display: inline-flex; gap: 0.4em; margin-left: 1em; }
-.zoom-controls button { font-family: inherit; font-size: 0.85em; padding: 0.15em 0.6em; cursor: pointer; }
-pre { font-family: "Courier New", "Roboto Mono", monospace; white-space: pre; overflow-x: auto;
-       background: rgba(128,128,128,0.08); padding: 1em; border-radius: 6px; font-size: 14px; }
-@media print {
-  :root { color-scheme: light; }
-  body { color: #000; background: #fff; }
-  .back, .no-print { display: none; }
-  pre { background: none; padding: 0; }
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Волна — Дайте танк (!)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<link rel="stylesheet" href="../assets/song.css">
 </head><body>
-<p class="back no-print"><a href="../index.html">&larr; ко всем песням</a><span class="zoom-controls no-print">
-<button type="button" id="fontDec" title="Меньше">A&minus;</button>
-<button type="button" id="fontReset" title="По ширине окна">авто</button>
-<button type="button" id="fontInc" title="Больше">A&plus;</button>
-</span></p>
-<header>
-<h1>Волна</h1>
-<p class="artist">Дайте танк (!)</p>
-<p class="meta"><span>аккорды</span></p>
-</header>
-<pre id="body">[Куплет 1]:Bb                   A 
+<div class="wrap">
+<nav class="top"><a href="../index.html">&larr; все песни</a></nav>
+<main class="sheet">
+<div class="head"><div><h1>Волна</h1><div class="by">Дайте танк (!)</div></div>
+<div class="meta"><span>аккорды</span></div></div>
+<div class="controls" id="controls"></div>
+<div id="view"></div>
+<details class="src"><summary>Исходный текст с сайта</summary><pre class="rawtxt">[Куплет 1]:Bb                   A 
  Каждый раб хочет собственного раба
 Dm            F
  Суп-пюре из ядерного гриба
@@ -107,28 +86,64 @@ Bb               A               Dm F
 Bb        A            Dm F
  И ещё одна новая волна
 Bb             A              Dm F
- База данных успешно обновлена</pre>
-<script>
-(function() {
-  var pre = document.getElementById('body');
-  var baseSize = 14;
-  var size = baseSize;
-  function apply() { pre.style.fontSize = size + 'px'; }
-  function fitWidth() {
-    size = baseSize;
-    apply();
-    var guard = 0;
-    while (pre.scrollWidth > pre.clientWidth && size > 6 && guard < 60) {
-      size -= 0.5;
-      apply();
-      guard++;
-    }
-  }
-  window.addEventListener('load', fitWidth);
-  window.addEventListener('resize', fitWidth);
-  document.getElementById('fontDec').addEventListener('click', function() { size = Math.max(size - 1, 6); apply(); });
-  document.getElementById('fontInc').addEventListener('click', function() { size = Math.min(size + 1, 32); apply(); });
-  document.getElementById('fontReset').addEventListener('click', fitWidth);
-})();
+ База данных успешно обновлена</pre></details>
+</main>
+</div>
+<script type="text/plain" id="song-src" data-format="chordpro" data-file="">
+{title: Волна}
+{artist: Дайте танк (!)}
+
+{comment: Куплет 1}
+[Bb] Каждый раб хочет соб[A]ственного раба
+[Dm] Суп-пюре из я[F]дерного гриба
+[Bb] От короны тя[A]жёлая голова
+[Dm] По ночам детям за[F]читывают права
+
+{start_of_chorus: Припев}
+[Bb] И ещё о[A]дна новая волна
+[Dm] И не могут верхи[F], и низы не хотят
+[Bb] И в историю мы [A]впишем свои имена
+[Dm] В ленте новостей [F]прямо под фото котят
+[Bb] И ещё од[A]на новая волна
+[Dm] Уже меняются мес[F]тами верхи и низы
+[Bb] И база данных ус[A]пешно обновлена
+[Dm] Короли у вас,[F] а у нас — тузы
+{end_of_chorus}
+
+{comment: Проигрыш}
+/*x2*/Bb A Dm F
+
+{comment: Куплет 2}
+[Bb] Антиутопии в топ[A]е. Гуси, спасите Рим!
+[Dm] Мы краски пьём, ноты [F]нюхаем, буквы едим
+[Bb] День ото дня мы д[A]елаемся нежней
+ Эй, [Dm]голуби напали на пам[F]ятники вождей!
+
+{start_of_chorus: Припев}
+[Bb] И ещё о[A]дна новая волна
+[Dm] И не могут верхи[F], и низы не хотят
+[Bb] И в историю мы [A]впишем свои имена
+[Dm] В ленте новостей[F] прямо под фото котят
+[Bb] И ещё од[A]на новая волна
+[Dm] Уже меняются мес[F]тами верхи и низы
+[Bb] И база данных ус[A]пешно обновлена
+[Dm] Короли у вас,[F] а у нас — тузы
+{end_of_chorus}
+
+{comment: Проигрыш}
+/*x2*/Bb A Dm F
+
+{comment: Куплет 3}
+[Bb] Не до работы — за[A]воды стоят опять
+[Dm] Все на марш, нет [F]времени объяснять!
+[Bb] Всех на фарш! Ук[A]аз уже написал...
+[Dm] Вассал моего вассал[F]а — не мой вассал!
+
+{comment: Кода}
+[Bb] И ещё одн[A]а новая волна[Dm]   [F]
+[Bb] И в историю мы в[A]пишем свои имена[Dm]   [F]
+[Bb] И ещё одн[A]а новая волна[Dm]   [F]
+[Bb] База данных ус[A]пешно обновлена[Dm]   [F]
 </script>
+<script src="../assets/song.js"></script>
 </body></html>
