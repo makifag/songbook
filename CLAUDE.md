@@ -125,20 +125,21 @@ alphaTab для проверки). Ноты проверяются всегда:
 
 ## Деплой
 
-- **GitHub:** `github.com/makifag/songbook` (публичный). Авторизован
-  `gh` CLI прямо на этой машине — `git push` работает без повторного логина.
+- **Порядок работы:** владелец работает только через чат с Claude (облачная
+  сессия Claude Code). Коммиты — прямо в `main`, без feature-веток и PR;
+  деплой делает Claude сам.
+- **GitHub:** `github.com/makifag/songbook` (публичный).
 - **Cloudflare:** воркер `songbook`, конфиг — `wrangler.toml` (assets-only
   Worker, не Pages — `wrangler pages deploy` для новых проектов ругается и
-  сам советует Workers). Обновить прод:
+  сам советует Workers). Сайт — https://songbook.makifag.workers.dev.
+  Обновить прод:
   ```bash
   npx wrangler deploy
   ```
-  `wrangler` тоже авторизован локально (`wrangler whoami` покажет
-  `makifag@gmail.com`).
-- Автодеплоя по git push **нет** — это настраивается только кликами в
-  Cloudflare-дашборде (Workers & Pages → songbook → Settings → Build →
-  Connect to Git), руками через CLI не решить. Пока обновление — это
-  `python build.py && git add -A && git commit && git push && npx wrangler deploy`.
+  `wrangler` берёт токен из `CLOUDFLARE_API_TOKEN` (задан в окружении
+  облачной сессии; `wrangler whoami` покажет `makifag@gmail.com`).
+- Автодеплоя по git push **нет**. Обновление —
+  `git push origin main && npx wrangler deploy`.
 
 ## Осознанно не делать (см. ТЗ.md)
 
