@@ -56,6 +56,12 @@ nav.top a { text-decoration: none; }
 .controls input[type=range] { accent-color: var(--accent); width: 6.5rem; }
 .controls .group { display: inline-flex; align-items: center; gap: .35rem; }
 .controls .group button { min-width: 2.2rem; justify-content: center; }
+.controls .more { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; }
+.controls .more[hidden] { display: none; }
+.controls select { font: inherit; background: transparent; color: inherit; border: 0; }
+.controls .info { flex-basis: 100%; }
+.controls .info .notes { margin: .5rem 0 0; }
+.controls .info .downloads { margin: .5rem 0 0; }
 .controls .status { font: .78rem/1.3 var(--f-mono); color: var(--muted); }
 button:focus-visible, input:focus-visible, label:focus-within, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
