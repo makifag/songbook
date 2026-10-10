@@ -10,7 +10,7 @@ Arranged by  ()
 \tempo 90
 .
 \track "Guitar"
-\staff {score tabs}
+\staff {tabs}
 \tuning e4 b3 g3 d3 a2 e2
 \ts 3 4 0.6.8 4.3.8 3.2.8 2.6.8 4.3.8 3.2.8 |
 3.6.8 4.3.8 3.2.8 2.6.8 4.3.8 3.2.8 |

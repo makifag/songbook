@@ -8,7 +8,7 @@ Arranged by John Lee
 \tempo 90
 .
 \track "Guitar"
-\staff {score tabs}
+\staff {tabs}
 \tuning e4 b3 g3 d3 a2 e2
 \ts 4 4 3.2.8{d} 0.1.8{d} 2.3.8{d} 0.2.8{d} 0.3.8 2.4.8 |
 1.2.8{d} 0.3.8{d} 3.2.8{d} 0.3.8{d} 4.4.8 0.4.8 |

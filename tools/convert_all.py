@@ -28,11 +28,24 @@ import chords2chordpro  # noqa: E402
 RAW = ROOT / "songbook" / "raw"
 OUT = ROOT / "formats"
 
-# Табы без строки длительностей, у которых ритм однозначно читается по сетке
-# (одна позиция = фиксированная длительность). Параметры подобраны руками.
+# Табы без строки длительностей. Ноты берутся из таба, ритм восстанавливается
+# (tools/gridtab.py): по равномерной сетке, по расстояниям или из formats/rhythm/{slug}.txt.
+STD = "e4 b3 g3 d3 a2 e2"
 GRID_TABS = {
-    "undertale-home": {"tuning": "d4 a3 g3 d3 a2 d2", "chars_per_slot": 2, "offset": 1,
-                       "ts": (12, 8), "slot": 8, "tempo": 120},
+    # ритм читается по сетке: 2 символа = восьмая, размер 12/8 (сверено по всему табу)
+    "undertale-home": {"tuning": "d4 a3 g3 d3 a2 d2", "cps": 2, "offset": 1, "ts": (12, 8), "tempo": 120},
+    # экспорт Guitar Pro без строки длительностей: 3 символа на долю, доля = восьмая
+    "minecraft-wet-hands": {"tuning": STD, "cps": 3, "offset": 2, "tempo": 70},
+    # небрежный таб без сетки, сдвоенные цифры ("0-23-5") — отдельные ноты
+    "lil-gator-game-forest-main": {"tuning": STD, "cps": None, "split_digits": True, "tempo": 100},
+    # ритм размечен руками по мелодии (formats/rhythm/), 6/8
+    "traditional-greensleeves": {"tuning": STD, "rhythm": True, "tempo": 90, "prefer": (6, 8)},
+}
+GRID_NOTE = {
+    "undertale-home": "ритм по сетке таба",
+    "minecraft-wet-hands": "ритм по сетке таба (в исходнике нет длительностей)",
+    "lil-gator-game-forest-main": "ритм приблизительный — по расстояниям между нотами",
+    "traditional-greensleeves": "ритм размечен вручную по мелодии",
 }
 
 
@@ -51,35 +64,17 @@ def midi_of(name):
     return 12 * (int(m.group(3)) + 1) + idx[m.group(1)] + {"#": 1, "b": -1}.get(m.group(2), 0)
 
 
-def convert_grid(text, song, cfg):
-    """Сеточный таб (как Home) — тот же алгоритм, что в ascii2alphatex.py."""
-    import ascii2alphatex as a2a
+def convert_grid(text, song, cfg, slug):
+    import gridtab
+    rhythm = None
+    if cfg.get("rhythm"):
+        rhythm = [l for l in (OUT / "rhythm" / f"{slug}.txt").read_text(encoding="utf-8").splitlines() if l.strip()]
     tuning = cfg["tuning"].split()
-    systems = a2a.parse_systems(text, len(tuning))
-    table = a2a.dur_table(cfg["slot"])
-    bar_slots = cfg["ts"][0] * cfg["slot"] // cfg["ts"][1]
-    slot_ticks = 3840 // cfg["slot"]
-    bars, events = [], []
-    for system in systems:
-        for bar in a2a.bars_of(system):
-            ev, _ = a2a.bar_events(bar, cfg["chars_per_slot"], cfg["offset"])
-            onsets = sorted(ev)
-            toks = [f"r.{a2a.fmt_dur(b, d)}" for b, d in a2a.split_fill(onsets[0] if onsets else bar_slots, table)]
-            for k, slot in enumerate(onsets):
-                nxt = onsets[k + 1] if k + 1 < len(onsets) else bar_slots
-                parts = a2a.split_fill(nxt - slot, table)
-                notes = sorted(ev[slot])
-                body = " ".join(f"{f}.{s}" for s, f in notes)
-                head = f"({body})" if len(notes) > 1 else body
-                toks.append(f"{head}.{a2a.fmt_dur(*parts[0])}")
-                toks += [f"r.{a2a.fmt_dur(b, d)}" for b, d in parts[1:]]
-                for s, f in notes:
-                    events.append({"bar": len(bars), "tick": slot * slot_ticks, "string": s, "fret": f})
-            bars.append(" ".join(toks))
-    head = [f'\\title "{song["title"]}"', f'\\artist "{song["artist"]}"', f"\\tempo {cfg['tempo']}", ".",
-            '\\track "Guitar"', "\\staff {score tabs}", f"\\tuning {' '.join(tuning)}",
-            f"\\ts {cfg['ts'][0]} {cfg['ts'][1]}"]
-    tex = "\n".join(head) + "\n" + " |\n".join(bars) + "\n"
+    tex, events = gridtab.convert(
+        text, esc_tex(song["title"]), esc_tex(song["artist"]), cfg["tempo"], tuning,
+        cps=cfg.get("cps", 2), offset=cfg.get("offset", 1), ts=cfg.get("ts"),
+        split_digits=cfg.get("split_digits", False), rhythm=rhythm, prefer=cfg.get("prefer"),
+    )
     return tex, events, [midi_of(t) for t in tuning]
 
 
@@ -90,7 +85,7 @@ def esc_tex(s):
 def main():
     OUT.mkdir(exist_ok=True)
     songs = song_list()
-    status, jobs, pending = {}, [], {}
+    status, jobs, pending, repair_notes = {}, [], {}, {}
 
     for song in songs:
         slug = song["slug"]
@@ -109,22 +104,33 @@ def main():
                 status[slug] = {"format": "chordpro", "checked_lines": len(checks)}
             continue
         # таб
+        if (ROOT / "manual_assets" / f"{slug}.gp5").exists():
+            status[slug] = {"format": "gp", "note": "файл Guitar Pro, alphaTab открывает его напрямую"}
+            continue
         try:
+            notes = []
             if slug in GRID_TABS:
-                tex, events, tuning = convert_grid(text, song, GRID_TABS[slug])
+                tex, events, tuning = convert_grid(text, song, GRID_TABS[slug], slug)
+                notes.append(GRID_NOTE[slug])
             else:
-                parsed = gpascii.parse(text)
+                parsed = gpascii.parse(text, tolerance=1)
                 tempo, ts = gpascii.header_info(text)
                 tex, events = gpascii.to_alphatex(parsed, esc_tex(song["title"]), esc_tex(song["artist"]), tempo or 90, ts)
                 tuning = parsed["pitches"]
+                if parsed["shifted"]:
+                    notes.append(f"в исходнике {parsed['shifted']} нот стояли мимо своей доли — привязаны к соседней")
+                if parsed.get("repaired_bars"):
+                    notes.append("лишняя короткая нота в тактах " + ", ".join(map(str, parsed["repaired_bars"]))
+                                 + " сделана форшлагом (в исходнике такт длиннее размера)")
                 pre = gpascii.preamble(text)
                 if pre:
                     # комментарий автора таба — в начало файла, alphaTex понимает /* */
                     tex = "/*\n" + pre.replace("*/", "* /") + "\n*/\n" + tex
-        except gpascii.NotUnderstood as e:
+        except (gpascii.NotUnderstood, Exception) as e:
             status[slug] = {"format": None, "reason": f"таб не разобран: {e}"}
             continue
         jobs.append({"id": slug, "tex": tex, "tuning": tuning, "events": events})
+        repair_notes[slug] = notes
         pending[slug] = ("atex", tex)
 
     if jobs:
@@ -138,6 +144,8 @@ def main():
         for r in json.loads(out.stdout):
             if r["ok"]:
                 status[r["id"]] = {"format": "alphatex", "bars": r["bars"], "checked_notes": r["notes"]}
+                if repair_notes.get(r["id"]):
+                    status[r["id"]]["notes"] = repair_notes[r["id"]]
             else:
                 reason = r.get("error") or f"ноты не сошлись: пропало {r['missing']}, лишние {r['extra']}"
                 status[r["id"]] = {"format": None, "reason": "alphaTab: " + reason}
@@ -152,6 +160,9 @@ def main():
     (OUT / "status.json").write_text(json.dumps(status, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
 
     ok = [s for s, v in status.items() if v["format"]]
+    for s_, v in sorted(status.items()):
+        for n in v.get("notes", []):
+            print(f"  {s_}: {n}")
     print(f"переведено {len(ok)} из {len(status)}")
     for s, v in sorted(status.items()):
         if not v["format"]:

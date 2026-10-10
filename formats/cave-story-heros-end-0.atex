@@ -17,7 +17,7 @@ JordanVS
 \tempo 100
 .
 \track "Guitar"
-\staff {score tabs}
+\staff {tabs}
 \tuning e4 b3 g3 d3 a2 e2
 \ts 4 4 r.2{d} 1.3.4 |
 (2.3 0.5).8 2.4.8 3.4.8 2.4.8 (2.3 0.5).8 (0.2 2.4).8 (1.2 3.4).8 (3.2 2.4).8 |

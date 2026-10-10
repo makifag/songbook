@@ -6,7 +6,7 @@
 \tempo 90
 .
 \track "Guitar"
-\staff {score tabs}
+\staff {tabs}
 \tuning e4 b3 g3 d3 a2 e2
 \ts 4 4 11.2.8 r.8 13.2.8 r.8 14.2.8 r.8 11.1.8 r.8 |
 13.1.8 r.8 14.2.8 r.8 14.1.4 13.1.8 11.1.8 |

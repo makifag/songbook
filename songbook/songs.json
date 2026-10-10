@@ -45,7 +45,7 @@
    "tuning": "EADGBE",
    "arranger": "kenor"
   },
-  "format": "text"
+  "format": "alphatex"
  },
  {
   "slug": "neon-genesis-evangelion-cruel-angels-thesis",
@@ -93,7 +93,7 @@
    "tuning": "EADGBE",
    "arranger": "guitarsvd"
   },
-  "format": "text"
+  "format": "alphatex"
  },
  {
   "slug": "warcraft-ii-tides-darkness-human-theme",
@@ -234,7 +234,7 @@
    "tuning": "DADGBE",
    "arranger": "scarecrowlol"
   },
-  "format": "text"
+  "format": "alphatex"
  },
  {
   "slug": "undertale-megalovania",
@@ -250,7 +250,7 @@
    "tuning": "EADGBE",
    "arranger": "johnbie"
   },
-  "format": "text"
+  "format": "alphatex"
  },
  {
   "slug": "undertale-battle-with-true-hero",
@@ -460,7 +460,7 @@
    "tuning": "EADGBE",
    "arranger": "The Ripper"
   },
-  "format": "text"
+  "format": "alphatex"
  },
  {
   "slug": "flyour-rozoviy-slon",
@@ -496,7 +496,7 @@
   "kind": "chords",
   "domain": "gitaristu.ru",
   "meta": {},
-  "format": "text"
+  "format": "chordpro"
  },
  {
   "slug": "orkestr-che-gorod",
@@ -575,7 +575,7 @@
    "tuning": "EADGBE",
    "arranger": "Alleeelex"
   },
-  "format": "text"
+  "format": "alphatex"
  },
  {
   "slug": "lil-gator-game-forest-main",
@@ -587,6 +587,6 @@
    "key": "C",
    "difficulty": "intermediate"
   },
-  "format": "text"
+  "format": "alphatex"
  }
 ]

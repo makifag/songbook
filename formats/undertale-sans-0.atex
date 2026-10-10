@@ -9,7 +9,7 @@ Capo 1
 \tempo 90
 .
 \track "Guitar"
-\staff {score tabs}
+\staff {tabs}
 \tuning e4 b3 g3 d3 a2 e2
 \ts 2 4 3.6.4 1.1.8 (0.3 3.6).8 |
 (0.1 0.4).4 3.4.8 4.4.8 |

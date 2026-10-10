@@ -10,7 +10,7 @@ BPM = 120
 \tempo 120
 .
 \track "Guitar"
-\staff {score tabs}
+\staff {tabs}
 \tuning e4 b3 g3 d3 a2 d2
 \ts 3 4 2.4.8 (1.2 2.3).8 2.4.4 2.4.8 (1.2 2.3).8 |
 3.4.8 (1.2 2.3).8 3.4.4 3.4.8 (1.2 2.3).8 |

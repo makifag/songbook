@@ -80,8 +80,55 @@ def normalize(lines):
             continue
         if "-" in line and DASH_CHORDS.match(line) and re.search(CHORD, line):
             line = line.replace("-", " ")
+        # "(1)<таб>текст" — номер куплета: отдельной меткой, текст на своей колонке
+        m = re.match(r"^\((\d+)\)(\s+)(\S.*)$", line)
+        if m:
+            out.append(f"Куплет {m.group(1)}:")
+            line = " " * (len(m.group(1)) + 2 + len(m.group(2))) + m.group(3)
+        # "Припев:<таб>текст" — метка в той же строке, что и текст: метку выносим
+        # отдельной строкой (перед аккордами над этим текстом), колонки текста сохраняем
+        m = re.match(r"^([А-ЯЁA-Z][^:,.!?]{1,20}):(\s+)(\S.*)$", line)
+        if m and not CHORD_LINE.match(" " * (len(m.group(1)) + 1) + m.group(2) + m.group(3)):
+            body = " " * (len(m.group(1)) + 1 + len(m.group(2))) + m.group(3)
+            k = len(out) - 1
+            while k >= 0 and not out[k].strip():
+                k -= 1
+            at = k if k >= 0 and CHORD_LINE.match(out[k]) else len(out)
+            out.insert(at, f"{m.group(1)}:")
+            out.append(body)
+            continue
         out.append(line)
-    return out
+    # текст "через строку" (после каждой строки пустая): одиночные пустые убираем,
+    # серии пустых строк становятся одной — иначе куплеты не отличить от строк
+    nonblank = [k for k, l in enumerate(out) if l.strip()]
+    single = sum(1 for k in nonblank if k + 2 < len(out) and not out[k + 1].strip() and out[k + 2].strip())
+    if nonblank and single > 0.4 * len(nonblank):
+        comp, k = [], 0
+        while k < len(out):
+            if not out[k].strip():
+                j = k
+                while j < len(out) and not out[j].strip():
+                    j += 1
+                if j - k >= 2:
+                    comp.append("")
+                k = j
+                continue
+            comp.append(out[k])
+            k += 1
+        out = comp
+    # общий отступ (табы в начале каждой строки) убираем
+    ind = [len(l) - len(l.lstrip(" ")) for l in out if l.strip() and not LABEL.match(l)]
+    cut = min(ind) if ind else 0
+    if cut:
+        out = [l[cut:] if l[:cut].strip() == "" else l for l in out]
+    # аккорды, отделённые от своей строки текста пустой строкой
+    res = []
+    for k, l in enumerate(out):
+        if not l.strip() and res and CHORD_LINE.match(res[-1]) and k + 1 < len(out) \
+                and out[k + 1].strip() and not CHORD_LINE.match(out[k + 1]) and not LABEL.match(out[k + 1]):
+            continue
+        res.append(l)
+    return res
 
 
 def convert(text, title, artist):

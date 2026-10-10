@@ -1,7 +1,11 @@
 {
  "a-short-hike-hello": {
-  "format": null,
-  "reason": "таб не разобран: строка 266, колонка 22: цифра без доли (4 шт. в системе)"
+  "bars": 100,
+  "checked_notes": 371,
+  "format": "alphatex",
+  "notes": [
+   "в исходнике 4 нот стояли мимо своей доли — привязаны к соседней"
+  ]
  },
  "cave-story-heros-end-0": {
   "bars": 28,
@@ -13,7 +17,7 @@
   "format": "chordpro"
  },
  "dayte-tank-spam": {
-  "checked_lines": 54,
+  "checked_lines": 56,
   "format": "chordpro"
  },
  "dayte-tank-volna": {
@@ -25,8 +29,12 @@
   "format": "chordpro"
  },
  "elder-scrolls-iii-morrowind-call-of-magic-main-theme": {
-  "format": null,
-  "reason": "таб не разобран: строка 155, колонка 48: цифра без доли (10 шт. в системе)"
+  "bars": 45,
+  "checked_notes": 402,
+  "format": "alphatex",
+  "notes": [
+   "в исходнике 10 нот стояли мимо своей доли — привязаны к соседней"
+  ]
  },
  "elder-scrolls-v-skyrim-sons-skyrim": {
   "bars": 95,
@@ -49,8 +57,12 @@
   "format": "alphatex"
  },
  "final-fantasy-vi-lockes-theme": {
-  "format": null,
-  "reason": "таб не разобран: строка 11, колонка 61: цифра без доли (10 шт. в системе)"
+  "bars": 33,
+  "checked_notes": 255,
+  "format": "alphatex",
+  "notes": [
+   "в исходнике 31 нот стояли мимо своей доли — привязаны к соседней"
+  ]
  },
  "final-fantasy-vi-phantom-forest-2": {
   "bars": 66,
@@ -83,7 +95,7 @@
   "format": "chordpro"
  },
  "flyour-sinie-teni": {
-  "checked_lines": 31,
+  "checked_lines": 32,
   "format": "chordpro"
  },
  "flyour-tancuyschiy-bog": {
@@ -119,7 +131,7 @@
   "format": "chordpro"
  },
  "kino-viktor-tsoy-vosmiklassnica": {
-  "checked_lines": 23,
+  "checked_lines": 24,
   "format": "chordpro"
  },
  "kino-viktor-tsoy-zvezda-po-imeni-solnce": {
@@ -127,20 +139,32 @@
   "format": "chordpro"
  },
  "laertskiy-hui-govno-i-muravey": {
-  "format": null,
-  "reason": "нет строк с аккордами"
+  "checked_lines": 2,
+  "format": "chordpro"
  },
  "lil-gator-game-forest-main": {
-  "format": null,
-  "reason": "таб не разобран: строка 1: система из 20 струн"
+  "bars": 30,
+  "checked_notes": 141,
+  "format": "alphatex",
+  "notes": [
+   "ритм приблизительный — по расстояниям между нотами"
+  ]
  },
  "minecraft-wet-hands": {
-  "format": null,
-  "reason": "таб не разобран: строка 35: нет строки длительностей над системой"
+  "bars": 28,
+  "checked_notes": 233,
+  "format": "alphatex",
+  "notes": [
+   "ритм по сетке таба (в исходнике нет длительностей)"
+  ]
  },
  "naruto-shippuuden-samidare-early-summer-rain": {
-  "format": null,
-  "reason": "таб не разобран: такт 18: длительность 3960 тиков не ложится в размер"
+  "bars": 41,
+  "checked_notes": 425,
+  "format": "alphatex",
+  "notes": [
+   "лишняя короткая нота в тактах 18, 35, 39 сделана форшлагом (в исходнике такт длиннее размера)"
+  ]
  },
  "neon-genesis-evangelion-cruel-angels-thesis": {
   "bars": 46,
@@ -157,7 +181,7 @@
   "format": "chordpro"
  },
  "puck-piper-dzhonni-pryzhok": {
-  "checked_lines": 11,
+  "checked_lines": 12,
   "format": "chordpro"
  },
  "puck-piper-shotlandec": {
@@ -175,8 +199,12 @@
   "format": "alphatex"
  },
  "traditional-greensleeves": {
-  "format": null,
-  "reason": "таб не разобран: строка 5: нет строки длительностей над системой"
+  "bars": 17,
+  "checked_notes": 113,
+  "format": "alphatex",
+  "notes": [
+   "ритм размечен вручную по мелодии"
+  ]
  },
  "undertale-battle-with-true-hero": {
   "bars": 62,
@@ -186,11 +214,15 @@
  "undertale-home": {
   "bars": 56,
   "checked_notes": 354,
-  "format": "alphatex"
+  "format": "alphatex",
+  "notes": [
+   "ритм по сетке таба"
+  ]
  },
  "undertale-megalovania": {
-  "format": null,
-  "reason": "таб не разобран: такт 30: длительность 5040 тиков не ложится в размер"
+  "bars": 44,
+  "checked_notes": 506,
+  "format": "alphatex"
  },
  "undertale-sans-0": {
   "bars": 28,
@@ -213,7 +245,7 @@
   "format": "alphatex"
  },
  "yann-tiersen-la-valse-damelie": {
-  "format": null,
-  "reason": "таб не разобран: не найдено ни одной системы"
+  "format": "gp",
+  "note": "файл Guitar Pro, alphaTab открывает его напрямую"
  }
 }

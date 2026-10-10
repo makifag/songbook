@@ -27,14 +27,13 @@
 html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(--f-text); }
 a { color: var(--accent); }
-.wrap { max-width: 60rem; margin: 0 auto; padding: 1rem 16px 4rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: .9rem; }
+.wrap { max-width: 76rem; margin: 0 auto; padding: .75rem clamp(8px, 2vw, 20px) 4rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: .75rem; }
 nav.top { font: 500 .85rem/1 var(--f-mono); }
 nav.top a { text-decoration: none; }
 
-.sheet { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px;
-  padding: 1.25rem clamp(14px, 4vw, 2.25rem) 2rem; min-width: 0; }
+.sheet { min-width: 0; }
 .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
-  gap: .75rem 1.5rem; border-bottom: 1px solid var(--rule); padding-bottom: .9rem; margin-bottom: 1.1rem; }
+  gap: .75rem 1.5rem; margin-bottom: 1rem; }
 .head h1 { margin: 0; font: 600 clamp(1.5rem, 4.5vw, 2.3rem)/1.1 var(--f-text); text-wrap: balance; }
 .head .by { color: var(--muted); font-size: 1rem; margin-top: .25rem; }
 .meta { display: flex; flex-wrap: wrap; gap: .35rem; }
@@ -46,9 +45,9 @@ nav.top a { text-decoration: none; }
 .controls:empty { display: none; }
 .controls button, .controls label {
   font: 500 .82rem/1 var(--f-mono); padding: .55rem .75rem; border-radius: 6px;
-  border: 1px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer;
+  border: 0; background: var(--chip); color: var(--ink); cursor: pointer;
   display: inline-flex; align-items: center; gap: .4rem; }
-.controls button.primary { background: var(--accent); color: var(--paper); border-color: var(--accent);
+.controls button.primary { background: var(--accent); color: var(--bg);
   min-width: 7.5rem; justify-content: center; }
 .controls button:disabled { opacity: .55; cursor: progress; }
 .controls .val { font-variant-numeric: tabular-nums; min-width: 2.4rem; text-align: right; }
@@ -56,8 +55,7 @@ nav.top a { text-decoration: none; }
 .controls .status { font: .78rem/1.3 var(--f-mono); color: var(--muted); }
 button:focus-visible, input:focus-visible, label:focus-within, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.notes { font: .85rem/1.45 var(--f-mono); color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 1rem;
-  border-left: 2px solid var(--rule); padding-left: .8rem; }
+.notes { font: .85rem/1.45 var(--f-mono); color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 1rem; }
 
 /* ChordPro */
 .cp { font-size: 1.05rem; }
@@ -84,7 +82,7 @@ pre.text { font-size: 14px; }
 .at-highlight * { fill: var(--accent); stroke: var(--accent); }
 .loading { color: var(--muted); font: .85rem var(--f-mono); padding: 1.5rem 0; }
 
-details.src { border-top: 1px solid var(--rule); padding-top: .8rem; margin-top: 1.5rem; }
+details.src { margin-top: 1.5rem; }
 details.src summary { cursor: pointer; font: 500 .8rem var(--f-mono); color: var(--muted); }
 details.src pre { margin-top: .7rem; max-height: 30rem; }
 

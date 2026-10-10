@@ -15,7 +15,7 @@ import re
 import sys
 
 DUR = {"W": 1, "H": 2, "Q": 4, "E": 8, "S": 16, "T": 32}
-TICKS = {1: 3840, 2: 1920, 4: 960, 8: 480, 16: 240, 32: 120}
+TICKS = {1: 3840, 2: 1920, 4: 960, 8: 480, 16: 240, 32: 120, 64: 60}
 NOTE_IDX = {"c": 0, "d": 2, "e": 4, "f": 5, "g": 7, "a": 9, "b": 11}
 
 RHYTHM_LINE = re.compile(r"^\s*(?:(?:[WHQEST]\.{0,2}|\d+x)\s+)*[WHQEST]\.{0,2}\s*$")
@@ -112,7 +112,9 @@ def number_at(line, col):
     return a, b, int(line[a:b + 1])
 
 
-def parse(text, n_strings=6):
+def parse(text, n_strings=6, tolerance=0):
+    """tolerance=1: нота, съехавшая на колонку от буквы длительности (частая
+    ошибка ручной правки таба), привязывается к соседней доле; счётчик в result["shifted"]."""
     lines = text.replace("\t", "    ").splitlines()
     # приписки после последней черты ("|  Repeat ad infinitum") — не часть таба
     lines = [re.sub(r"(-\|)\s+[A-Za-zА-Яа-яЁё(].*$", r"\1", l) for l in lines]
@@ -130,6 +132,7 @@ def parse(text, n_strings=6):
     tuning, pitches = tuning_from_labels(labels)
 
     bars = []  # каждый такт: список долей
+    shifted = [0]
     consumed_total = 0
     digits_total = 0
     for r, tup, block in systems:
@@ -146,6 +149,7 @@ def parse(text, n_strings=6):
             for m in TUPLET_MARK.finditer(lines[tup]):
                 tuplet_spans.append((m.start(), m.end() - 1, int(m.group(1))))
         letters = [(m.start(), m.group(1), len(m.group(2))) for m in re.finditer(r"([WHQEST])(\.{0,2})", rline)]
+        letter_cols = {c for c, _, _ in letters}
         # разбить на такты по колонкам черт
         edges = sorted(set(bar_cols) | {-1, width})
         segments = []
@@ -153,31 +157,54 @@ def parse(text, n_strings=6):
             if b - a > 1:
                 segments.append((a, b))
         consumed = set()
-        for a, b in segments:
+
+        def read_bar(a, b, shift):
+            """Прочитать такт; shift — сдвиг строки длительностей относительно струн."""
+            used = set()
             beats = []
-            for col, letter, dots in letters:
+            n_shift = 0
+            for col0, letter, dots in letters:
+                col = col0 + shift
                 if not (a < col < b):
                     continue
-                notes = []
-                grace = []
+                notes, grace, chains = [], [], []
                 for si, s in enumerate(slines):
                     num = number_at(s, col)
+                    if not num and tolerance and not (col < len(s) and s[col] in "Lx("):
+                        for dc in (1, -1):
+                            c2 = col + dc
+                            if c2 - shift in letter_cols or c2 < 0:
+                                continue
+                            cand = number_at(s, c2)
+                            if cand and not any((si, x) in used for x in range(cand[0], cand[1] + 1)):
+                                num = cand
+                                n_shift += 1
+                                break
                     ch = s[col] if col < len(s) else "-"
                     if num:
                         x0, x1, fret = num
-                        for x in range(x0, x1 + 1):
-                            consumed.add((si, x))
+                        used.update((si, x) for x in range(x0, x1 + 1))
                         after = s[x1 + 1] if x1 + 1 < len(s) else ""
                         before = s[x0 - 1] if x0 > 0 else ""
                         eff = []
                         if before == "g" and x0 >= 2 and s[x0 - 2].isdigit():
                             g0, g1, gfret = number_at(s, x0 - 2)
-                            for x in range(g0, g1 + 1):
-                                consumed.add((si, x))
+                            used.update((si, x) for x in range(g0, g1 + 1))
                             grace.append({"string": si + 1, "fret": gfret, "eff": []})
                         if before == "(" and after == ")":
                             eff.append("g")
-                        if after in "hp":
+                        # легато-цепочка внутри одной доли: 1h3p1
+                        chain = []
+                        x = x1
+                        while x + 2 < len(s) and s[x + 1] in "hpP" and s[x + 2].isdigit():
+                            c0, c1, cf = number_at(s, x + 2)
+                            used.update((si, y) for y in range(c0, c1 + 1))
+                            chain.append(cf)
+                            x = c1
+                        if chain:
+                            eff.append("h")
+                            chains.append((si + 1, chain))
+                        elif after in "hpP":
                             eff.append("h")
                         elif after in "S/\\":
                             eff.append("sl")
@@ -186,8 +213,7 @@ def parse(text, n_strings=6):
                         notes.append({"string": si + 1, "fret": fret, "eff": eff})
                     elif ch == "(" and col + 1 < len(s) and s[col + 1].isdigit():
                         x0, x1, fret = number_at(s, col + 1)
-                        for x in range(x0, x1 + 1):
-                            consumed.add((si, x))
+                        used.update((si, x) for x in range(x0, x1 + 1))
                         notes.append({"string": si + 1, "fret": fret, "eff": ["g"]})
                     elif ch == "(" and s[col + 1:col + 3] == "x)":
                         notes.append({"string": si + 1, "fret": None, "dead": True, "eff": []})
@@ -199,11 +225,39 @@ def parse(text, n_strings=6):
                         notes.append({"string": si + 1, "fret": None, "dead": True, "eff": []})
                 tu = None
                 for t0, t1, n in tuplet_spans:
-                    if t0 <= col <= t1:
+                    if t0 <= col0 <= t1:
                         tu = n
                 if grace:
                     beats.append({"dur": 16, "dots": 0, "tu": None, "notes": grace, "grace": True})
+                if chains and not tu and not dots:
+                    # доля делится между нотами цепочки: 2 ноты — пополам, 3 — триолью
+                    k = 1 + max(len(c) for _, c in chains)
+                    if k in (2, 3):
+                        sub = DUR[letter] * 2
+                        beats.append({"dur": sub, "dots": 0, "tu": 3 if k == 3 else None, "notes": notes})
+                        for i in range(1, k):
+                            nts = [{"string": st, "fret": c[i - 1], "eff": ["h"] if i < len(c) else []}
+                                   for st, c in chains if len(c) >= i]
+                            beats.append({"dur": sub, "dots": 0, "tu": 3 if k == 3 else None, "notes": nts})
+                        continue
                 beats.append({"dur": DUR[letter], "dots": dots, "tu": tu, "notes": notes})
+            return beats, used, n_shift
+
+        for a, b in segments:
+            bar_digits = {(si, c) for si, c in digits_here if a < c < b}
+            best = None
+            # сначала как есть; если в такте осталась ничейная цифра — строка длительностей
+            # могла съехать целиком (бывает у ручных правок): ищем сдвиг, при котором сходится всё
+            for shift in ([0] + ([1, -1, 2, -2, 3, -3, 4, -4] if tolerance else [])):
+                beats, used, n_shift = read_bar(a, b, shift)
+                if bar_digits <= used:
+                    best = (beats, used, n_shift + (1 if shift else 0))
+                    break
+                if best is None:
+                    best = (beats, used, n_shift)
+            beats, used, n_shift = best
+            consumed |= used
+            shifted[0] += n_shift
             if beats:
                 bars.append(beats)
         lost = digits_here - consumed
@@ -214,7 +268,7 @@ def parse(text, n_strings=6):
                 f"({len(lost)} шт. в системе)"
             )
         consumed_total += len(consumed)
-    return {"tuning": tuning, "pitches": pitches, "bars": bars, "digits": digits_total}
+    return {"tuning": tuning, "pitches": pitches, "bars": bars, "digits": digits_total, "shifted": shifted[0]}
 
 
 def beat_ticks(b):
@@ -232,9 +286,9 @@ def pick_ts(ticks, preferred):
         return preferred
     # такт странной длины (33/32 и т.п.) — почти всегда ошибка в самом табе
     # или в нашем чтении; честнее отказаться, чем нарисовать неверный ритм
-    for den in (4, 8, 16):
+    for den in (4, 8, 16, 32):
         unit = 3840 // den
-        if ticks % unit == 0 and 1 <= ticks // unit <= 16:
+        if ticks % unit == 0 and 1 <= ticks // unit <= 32:
             return (ticks // unit, den)
     return None
 
@@ -244,13 +298,24 @@ def to_alphatex(parsed, title, artist, tempo, preferred_ts=None, track="Guitar")
     if artist:
         out.append(f'\\artist "{artist}"')
     out.append(f"\\tempo {tempo}")
-    out += [".", f'\\track "{track}"', "\\staff {score tabs}", f"\\tuning {' '.join(parsed['tuning'])}"]
+    out += [".", f'\\track "{track}"', "\\staff {tabs}", f"\\tuning {' '.join(parsed['tuning'])}"]
     events = []
+    repaired = parsed.setdefault("repaired_bars", [])
     cur_ts = None
     bar_lines = []
     for bi, beats in enumerate(parsed["bars"]):
         ticks = sum(beat_ticks(b) for b in beats)
         ts = pick_ts(ticks, preferred_ts)
+        if ts is None and preferred_ts:
+            # лишняя мелкая нота в такте (ошибка в самом табе): превращаем её в форшлаг
+            excess = ticks - preferred_ts[0] * 3840 // preferred_ts[1]
+            for b in beats:
+                if beat_ticks(b) == excess and b["notes"] and not b.get("grace"):
+                    b["grace"] = True
+                    repaired.append(bi + 1)
+                    ticks -= excess
+                    ts = pick_ts(ticks, preferred_ts)
+                    break
         if ts is None:
             raise NotUnderstood(f"такт {bi + 1}: длительность {ticks} тиков не ложится в размер")
         toks = []

@@ -455,7 +455,15 @@ SONG_TEMPLATE = """<!doctype html>
 </body></html>
 """
 
-FORMAT_LABEL = {"alphatex": "ноты + таб", "chordpro": "аккорды", "gp": "Guitar Pro", "text": "текст"}
+FORMAT_LABEL = {"alphatex": "таб", "chordpro": "аккорды", "gp": "таб · Guitar Pro", "text": "текст"}
+
+
+def format_notes(slug):
+    """Пометки конвертера (восстановленный ритм, поправленные ноты) — показываем на странице."""
+    path = FORMATS_DIR / "status.json"
+    if not path.exists():
+        return []
+    return json.loads(path.read_text(encoding="utf-8")).get(slug, {}).get("notes", [])
 
 
 def _script_safe(text):
@@ -482,7 +490,7 @@ def render_song_html(slug, title, artist, kind, meta, body, downloads=None):
     if content is None:
         content = body
     chips = [FORMAT_LABEL[fmt]]
-    notes = []
+    notes = [f"при переводе: {n}" for n in format_notes(slug)]
     for k, v in meta.items():
         v = str(v)
         if k == "источник" or len(v) > 40:
@@ -496,7 +504,7 @@ def render_song_html(slug, title, artist, kind, meta, body, downloads=None):
         links = " · ".join(f'<a href="{html_mod.escape(href)}">{html_mod.escape(label)}</a>' for label, href in downloads)
         downloads_html = f'<p class="downloads">{links}</p>\n'
     source_html = ""
-    if fmt in ("alphatex", "chordpro"):
+    if fmt == "chordpro":  # табы текстом не показываем
         source_html = (
             '<details class="src"><summary>Исходный текст с сайта</summary>'
             f'<pre class="rawtxt">{html_mod.escape(body)}</pre></details>'
@@ -534,14 +542,14 @@ h1 {{ margin: 0; font: 600 clamp(1.8rem, 5vw, 2.6rem)/1.1 var(--f-text); }}
 .filters {{ display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: env(safe-area-inset-top, 0px);
   background: var(--bg); padding: .6rem 0; z-index: 2; }}
 .filters input, .filters select {{ font: 1rem var(--f-text); padding: .55rem .7rem; border-radius: 6px;
-  border: 1px solid var(--rule); background: var(--paper); color: var(--ink); }}
+  border: 0; background: var(--chip); color: var(--ink); }}
 .filters input {{ flex: 1 1 14rem; min-width: 0; }}
 .filters select {{ font: .85rem var(--f-mono); }}
 .count {{ font: .8rem var(--f-mono); color: var(--muted); margin: 0; }}
-ul.songs {{ list-style: none; margin: 0; padding: 0; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; }}
+ul.songs {{ list-style: none; margin: 0; padding: 0; }}
 ul.songs li + li {{ border-top: 1px solid var(--rule); }}
 ul.songs a {{ display: flex; align-items: baseline; justify-content: space-between; gap: .3rem 1rem; flex-wrap: wrap;
-  padding: .75rem 1rem; color: var(--ink); text-decoration: none; }}
+  padding: .7rem .2rem; color: var(--ink); text-decoration: none; }}
 ul.songs a:hover .t {{ color: var(--accent); }}
 .t {{ font-size: 1.05rem; }}
 .a {{ color: var(--muted); font-size: .9rem; margin-left: .5rem; }}
@@ -562,7 +570,7 @@ ul.songs a:hover .t {{ color: var(--accent); }}
 </div>
 <script>
 var SONGS = {songs_json};
-var LABEL = {{ alphatex: "ноты + таб", gp: "Guitar Pro", chordpro: "аккорды", text: "текст" }};
+var LABEL = {{ alphatex: "таб", gp: "таб", chordpro: "аккорды", text: "текст" }};
 var list = document.getElementById('list');
 var q = document.getElementById('q');
 var kindFilter = document.getElementById('kindFilter');

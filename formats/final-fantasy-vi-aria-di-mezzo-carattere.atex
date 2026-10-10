@@ -17,7 +17,7 @@ Capo. 2
 \tempo 70
 .
 \track "Guitar"
-\staff {score tabs}
+\staff {tabs}
 \tuning e4 b3 g3 d3 a2 e2
 \ts 4 4 (0.1 0.3 8.6).8 8.2.8 8.1{v}.4 (8.1 7.5).8 8.2.8 (5.2 5.4).8 7.3.8 |
 (0.1 0.3 8.6).8 8.2.8 8.1{v}.2{d} |

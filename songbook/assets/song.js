@@ -113,23 +113,39 @@
       '<button type="button" id="stop" disabled>Стоп</button>' +
       '<label for="speed">темп <input type="range" id="speed" min="40" max="120" step="5" value="100"><span class="val" id="speedv">100%</span></label>' +
       '<label for="metro"><input type="checkbox" id="metro"> метроном</label>' +
-      '<label for="loopc"><input type="checkbox" id="loopc"> по кругу</label>' +
-      '<label for="score"><input type="checkbox" id="score" checked> ноты</label>';
+      '<label for="loopc"><input type="checkbox" id="loopc"> по кругу</label>';
     view.innerHTML = (format === "alphatex" && notes && notes[1].trim() ? '<p class="notes">' + esc(notes[1].trim()) + "</p>" : "") +
-      '<div id="at-host"><div id="at"><div class="loading">Рисую…</div></div></div>';
+      '<div class="loading" id="at-loading">Рисую…</div><div id="at-host"><div id="at"></div></div>';
     var narrow = window.innerWidth < 600;
     var api = new alphaTab.AlphaTabApi($("#at"), {
       core: { fontDirectory: VENDOR + "font/", scriptFile: VENDOR + "alphaTab.min.js" },
       display: {
-        scale: narrow ? 0.72 : 0.95, staveProfile: "ScoreTab",
+        scale: narrow ? 0.72 : 0.95, staveProfile: "Tab",
         resources: {
           mainGlyphColor: cssVar("--ink"), secondaryGlyphColor: cssVar("--muted"), staffLineColor: cssVar("--rule"),
           barSeparatorColor: cssVar("--muted"), barNumberColor: cssVar("--accent"), scoreInfoColor: cssVar("--ink"),
         },
       },
-      notation: { elements: { scoreTitle: false, scoreSubTitle: false, scoreArtist: false, scoreAlbum: false, scoreWords: false, scoreMusic: false, scoreWordsAndMusic: false, scoreCopyright: false } },
+      // только таб: без нотного стана, ритм — штилями под табом; без подписей дорожки и строя
+      notation: {
+        rhythmMode: "ShowWithBars",
+        elements: { scoreTitle: false, scoreSubTitle: false, scoreArtist: false, scoreAlbum: false, scoreWords: false,
+          scoreMusic: false, scoreWordsAndMusic: false, scoreCopyright: false, trackNames: false, guitarTuning: false,
+          effectDynamics: false },
+      },
       player: { playerMode: "EnabledSynthesizer", soundFont: VENDOR + "soundfont/sonivox.sf2", enableCursor: true, enableUserInteraction: true, scrollMode: "OffScreen" },
     });
+    // ключ "TAB" в начале строк не нужен — убираем глиф из готового SVG
+    api.renderFinished.on(function () {
+      var l = $("#at-loading"); if (l) l.remove();
+    });
+    // alphaTab дорисовывает строки по мере прокрутки, поэтому следим за SVG постоянно
+    var TAB_CLEF = "\uE06D";
+    new MutationObserver(function () {
+      document.querySelectorAll("#at svg text").forEach(function (t) {
+        if (t.textContent.indexOf(TAB_CLEF) !== -1) t.remove();
+      });
+    }).observe($("#at"), { childList: true, subtree: true });
     loadFn(api);
     var play = $("#play");
     api.soundFontLoad.on(function (e) { play.textContent = "Звук " + Math.round((e.loaded / e.total) * 100) + "%"; });
@@ -140,10 +156,6 @@
     $("#speed").oninput = function (e) { api.playbackSpeed = e.target.value / 100; $("#speedv").textContent = e.target.value + "%"; };
     $("#metro").onchange = function (e) { api.metronomeVolume = e.target.checked ? 1 : 0; };
     $("#loopc").onchange = function (e) { api.isLooping = e.target.checked; };
-    $("#score").onchange = function (e) {
-      api.settings.display.staveProfile = e.target.checked ? alphaTab.StaveProfile.ScoreTab : alphaTab.StaveProfile.Tab;
-      api.updateSettings(); api.render();
-    };
     api.error.on(function (e) {
       view.insertAdjacentHTML("afterbegin", '<p class="notes">Не получилось отрисовать: ' + esc(e && e.message || e) + "</p>");
     });

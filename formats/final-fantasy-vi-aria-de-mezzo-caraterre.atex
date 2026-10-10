@@ -13,7 +13,7 @@ Bpm:72
 \tempo 72
 .
 \track "Guitar"
-\staff {score tabs}
+\staff {tabs}
 \tuning e4 b3 g3 d3 a2 e2
 \ts 4 4 (2.4 3.5).8 0.3.8 1.2.4 -.2.8 0.3.8 (2.4 3.5).8 0.4.8 |
 (2.4 3.5).8 0.3.8 1.2.2{d} |
