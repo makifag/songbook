@@ -113,22 +113,31 @@
       '<button type="button" id="stop" disabled>Стоп</button>' +
       '<label for="speed">темп <input type="range" id="speed" min="40" max="120" step="5" value="100"><span class="val" id="speedv">100%</span></label>' +
       '<label for="metro"><input type="checkbox" id="metro"> метроном</label>' +
-      '<label for="loopc"><input type="checkbox" id="loopc"> по кругу</label>';
+      '<label for="loopc"><input type="checkbox" id="loopc"> по кругу</label>' +
+      '<span class="group"><button type="button" id="zout" title="Мельче">−</button>' +
+      '<span class="status">масштаб <b class="val" id="zval"></b></span>' +
+      '<button type="button" id="zin" title="Крупнее">+</button></span>' +
+      '<label for="rhythm"><input type="checkbox" id="rhythm"> длительности</label>';
     view.innerHTML = (format === "alphatex" && notes && notes[1].trim() ? '<p class="notes">' + esc(notes[1].trim()) + "</p>" : "") +
       '<div class="loading" id="at-loading">Рисую…</div><div id="at-host"><div id="at"></div></div>';
-    var narrow = window.innerWidth < 600;
+    document.body.classList.add("wide");
+    // масштаб и показ длительностей запоминаем на устройстве (общие для всех песен)
+    var pref = function (k, d) { try { var v = localStorage.getItem("songbook." + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } };
+    var save = function (k, v) { try { localStorage.setItem("songbook." + k, JSON.stringify(v)); } catch (e) {} };
+    var scale = pref("scale", window.innerWidth < 600 ? 0.8 : 1.1), rhythm = pref("rhythm", false);
+    var rhythmMode = function () { return rhythm ? "ShowWithBars" : "Hidden"; };
     var api = new alphaTab.AlphaTabApi($("#at"), {
       core: { fontDirectory: VENDOR + "font/", scriptFile: VENDOR + "alphaTab.min.js" },
       display: {
-        scale: narrow ? 0.72 : 0.95, staveProfile: "Tab",
+        scale: scale, staveProfile: "Tab",
         resources: {
           mainGlyphColor: cssVar("--ink"), secondaryGlyphColor: cssVar("--muted"), staffLineColor: cssVar("--rule"),
           barSeparatorColor: cssVar("--muted"), barNumberColor: cssVar("--accent"), scoreInfoColor: cssVar("--ink"),
         },
       },
-      // только таб: без нотного стана, ритм — штилями под табом; без подписей дорожки и строя
+      // только таб: без нотного стана и подписей дорожки/строя; длительности (штили под табом) — по галочке
       notation: {
-        rhythmMode: "ShowWithBars",
+        rhythmMode: rhythmMode(),
         elements: { scoreTitle: false, scoreSubTitle: false, scoreArtist: false, scoreAlbum: false, scoreWords: false,
           scoreMusic: false, scoreWordsAndMusic: false, scoreCopyright: false, trackNames: false, guitarTuning: false,
           effectDynamics: false },
@@ -156,6 +165,21 @@
     $("#speed").oninput = function (e) { api.playbackSpeed = e.target.value / 100; $("#speedv").textContent = e.target.value + "%"; };
     $("#metro").onchange = function (e) { api.metronomeVolume = e.target.checked ? 1 : 0; };
     $("#loopc").onchange = function (e) { api.isLooping = e.target.checked; };
+    function rerender() { api.updateSettings(); api.render(); }
+    function showScale() { $("#zval").textContent = Math.round(scale * 100) + "%"; }
+    function zoom(d) {
+      scale = Math.min(2.5, Math.max(0.5, Math.round((scale + d) * 10) / 10));
+      save("scale", scale); showScale();
+      api.settings.display.scale = scale; rerender();
+    }
+    showScale();
+    $("#zout").onclick = function () { zoom(-0.1); };
+    $("#zin").onclick = function () { zoom(0.1); };
+    $("#rhythm").checked = rhythm;
+    $("#rhythm").onchange = function (e) {
+      rhythm = e.target.checked; save("rhythm", rhythm);
+      api.settings.notation.rhythmMode = alphaTab.TabRhythmMode[rhythmMode()]; rerender();
+    };
     api.error.on(function (e) {
       view.insertAdjacentHTML("afterbegin", '<p class="notes">Не получилось отрисовать: ' + esc(e && e.message || e) + "</p>");
     });
