@@ -519,7 +519,7 @@ def render_song_html(slug, title, artist, kind, meta, body, downloads=None):
         fmt=fmt,
         file_attr=html_mod.escape(file_attr),
         src_text=_script_safe(content),
-        alphatab_tag='<script src="../vendor/alphatab/alphaTab.min.js"></script>\n' if fmt in ("alphatex", "gp") else "",
+        alphatab_tag='<script src="../vendor/alphatab/alphaTab.min.js"></script>\n<script src="../assets/tabview.js"></script>\n' if fmt in ("alphatex", "gp") else "",
     )
 
 

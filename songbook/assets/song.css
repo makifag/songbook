@@ -86,10 +86,30 @@ pre.tab, pre.text, pre.rawtxt { font: .82rem/1.35 var(--f-mono); overflow-x: aut
   padding: .7rem .8rem; background: var(--chip); border-radius: 6px; color: var(--ink); white-space: pre; }
 pre.text { font-size: 14px; }
 
-#at-host { min-width: 0; overflow-x: auto; }
-.at-cursor-bar { background: color-mix(in srgb, var(--accent) 14%, transparent); }
-.at-cursor-beat { background: var(--accent); width: 3px; }
-.at-highlight * { fill: var(--accent); stroke: var(--accent); }
+/* таб (assets/tabview.js) */
+#tab-host { min-width: 0; overflow-x: auto; }
+#at { position: absolute; left: -10000px; top: 0; width: 800px; height: 200px; overflow: hidden; }
+svg.tv { display: block; user-select: none; -webkit-user-select: none; cursor: pointer; }
+svg.tv .str { stroke: var(--rule); stroke-width: 1; }
+svg.tv .bl { stroke: var(--muted); stroke-width: 1; }
+svg.tv .bl.end, svg.tv .bl.thick { stroke-width: 3; }
+svg.tv .dot { fill: var(--muted); }
+svg.tv text { font-family: var(--f-mono); }
+svg.tv .fret { fill: var(--ink); text-anchor: middle; dominant-baseline: central; font-weight: 500; }
+svg.tv .fret.soft { fill: var(--muted); }
+svg.tv .grace .fret { fill: var(--muted); }
+svg.tv .knock { fill: var(--bg); }
+svg.tv .dur { fill: var(--muted); opacity: .6; text-anchor: middle; }
+svg.tv .rest .dur { opacity: .4; }
+svg.tv .bn { fill: var(--accent); opacity: .8; }
+svg.tv .ts { fill: var(--ink); text-anchor: middle; font-family: var(--f-text); font-weight: 600; }
+svg.tv .arc { fill: none; stroke: var(--muted); stroke-width: 1; }
+svg.tv .hp, svg.tv .vib { fill: var(--muted); text-anchor: middle; }
+svg.tv .fx { stroke: var(--ink); stroke-width: 1.2; }
+svg.tv .hl { fill: color-mix(in srgb, var(--accent) 10%, transparent); }
+svg.tv .cur { fill: var(--accent); }
+svg.tv .beat.on .fret { fill: var(--accent); }
+.controls button[aria-pressed=true] { background: var(--accent); color: var(--bg); }
 .loading { color: var(--muted); font: .85rem var(--f-mono); padding: 1.5rem 0; }
 
 details.src { margin-top: 1.5rem; }
@@ -101,3 +121,4 @@ details.src pre { margin-top: .7rem; max-height: 30rem; }
   nav.top, .controls, details.src { display: none; }
   .sheet { border: 0; padding: 0; }
 }
+svg.tv .tsm { fill: var(--ink); font-weight: 700; }

@@ -1,6 +1,6 @@
 // Песенник: отрисовка страницы песни по её формату.
 //   chordpro — свой рендер аккордов над текстом + транспонирование
-//   alphatex — alphaTab: ноты + таб + проигрывание
+//   alphatex — таб рисует TabView (tabview.js), alphaTab разбирает и играет
 //   gp       — файл Guitar Pro, тоже через alphaTab
 //   text     — как было: моноширинный текст с подгонкой по ширине
 (function () {
@@ -104,34 +104,33 @@
     draw();
   }
 
-  // ---------- alphaTab ----------
-  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  // ---------- таб: рисует TabView (assets/tabview.js), alphaTab только разбирает и играет ----------
   function showAlphaTab(loadFn) {
     var notes = /^\/\*\n?([\s\S]*?)\n?\*\//.exec(src);
-    // наверху — только самое нужное; темп, метроном, длительности, такты в строке и
+    // наверху — только самое нужное; метроном, повтор, такты в строке и
     // сведения о табе (чипы, шапка из исходника) — под кнопкой «ещё»
     controls.innerHTML =
       '<button type="button" class="primary" id="play" disabled>Загрузка звука…</button>' +
       '<button type="button" id="stop" disabled>Стоп</button>' +
+      '<label for="speed">темп <input type="range" id="speed" min="40" max="120" step="5" value="100"><span class="val" id="speedv">100%</span></label>' +
       '<span class="group"><button type="button" id="zout" title="Мельче">−</button>' +
       '<span class="status"><b class="val" id="zval"></b></span>' +
       '<button type="button" id="zin" title="Крупнее">+</button></span>' +
+      '<button type="button" id="rhythm" aria-pressed="false" title="Длительности нот над табом">длит.</button>' +
       '<button type="button" id="more" aria-expanded="false">ещё ▾</button>' +
       '<div class="more" id="morepanel" hidden>' +
-      '<label for="speed">темп <input type="range" id="speed" min="40" max="120" step="5" value="100"><span class="val" id="speedv">100%</span></label>' +
       '<label for="metro"><input type="checkbox" id="metro"> метроном</label>' +
       '<label for="loopc"><input type="checkbox" id="loopc"> по кругу</label>' +
-      '<label for="rhythm"><input type="checkbox" id="rhythm"> длительности</label>' +
       '<label for="bpr">тактов в строке <select id="bpr"><option value="-1">авто</option>' +
-      '<option>1</option><option>2</option><option>3</option><option>4</option><option>6</option></select></label>' +
+      '<option>1</option><option>2</option><option>3</option><option>4</option><option>6</option><option>8</option></select></label>' +
       "</div>";
     view.innerHTML = (format === "alphatex" && notes && notes[1].trim() ? '<p class="notes">' + esc(notes[1].trim()) + "</p>" : "") +
-      '<div class="loading" id="at-loading">Рисую…</div><div id="at-host"><div id="at"></div></div>';
+      '<div class="loading" id="at-loading">Рисую…</div><div id="tab-host"></div><div id="at" aria-hidden="true"></div>';
     document.body.classList.add("wide");
-    // масштаб и показ длительностей запоминаем на устройстве (общие для всех песен)
+    // масштаб, длительности и такты в строке запоминаем на устройстве (общие для всех песен)
     var pref = function (k, d) { try { var v = localStorage.getItem("songbook." + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } };
     var save = function (k, v) { try { localStorage.setItem("songbook." + k, JSON.stringify(v)); } catch (e) {} };
-    var scale = pref("scale", window.innerWidth < 600 ? 0.8 : 1.1), rhythm = pref("rhythm", false), bpr = pref("bpr", -1);
+    var scale = pref("tabscale", window.innerWidth < 600 ? 0.85 : 1.1), rhythm = pref("letters", true), bpr = pref("bpr", -1);
     // сведения о табе переезжают в панель «ещё»
     var panel = $("#morepanel"), info = document.createElement("div");
     info.className = "info";
@@ -142,40 +141,39 @@
       this.setAttribute("aria-expanded", String(!panel.hidden));
       this.textContent = panel.hidden ? "ещё ▾" : "ещё ▴";
     };
-    var rhythmMode = function () { return rhythm ? "ShowWithBars" : "Hidden"; };
+
+    // alphaTab рисует за кадром один такт — без отрисовки он не грузит звук
     var api = new alphaTab.AlphaTabApi($("#at"), {
-      core: { fontDirectory: VENDOR + "font/", scriptFile: VENDOR + "alphaTab.min.js" },
-      display: {
-        scale: scale, staveProfile: "Tab", barsPerRow: bpr,
-        // плотнее, чем по умолчанию: ноты ближе друг к другу, поля листа узкие —
-        // на вертикальном телефоне влезает 2–3 такта в строку
-        stretchForce: 0.6, padding: [4, 10], firstStaffPaddingLeft: 2,
-        resources: {
-          mainGlyphColor: cssVar("--ink"), secondaryGlyphColor: cssVar("--muted"), staffLineColor: cssVar("--rule"),
-          barSeparatorColor: cssVar("--muted"), barNumberColor: cssVar("--accent"), scoreInfoColor: cssVar("--ink"),
-        },
-      },
-      // только таб: без нотного стана и подписей дорожки/строя; длительности (штили под табом) — по галочке
-      notation: {
-        rhythmMode: rhythmMode(),
-        elements: { scoreTitle: false, scoreSubTitle: false, scoreArtist: false, scoreAlbum: false, scoreWords: false,
-          scoreMusic: false, scoreWordsAndMusic: false, scoreCopyright: false, trackNames: false, guitarTuning: false,
-          effectDynamics: false },
-      },
-      player: { playerMode: "EnabledSynthesizer", soundFont: VENDOR + "soundfont/sonivox.sf2", enableCursor: true, enableUserInteraction: true, scrollMode: "OffScreen" },
+      core: { fontDirectory: VENDOR + "font/", scriptFile: VENDOR + "alphaTab.min.js", enableLazyLoading: false },
+      display: { staveProfile: "Tab", barCount: 1 },
+      player: { playerMode: "EnabledSynthesizer", soundFont: VENDOR + "soundfont/sonivox.sf2", enableCursor: false, enableUserInteraction: false, scrollMode: "Off" },
     });
-    // ключ "TAB" в начале строк не нужен — убираем глиф из готового SVG
-    api.renderFinished.on(function () {
-      var l = $("#at-loading"); if (l) l.remove();
-    });
-    // alphaTab дорисовывает строки по мере прокрутки, поэтому следим за SVG постоянно
-    var TAB_CLEF = "\uE06D";
-    new MutationObserver(function () {
-      document.querySelectorAll("#at svg text").forEach(function (t) {
-        if (t.textContent.indexOf(TAB_CLEF) !== -1) t.remove();
-      });
-    }).observe($("#at"), { childList: true, subtree: true });
     window.songbookApi = api; // для отладки из консоли
+    var tv = null, TRACKS = new Set([0]);
+    api.scoreLoaded.on(function (score) {
+      var l = $("#at-loading"); if (l) l.remove();
+      try {
+        tv = new TabView($("#tab-host"), score, {
+          scale: scale, letters: rhythm, barsPerRow: bpr,
+          onSeek: function (beat) {
+            var cache = api.tickCache;
+            if (!cache) return;
+            api.tickPosition = cache.getMasterBarStart(beat.voice.bar.masterBar) + beat.playbackStart;
+            tv.moveCursor(beat, 0, false);
+          },
+        });
+      } catch (e) {
+        view.insertAdjacentHTML("afterbegin", '<p class="notes">Не получилось нарисовать таб: ' + esc(e.message) + "</p>");
+      }
+    });
+    api.playerPositionChanged.on(function (e) {
+      var cache = api.tickCache;
+      if (!tv || !cache) return;
+      var r = cache.findBeat(TRACKS, e.currentTick);
+      if (!r) return;
+      var frac = r.tickDuration > 0 ? Math.min(1, Math.max(0, (e.currentTick - r.start) / r.tickDuration)) : 0;
+      tv.moveCursor(r.beat, frac, api.playerState === 1);
+    });
     loadFn(api);
     var play = $("#play");
     api.soundFontLoad.on(function (e) { play.textContent = "Звук " + Math.round((e.loaded / e.total) * 100) + "%"; });
@@ -186,12 +184,11 @@
     $("#speed").oninput = function (e) { api.playbackSpeed = e.target.value / 100; $("#speedv").textContent = e.target.value + "%"; };
     $("#metro").onchange = function (e) { api.metronomeVolume = e.target.checked ? 1 : 0; };
     $("#loopc").onchange = function (e) { api.isLooping = e.target.checked; };
-    function rerender() { api.updateSettings(); api.render(); }
     function showScale() { $("#zval").textContent = Math.round(scale * 100) + "%"; }
     function zoom(d) {
       scale = Math.min(2.5, Math.max(0.5, Math.round((scale + d) * 10) / 10));
-      save("scale", scale); showScale();
-      api.settings.display.scale = scale; rerender();
+      save("tabscale", scale); showScale();
+      if (tv) tv.set({ scale: scale });
     }
     showScale();
     $("#zout").onclick = function () { zoom(-0.1); };
@@ -199,15 +196,16 @@
     $("#bpr").value = String(bpr);
     $("#bpr").onchange = function (e) {
       bpr = +e.target.value; save("bpr", bpr);
-      api.settings.display.barsPerRow = bpr; rerender();
+      if (tv) tv.set({ barsPerRow: bpr });
     };
-    $("#rhythm").checked = rhythm;
-    $("#rhythm").onchange = function (e) {
-      rhythm = e.target.checked; save("rhythm", rhythm);
-      api.settings.notation.rhythmMode = alphaTab.TabRhythmMode[rhythmMode()]; rerender();
+    function showRhythm() { $("#rhythm").setAttribute("aria-pressed", String(rhythm)); }
+    showRhythm();
+    $("#rhythm").onclick = function () {
+      rhythm = !rhythm; save("letters", rhythm); showRhythm();
+      if (tv) tv.set({ letters: rhythm });
     };
     api.error.on(function (e) {
-      view.insertAdjacentHTML("afterbegin", '<p class="notes">Не получилось отрисовать: ' + esc(e && e.message || e) + "</p>");
+      view.insertAdjacentHTML("afterbegin", '<p class="notes">Не получилось разобрать таб: ' + esc(e && e.message || e) + "</p>");
     });
   }
 
