@@ -132,11 +132,10 @@
   TabView.prototype.render = function () {
     var host = this.host, M = this.metrics(), o = this.edge(M), self = this;
     var bars = this.m.bars, S = this.m.strings;
-    var staffH = (S - 1) * M.line, tsFs = staffH * 0.52;
+    var staffH = (S - 1) * M.line, tsFs = M.fs * 0.95; // размер такта — чуть крупнее цифр лада, не больше
     var digits = 1;
     bars.forEach(function (b) { digits = Math.max(digits, String(b.mb.timeSignatureNumerator).length, String(b.mb.timeSignatureDenominator).length); });
-    if (digits > 1) tsFs *= 0.72; // 12/8, 21/16 — уже, чтобы поле не съедало строку
-    var gutter = Math.ceil(tsFs * 0.62 * digits + M.cw * 0.7);
+    var gutter = Math.ceil(tsFs * 0.6 * digits + 4);
     var W = Math.max(120, host.clientWidth - gutter - 2);
 
     // самая частая длина такта задаёт, сколько тактов в строке
@@ -189,9 +188,9 @@
         g.appendChild(el("line", { class: "str", x1: x0, x2: r1(xEnd), y1: r1(y0 + s * M.line), y2: r1(y0 + s * M.line) }));
       }
       if (row.ts) {
-        var cx = gutter / 2 - M.cw * 0.2, mid = y0 + staffH / 2;
-        g.appendChild(el("text", { class: "ts", x: r1(cx), y: r1(mid - staffH * 0.04), "font-size": r1(tsFs) }, String(row.ts.timeSignatureNumerator)));
-        g.appendChild(el("text", { class: "ts", x: r1(cx), y: r1(mid + tsFs * 0.78), "font-size": r1(tsFs) }, String(row.ts.timeSignatureDenominator)));
+        var cx = (gutter - 3) / 2, mid = y0 + staffH / 2;
+        g.appendChild(el("text", { class: "ts", x: r1(cx), y: r1(mid - tsFs * 0.08), "font-size": r1(tsFs) }, String(row.ts.timeSignatureNumerator)));
+        g.appendChild(el("text", { class: "ts", x: r1(cx), y: r1(mid + tsFs * 0.8), "font-size": r1(tsFs) }, String(row.ts.timeSignatureDenominator)));
       }
       row.bars.forEach(function (rb, bi) {
         var bx = x0 + rb.x, mb = rb.bar.mb;
