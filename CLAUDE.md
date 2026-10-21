@@ -18,7 +18,7 @@ python build.py --refetch  # принудительно перекачать в�
 
 ## Структура
 
-- `sources.json` — вход: список из 50 источников (Home с 2026-10-21 — с Songsterr,
+- `sources.json` — вход: список из 51 источника (Home с 2026-10-21 — с Songsterr,
   в `manual_entries.json`) (`title_raw, url_norm, domain,
   artist, work, handler, status, note`). `status`: `live` / `dead_wayback`
   (тянуть из Wayback) / `manual` (в отчёт, не качать).
@@ -72,6 +72,9 @@ alphaTab для проверки). Ноты проверяются всегда:
   нота на колонку мимо буквы привязывается к соседней доле, строка
   длительностей, съехавшая целиком на 1–4 колонки в такте, сдвигается;
   лишняя короткая нота в переполненном такте становится форшлагом.
+  Капо из шапки таба («Capo 2», «Guitar (Capo 3)», «Capo on the 3rd fret») —
+  в `\capo` (`convert_all.py`); «капо по желанию» словами (Call of Magic) не
+  берётся. Темп, если его нет в шапке, — `TEMPO_HINT` в `convert_all.py`.
 - `tools/gridtab.py` — табы без строки длительностей: ритм по равномерной
   сетке (Wet Hands — с ultimate-guitar, последняя строка перекладывается
   `respace()`), по расстояниям между нотами (Lil Gator — ритм

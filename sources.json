@@ -548,5 +548,16 @@
     "status": "live",
     "note": "контент в JSON: div.js-store[data-content] -> wiki_tab.content",
     "url_norm": "https://tabs.ultimate-guitar.com/tab/misc-computer-games/lil-gator-game-forest-main-tabs-4585853"
+  },
+  {
+    "title_raw": "Game of Thrones — Main Title",
+    "url_raw": "https://tabs.ultimate-guitar.com/tab/misc-television/game-of-thrones-theme-tabs-1163779",
+    "domain": "tabs.ultimate-guitar.com",
+    "artist": "game-of-thrones",
+    "work": "main-title",
+    "handler": "ultimateguitar_json",
+    "status": "live",
+    "note": "добавлено 2026-10-21 по просьбе владельца",
+    "url_norm": "https://tabs.ultimate-guitar.com/tab/misc-television/game-of-thrones-theme-tabs-1163779"
   }
 ]

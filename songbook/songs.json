@@ -569,5 +569,19 @@
    "difficulty": "intermediate"
   },
   "format": "alphatex"
+ },
+ {
+  "slug": "game-of-thrones-main-title",
+  "title": "Main Title",
+  "artist": "Game of Thrones",
+  "kind": "tab",
+  "domain": "tabs.ultimate-guitar.com",
+  "meta": {
+   "composer": "Ramin Djawadi",
+   "difficulty": "intermediate",
+   "tuning": "EADGBE",
+   "capo": "3"
+  },
+  "format": "alphatex"
  }
 ]

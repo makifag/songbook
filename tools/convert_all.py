@@ -43,6 +43,10 @@ GRID_TABS = {
     # ритм размечен руками по мелодии (formats/rhythm/), 6/8
     "traditional-greensleeves": {"tuning": STD, "rhythm": True, "tempo": 90, "prefer": (6, 8)},
 }
+# темп для табов, где его нет в шапке (иначе 90)
+TEMPO_HINT = {
+    "game-of-thrones-main-title": 160,
+}
 GRID_NOTE = {
     "minecraft-wet-hands": "ритм по сетке таба (в исходнике нет длительностей): восьмые, 4/4",
     "lil-gator-game-forest-main": "ритм приблизительный — по расстояниям между нотами",
@@ -157,8 +161,18 @@ def main():
             else:
                 parsed = gpascii.parse(text, tolerance=1)
                 tempo, ts = gpascii.header_info(text)
+                if not tempo and slug in TEMPO_HINT:
+                    tempo = TEMPO_HINT[slug]
+                    notes.append(f"темп в табе не указан — поставлен {tempo}, подстрой ползунком")
                 tex, events = gpascii.to_alphatex(parsed, esc_tex(song["title"]), esc_tex(song["artist"]), tempo or 90, ts)
                 tuning = parsed["pitches"]
+                # капо пишут словами в шапке ("Guitar (Capo 3)") — переносим в alphaTex;
+                # сверка идёт по реальному звуку, а alphaTab высоту считает с капо
+                capo = re.search(r"\bcapo\W{0,3}(?:(?:on|at)\s+)?(?:the\s+)?(\d{1,2})(?:st|nd|rd|th)?\b",
+                                 gpascii.preamble(text) or "", re.I)
+                if capo and int(capo.group(1)):
+                    tex = re.sub(r"(\\tuning [^\n]*\n)", lambda m: m.group(1) + f"\\capo {capo.group(1)}\n", tex, count=1)
+                    tuning = [t + int(capo.group(1)) for t in tuning]
                 if parsed["shifted"]:
                     notes.append(f"в исходнике {parsed['shifted']} нот стояли мимо своей доли — привязаны к соседней")
                 if parsed.get("repaired_bars"):

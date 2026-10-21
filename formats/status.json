@@ -117,6 +117,14 @@
   "checked_lines": 9,
   "format": "chordpro"
  },
+ "game-of-thrones-main-title": {
+  "bars": 46,
+  "checked_notes": 430,
+  "format": "alphatex",
+  "notes": [
+   "темп в табе не указан — поставлен 160, подстрой ползунком"
+  ]
+ },
  "grazhdanskaya-oborona-pro-durachka": {
   "checked_lines": 44,
   "format": "chordpro"
