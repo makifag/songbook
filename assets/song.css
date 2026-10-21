@@ -121,6 +121,7 @@ details.src pre { margin-top: .7rem; max-height: 30rem; }
   nav.top, .controls, details.src { display: none; }
   .sheet { border: 0; padding: 0; }
 }
+svg.tv .rx { fill: var(--ink); font-weight: 700; text-anchor: end; }
 svg.tv .tsm { fill: var(--ink); font-weight: 700; }
 
 /* отметки хозяина (assets/owner.js): знакомство — фаза луны, сложность — столбики */

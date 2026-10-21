@@ -25,6 +25,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import gpascii  # noqa: E402
 import chords2chordpro  # noqa: E402
 import songsterr  # noqa: E402
+import fold  # noqa: E402
 
 RAW = ROOT / "songbook" / "raw"
 OUT = ROOT / "formats"
@@ -111,6 +112,19 @@ def convert_grid(text, song, cfg, slug):
     return tex, events, [midi_of(t) for t in tuning]
 
 
+def fold_repeats(slug, tex, events, folded):
+    """Одинаковые подряд куски → |: … :| ×N (tools/fold.py). Сверка alphaTab идёт
+    уже по свёрнутому тексту: каждая оставшаяся нота — против исходной."""
+    try:
+        tex2, events2, msg = fold.fold(tex, events)
+    except ValueError as e:
+        print(f"  {slug}: повторы не свёрнуты — {e}", file=sys.stderr)
+        return tex, events
+    if msg:
+        folded[slug] = msg
+    return tex2, events2
+
+
 def esc_tex(s):
     return s.replace("\\", "").replace('"', "'")
 
@@ -118,7 +132,7 @@ def esc_tex(s):
 def main():
     OUT.mkdir(exist_ok=True)
     songs = song_list()
-    status, jobs, pending, repair_notes = {}, [], {}, {}
+    status, jobs, pending, repair_notes, folded = {}, [], {}, {}, {}
 
     for song in songs:
         slug = song["slug"]
@@ -131,6 +145,7 @@ def main():
             except Exception as e:
                 status[slug] = {"format": None, "reason": f"songsterr не разобран: {e}"}
                 continue
+            tex, events = fold_repeats(slug, tex, events, folded)
             jobs.append({"id": slug, "tex": tex, "tuning": tuning, "events": events})
             repair_notes[slug] = warn
             pending[slug] = ("atex", tex)
@@ -185,6 +200,7 @@ def main():
         except (gpascii.NotUnderstood, Exception) as e:
             status[slug] = {"format": None, "reason": f"таб не разобран: {e}"}
             continue
+        tex, events = fold_repeats(slug, tex, events, folded)
         jobs.append({"id": slug, "tex": tex, "tuning": tuning, "events": events})
         repair_notes[slug] = notes
         pending[slug] = ("atex", tex)
@@ -202,6 +218,8 @@ def main():
                 status[r["id"]] = {"format": "alphatex", "bars": r["bars"], "checked_notes": r["notes"]}
                 if repair_notes.get(r["id"]):
                     status[r["id"]]["notes"] = repair_notes[r["id"]]
+                if folded.get(r["id"]):
+                    status[r["id"]]["folded"] = folded[r["id"]]
             else:
                 reason = r.get("error") or f"ноты не сошлись: пропало {r['missing']}, лишние {r['extra']}"
                 status[r["id"]] = {"format": None, "reason": "alphaTab: " + reason}

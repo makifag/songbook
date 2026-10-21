@@ -196,7 +196,11 @@
         var bx = x0 + rb.x, mb = rb.bar.mb;
         g.appendChild(el("line", { class: "bl", x1: r1(bx), x2: r1(bx), y1: y0, y2: r1(y0 + staffH) }));
         if (mb.isRepeatStart) self.repeat(g, bx, y0, M, true);
-        if (mb.repeatCount > 0) self.repeat(g, bx + rb.w, y0, M, false);
+        if (mb.repeatCount > 0) {
+          self.repeat(g, bx + rb.w, y0, M, false);
+          if (mb.repeatCount > 2) // ×N — сколько раз играть (×2 подразумевается)
+            g.appendChild(el("text", { class: "rx", x: r1(bx + rb.w - 2), y: r1(ri * rowH + M.small), "font-size": r1(M.small) }, "×" + mb.repeatCount));
+        }
         var label = String(mb.index + 1) + (mb.section && mb.section.text ? "  " + mb.section.text : "");
         if (mb.alternateEndings) {
           var ends = []; for (var e = 0; e < 8; e++) if (mb.alternateEndings & (1 << e)) ends.push(e + 1);
