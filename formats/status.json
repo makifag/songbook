@@ -40,17 +40,16 @@
   "format": "alphatex"
  },
  "elder-scrolls-iii-morrowind-call-of-magic-main-theme": {
-  "bars": 43,
-  "checked_notes": 385,
-  "folded": "повторы свёрнуты: 45 тактов → 43",
+  "bars": 45,
+  "checked_notes": 402,
   "format": "alphatex",
   "notes": [
    "в исходнике 10 нот стояли мимо своей доли — привязаны к соседней"
   ]
  },
  "elder-scrolls-v-skyrim-secunda": {
-  "bars": 37,
-  "checked_notes": 233,
+  "bars": 39,
+  "checked_notes": 251,
   "format": "alphatex"
  },
  "elder-scrolls-v-skyrim-sons-skyrim": {
@@ -60,9 +59,8 @@
   "format": "alphatex"
  },
  "final-fantasy-vi-aria-de-mezzo-caraterre": {
-  "bars": 47,
-  "checked_notes": 486,
-  "folded": "повторы свёрнуты: 49 тактов → 47",
+  "bars": 49,
+  "checked_notes": 512,
   "format": "alphatex"
  },
  "final-fantasy-vi-aria-di-mezzo-carattere": {
@@ -85,9 +83,9 @@
   ]
  },
  "final-fantasy-vi-phantom-forest-2": {
-  "bars": 57,
-  "checked_notes": 241,
-  "folded": "повторы свёрнуты: 66 тактов → 57",
+  "bars": 60,
+  "checked_notes": 251,
+  "folded": "повторы свёрнуты: 66 тактов → 60",
   "format": "alphatex"
  },
  "final-fantasy-vi-terras-theme-1": {
@@ -124,9 +122,9 @@
   "format": "chordpro"
  },
  "game-of-thrones-main-title": {
-  "bars": 32,
-  "checked_notes": 298,
-  "folded": "повторы свёрнуты: 46 тактов → 32",
+  "bars": 44,
+  "checked_notes": 410,
+  "folded": "повторы свёрнуты: 46 тактов → 44",
   "format": "alphatex",
   "notes": [
    "темп в табе не указан — поставлен 160, подстрой ползунком"
@@ -199,15 +197,13 @@
   ]
  },
  "neon-genesis-evangelion-cruel-angels-thesis": {
-  "bars": 38,
-  "checked_notes": 600,
-  "folded": "повторы свёрнуты: 46 тактов → 38",
+  "bars": 46,
+  "checked_notes": 707,
   "format": "alphatex"
  },
  "neverhood-southern-front-porch-whistler": {
-  "bars": 28,
-  "checked_notes": 271,
-  "folded": "повторы свёрнуты: 34 тактов → 28",
+  "bars": 34,
+  "checked_notes": 327,
   "format": "alphatex"
  },
  "orkestr-che-gorod": {
@@ -238,54 +234,49 @@
   "format": "alphatex"
  },
  "traditional-greensleeves": {
-  "bars": 15,
-  "checked_notes": 96,
-  "folded": "повторы свёрнуты: 17 тактов → 15",
+  "bars": 17,
+  "checked_notes": 113,
   "format": "alphatex",
   "notes": [
    "ритм размечен вручную по мелодии"
   ]
  },
  "undertale-battle-with-true-hero": {
-  "bars": 56,
-  "checked_notes": 358,
-  "folded": "повторы свёрнуты: 62 тактов → 56",
+  "bars": 62,
+  "checked_notes": 401,
   "format": "alphatex"
  },
  "undertale-home": {
-  "bars": 54,
-  "checked_notes": 344,
-  "folded": "повторы свёрнуты: 56 тактов → 54",
+  "bars": 56,
+  "checked_notes": 358,
   "format": "alphatex"
  },
  "undertale-megalovania": {
-  "bars": 42,
-  "checked_notes": 486,
-  "folded": "повторы свёрнуты: 44 тактов → 42",
+  "bars": 44,
+  "checked_notes": 506,
   "format": "alphatex"
  },
  "undertale-sans-0": {
-  "bars": 20,
-  "checked_notes": 95,
-  "folded": "повторы свёрнуты: 28 тактов → 20",
+  "bars": 26,
+  "checked_notes": 122,
+  "folded": "повторы свёрнуты: 28 тактов → 26",
   "format": "alphatex"
  },
  "undertale-snowdin-town": {
-  "bars": 21,
-  "checked_notes": 200,
-  "folded": "повторы свёрнуты: 32 тактов → 21",
+  "bars": 24,
+  "checked_notes": 227,
+  "folded": "повторы свёрнуты: 32 тактов → 24",
   "format": "alphatex"
  },
  "undertale-spider-dance-muffet-theme": {
-  "bars": 73,
-  "checked_notes": 502,
-  "folded": "повторы свёрнуты: 93 тактов → 73",
+  "bars": 87,
+  "checked_notes": 624,
+  "folded": "повторы свёрнуты: 93 тактов → 87",
   "format": "alphatex"
  },
  "warcraft-ii-tides-darkness-human-theme": {
-  "bars": 20,
-  "checked_notes": 220,
-  "folded": "повторы свёрнуты: 33 тактов → 20",
+  "bars": 33,
+  "checked_notes": 364,
   "format": "alphatex"
  },
  "yann-tiersen-la-valse-damelie": {

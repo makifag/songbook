@@ -72,6 +72,40 @@ def _dur(beat):
     return str(t), fx, Fraction(n, d)
 
 
+def unroll_voltas(measures):
+    """Повторы с вольтами (|1. … :|2.) разворачиваем в порядок игры — вольты на
+    сайте не используем (запрет владельца). Повторы без вольт остаются.
+    Концовка действует от такта с alternateEnding до закрытия повтора или
+    следующей пометки; после закрытия такты с концовкой играются по порядку."""
+    out, i, n = [], 0, len(measures)
+    strip = ("repeatStart", "repeat", "alternateEnding")
+    clean = lambda m: {k: v for k, v in m.items() if k not in strip}
+    while i < n:
+        m = measures[i]
+        if m.get("repeatStart"):
+            c = next((j for j in range(i, n) if measures[j].get("repeat")), None)
+            if c is not None:
+                after = c + 1
+                while after < n and measures[after].get("alternateEnding") and not measures[after].get("repeatStart"):
+                    after += 1
+                if any(measures[j].get("alternateEnding") for j in range(i, after)):
+                    ending, owner = None, []
+                    for j in range(i, c + 1):
+                        if measures[j].get("alternateEnding"):
+                            ending = set(measures[j]["alternateEnding"])
+                        owner.append(ending)
+                    for p in range(1, measures[c]["repeat"] + 1):
+                        for j, e in zip(range(i, c + 1), owner):
+                            if e is None or p in e:
+                                out.append(clean(measures[j]))
+                    out.extend(clean(measures[j]) for j in range(c + 1, after))
+                    i = after
+                    continue
+        out.append(m)
+        i += 1
+    return out
+
+
 def to_alphatex(part, title, artist):
     """→ (alphaTex, events, строй со звучанием капо — midi сверху вниз, заметки)"""
     tuning = part["tuning"]
@@ -83,7 +117,10 @@ def to_alphatex(part, title, artist):
         head.append(f"\\capo {part['capo']}")
     bars, events, notes_out = [], [], []
     cur_sig = None
-    for bi, m in enumerate(part["measures"]):
+    measures = unroll_voltas([dict(m, _orig=k) for k, m in enumerate(part["measures"])])
+    tempo_at = lambda k: max(((ms, bpm) for ms, bpm in tempos.items() if ms <= k + 1), default=(1, tempos.get(1, 90)))[1]
+    cur_tempo = tempo_at(0)
+    for bi, m in enumerate(measures):
         voices = [v for v in m["voices"] if any(not b.get("rest") for b in v["beats"])]
         if len(voices) > 1:
             raise NotUnderstood(f"такт {bi + 1}: несколько голосов")
@@ -92,8 +129,9 @@ def to_alphatex(part, title, artist):
         if sig != cur_sig:
             toks.append(f"\\ts {sig[0]} {sig[1]}")
             cur_sig = sig
-        if bi > 0 and (bi + 1) in tempos:
-            toks.append(f"\\tempo {tempos[bi + 1]}")
+        if tempo_at(m["_orig"]) != cur_tempo:  # темп — по исходному номеру такта
+            cur_tempo = tempo_at(m["_orig"])
+            toks.append(f"\\tempo {cur_tempo}")
         if m.get("repeatStart"):
             toks.append("\\ro")
         if m.get("repeat"):

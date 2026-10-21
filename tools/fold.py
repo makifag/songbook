@@ -1,4 +1,6 @@
-"""Свернуть одинаковые подряд идущие куски alphaTex в знаки повтора и вольты.
+"""Свернуть одинаковые подряд идущие куски alphaTex в знаки повтора |: … :| ×N.
+
+Вольты (|1. … :|2.) не используем — запрет владельца: путают при игре.
 
 Звук не меняется: alphaTab проигрывает |: … :| ×N так же, как выписанное подряд.
 Ничего не угадываем — сворачиваются только побуквенно одинаковые такты, и
@@ -82,33 +84,6 @@ def fold(tex, events):
                 saved = L * (k - 1)
                 if best is None or saved > best[2]:
                     best = (L, k, saved)
-        # вольты: тело + концовка1, тело + концовка2 → |: тело |1. к1 :|2. к2
-        volta = None
-        for B in range(2, MAX_BLOCK + 1):
-            for E in (1, 2):
-                if E > B or i + 2 * (B + E) > n:
-                    continue
-                b1, e1 = i, i + B
-                b2, e2 = i + B + E, i + 2 * B + E
-                if (content[b1:b1 + B] == content[b2:b2 + B] and content[e1:e1 + E] != content[e2:e2 + E]
-                        and not any(parsed[j][0] for j in range(b2, b2 + B))
-                        and not any(parsed[j][0] for j in range(e2, e2 + E))
-                        and not content[i].startswith("-.") and not re.match(r"^\(?-\.", content[e2])):
-                    if volta is None or B > volta[2]:
-                        volta = (B, E, B)
-        if volta and (best is None or volta[2] > best[2]):
-            B, E, _ = volta
-            for j in range(i, i + B):
-                metas = list(parsed[j][0]) + (["\\ro"] if j == i else [])
-                out.append(" ".join(metas + [parsed[j][1]])); mapping.append(j)
-            for j in range(i + B, i + B + E):
-                metas = list(parsed[j][0]) + ["\\ae (1)"] + ([f"\\rc 2"] if j == i + B + E - 1 else [])
-                out.append(" ".join(metas + [parsed[j][1]])); mapping.append(j)
-            for j in range(i + 2 * B + E, i + 2 * B + 2 * E):
-                metas = list(parsed[j][0]) + ["\\ae (2)"]
-                out.append(" ".join(metas + [parsed[j][1]])); mapping.append(j)
-            i += 2 * (B + E)
-            continue
         if best:
             L, k, _ = best
             for j in range(i, i + L):
