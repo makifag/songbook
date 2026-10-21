@@ -1,0 +1,2 @@
+Таб с Songsterr: https://www.songsterr.com/a/wsa/outer-wilds-outer-wilds-travelers-tab-s3726175
+Ноты: manual_assets/songsterr/outer-wilds-travelers.json (длительности точные, переведено в alphaTex).

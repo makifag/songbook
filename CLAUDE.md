@@ -18,7 +18,8 @@ python build.py --refetch  # принудительно перекачать в�
 
 ## Структура
 
-- `sources.json` — вход: список из 51 источника (`title_raw, url_norm, domain,
+- `sources.json` — вход: список из 50 источников (Home с 2026-10-21 — с Songsterr,
+  в `manual_entries.json`) (`title_raw, url_norm, domain,
   artist, work, handler, status, note`). `status`: `live` / `dead_wayback`
   (тянуть из Wayback) / `manual` (в отчёт, не качать).
 - `build.py` — весь пайплайн в одном файле: fetch+cache → handler-specific
@@ -72,10 +73,19 @@ alphaTab для проверки). Ноты проверяются всегда:
   длительностей, съехавшая целиком на 1–4 колонки в такте, сдвигается;
   лишняя короткая нота в переполненном такте становится форшлагом.
 - `tools/gridtab.py` — табы без строки длительностей: ритм по равномерной
-  сетке (Home, Wet Hands), по расстояниям между нотами (Lil Gator — ритм
+  сетке (Wet Hands — с ultimate-guitar, последняя строка перекладывается
+  `respace()`), по расстояниям между нотами (Lil Gator — ритм
   приблизительный) или из ручной разметки `formats/rhythm/{slug}.txt`
   (Greensleeves: строка на такт, `4 8 8. 16 8`). Настройки — `GRID_TABS` в
   `convert_all.py`.
+- `tools/songsterr.py` — Songsterr → alphaTex. У songsterr ноты — JSON с точными
+  длительностями (CDN `dqsljvtekg760.cloudfront.net`, gzip), ритм переносится как
+  есть: точки, триоли, лиги, `h/p`, слайды, вибрато, `x`, флажолеты, повторы и
+  вольты, смена темпа/размера, капо. Партия скачивается один раз
+  (`python tools/songsterr.py fetch <slug> <songId> [part]`) в
+  `manual_assets/songsterr/{slug}.json`, песня — запись в `manual_entries.json`
+  (поле `songsterr`). Сверка — по реальному звуку с капо; у флажолетов — без
+  обертона (`realValueWithoutHarmonic` в `verify_alphatex.mjs`).
 - `tools/chords2chordpro.py` — аккорды над текстом → ChordPro; понимает
   `[Куплет]:Am ...`, `Припев:<таб>текст`, `(1)` номера куплетов, аккорды на
   дефисах `----D----G`, позиции `G(III)`, текст «через строку», аккорды,

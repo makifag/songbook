@@ -220,17 +220,6 @@
     "url_norm": "https://gametabs.net/tabs/undertale/battle-with-true-hero"
   },
   {
-    "title_raw": "Home (Undertale)",
-    "url_raw": "https://www.gametabs.net/undertale/home",
-    "domain": "gametabs.net",
-    "artist": "undertale",
-    "work": "home",
-    "handler": "gametabs_ascii",
-    "status": "live",
-    "note": "",
-    "url_norm": "https://gametabs.net/tabs/undertale/home"
-  },
-  {
     "title_raw": "Sans (Undertale)",
     "url_raw": "https://www.gametabs.net/undertale/sans-0",
     "domain": "gametabs.net",

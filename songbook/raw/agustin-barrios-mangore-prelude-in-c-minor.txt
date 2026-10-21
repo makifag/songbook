@@ -1,0 +1,2 @@
+Таб с Songsterr: https://www.songsterr.com/a/wsa/agustin-barrios-mangore-prelude-in-c-minor-tab-s470418
+Ноты: manual_assets/songsterr/agustin-barrios-mangore-prelude-in-c-minor.json (длительности точные, переведено в alphaTex).

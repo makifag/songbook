@@ -1,0 +1,2 @@
+Таб с Songsterr: https://www.songsterr.com/a/wsa/jeremy-soule-secunda-acoustic-tab-s441960
+Ноты: manual_assets/songsterr/elder-scrolls-v-skyrim-secunda.json (длительности точные, переведено в alphaTex).

@@ -266,22 +266,6 @@
   "format": "alphatex"
  },
  {
-  "slug": "undertale-home",
-  "title": "Home",
-  "artist": "Undertale",
-  "kind": "tab",
-  "domain": "gametabs.net",
-  "meta": {
-   "platform": "PC",
-   "composer": "Toby Fox",
-   "style": "Arrangement, Fingerstyle",
-   "instrument": "Guitar",
-   "tuning": "DADGAD",
-   "arranger": "FeralCadence"
-  },
-  "format": "alphatex"
- },
- {
   "slug": "undertale-sans-0",
   "title": "Sans",
   "artist": "Undertale",

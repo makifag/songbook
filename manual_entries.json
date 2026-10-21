@@ -46,5 +46,84 @@
       "filename": "yann-tiersen-la-valse-damelie.gp5",
       "label": "Скачать .gp5"
     }
+  },
+  {
+    "slug": "elder-scrolls-v-skyrim-secunda",
+    "title": "Secunda",
+    "artist": "The Elder Scrolls V: Skyrim",
+    "kind": "tab",
+    "meta": {
+      "composer": "Jeremy Soule",
+      "arranger": "evelyn",
+      "источник": "Songsterr (добавлено 2026-10-21): https://www.songsterr.com/a/wsa/jeremy-soule-secunda-acoustic-tab-s441960"
+    },
+    "body": "Таб с Songsterr: https://www.songsterr.com/a/wsa/jeremy-soule-secunda-acoustic-tab-s441960\nНоты: manual_assets/songsterr/elder-scrolls-v-skyrim-secunda.json (длительности точные, переведено в alphaTex).",
+    "songsterr": {
+      "id": 441960,
+      "url": "https://www.songsterr.com/a/wsa/jeremy-soule-secunda-acoustic-tab-s441960"
+    }
+  },
+  {
+    "slug": "agustin-barrios-mangore-prelude-in-c-minor",
+    "title": "Prelude in C minor",
+    "artist": "Agustín Barrios Mangoré",
+    "kind": "tab",
+    "meta": {
+      "arranger": "Agent Dale Cooper",
+      "источник": "Songsterr (добавлено 2026-10-21): https://www.songsterr.com/a/wsa/agustin-barrios-mangore-prelude-in-c-minor-tab-s470418"
+    },
+    "body": "Таб с Songsterr: https://www.songsterr.com/a/wsa/agustin-barrios-mangore-prelude-in-c-minor-tab-s470418\nНоты: manual_assets/songsterr/agustin-barrios-mangore-prelude-in-c-minor.json (длительности точные, переведено в alphaTex).",
+    "songsterr": {
+      "id": 470418,
+      "url": "https://www.songsterr.com/a/wsa/agustin-barrios-mangore-prelude-in-c-minor-tab-s470418"
+    }
+  },
+  {
+    "slug": "deep-purple-child-in-time",
+    "title": "Child in Time (easy fingerstyle)",
+    "artist": "Deep Purple",
+    "kind": "tab",
+    "meta": {
+      "arranger": "Gael Vuc",
+      "источник": "Songsterr (добавлено 2026-10-21): https://www.songsterr.com/a/wsa/unknown-artis-child-in-time-easy-fingerstyle-guitar-tutorial-tabs-tab-s6551887"
+    },
+    "body": "Таб с Songsterr: https://www.songsterr.com/a/wsa/unknown-artis-child-in-time-easy-fingerstyle-guitar-tutorial-tabs-tab-s6551887\nНоты: manual_assets/songsterr/deep-purple-child-in-time.json (длительности точные, переведено в alphaTex).",
+    "songsterr": {
+      "id": 6551887,
+      "url": "https://www.songsterr.com/a/wsa/unknown-artis-child-in-time-easy-fingerstyle-guitar-tutorial-tabs-tab-s6551887"
+    }
+  },
+  {
+    "slug": "outer-wilds-travelers",
+    "title": "Travelers",
+    "artist": "Outer Wilds",
+    "kind": "tab",
+    "meta": {
+      "composer": "Andrew Prahlow",
+      "партия": "Steel Guitar (одна из 5 партий)",
+      "arranger": "Blake",
+      "источник": "Songsterr (добавлено 2026-10-21): https://www.songsterr.com/a/wsa/outer-wilds-outer-wilds-travelers-tab-s3726175"
+    },
+    "body": "Таб с Songsterr: https://www.songsterr.com/a/wsa/outer-wilds-outer-wilds-travelers-tab-s3726175\nНоты: manual_assets/songsterr/outer-wilds-travelers.json (длительности точные, переведено в alphaTex).",
+    "songsterr": {
+      "id": 3726175,
+      "url": "https://www.songsterr.com/a/wsa/outer-wilds-outer-wilds-travelers-tab-s3726175"
+    }
+  },
+  {
+    "slug": "undertale-home",
+    "title": "Home",
+    "artist": "Undertale",
+    "kind": "tab",
+    "meta": {
+      "composer": "Toby Fox",
+      "arranger": "King Darth Panda",
+      "источник": "Songsterr (добавлено вместо gametabs 2026-10-21): https://www.songsterr.com/a/wsa/toby-fox-home-undertale-fingerstyle-tab-s2756301"
+    },
+    "body": "Таб с Songsterr: https://www.songsterr.com/a/wsa/toby-fox-home-undertale-fingerstyle-tab-s2756301\nНоты: manual_assets/songsterr/undertale-home.json (длительности точные, переведено в alphaTex).",
+    "songsterr": {
+      "id": 2756301,
+      "url": "https://www.songsterr.com/a/wsa/toby-fox-home-undertale-fingerstyle-tab-s2756301"
+    }
   }
 ]

@@ -7,6 +7,11 @@
    "в исходнике 4 нот стояли мимо своей доли — привязаны к соседней"
   ]
  },
+ "agustin-barrios-mangore-prelude-in-c-minor": {
+  "bars": 32,
+  "checked_notes": 379,
+  "format": "alphatex"
+ },
  "cave-story-heros-end-0": {
   "bars": 28,
   "checked_notes": 276,
@@ -28,6 +33,11 @@
   "checked_lines": 44,
   "format": "chordpro"
  },
+ "deep-purple-child-in-time": {
+  "bars": 283,
+  "checked_notes": 2861,
+  "format": "alphatex"
+ },
  "elder-scrolls-iii-morrowind-call-of-magic-main-theme": {
   "bars": 45,
   "checked_notes": 402,
@@ -35,6 +45,11 @@
   "notes": [
    "в исходнике 10 нот стояли мимо своей доли — привязаны к соседней"
   ]
+ },
+ "elder-scrolls-v-skyrim-secunda": {
+  "bars": 37,
+  "checked_notes": 233,
+  "format": "alphatex"
  },
  "elder-scrolls-v-skyrim-sons-skyrim": {
   "bars": 95,
@@ -180,6 +195,11 @@
   "checked_lines": 7,
   "format": "chordpro"
  },
+ "outer-wilds-travelers": {
+  "bars": 24,
+  "checked_notes": 138,
+  "format": "alphatex"
+ },
  "puck-piper-dzhonni-pryzhok": {
   "checked_lines": 12,
   "format": "chordpro"
@@ -213,11 +233,8 @@
  },
  "undertale-home": {
   "bars": 56,
-  "checked_notes": 354,
-  "format": "alphatex",
-  "notes": [
-   "ритм по сетке таба"
-  ]
+  "checked_notes": 358,
+  "format": "alphatex"
  },
  "undertale-megalovania": {
   "bars": 44,

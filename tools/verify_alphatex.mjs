@@ -24,7 +24,8 @@ for (const job of jobs) {
         if (beat.graceType) continue;
         for (const note of beat.notes) {
           if (note.isDead || note.isTieDestination) continue;
-          got.push({ bar: bi, tick: beat.playbackStart, fret: note.fret, pitch: note.realValue });
+          // высота без флажолета: лад и струну сверяем, звучащий обертон — нет
+          got.push({ bar: bi, tick: beat.playbackStart, fret: note.fret, pitch: note.realValueWithoutHarmonic });
         }
       }
     });

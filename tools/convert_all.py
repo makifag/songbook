@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import gpascii  # noqa: E402
 import chords2chordpro  # noqa: E402
+import songsterr  # noqa: E402
 
 RAW = ROOT / "songbook" / "raw"
 OUT = ROOT / "formats"
@@ -32,8 +33,6 @@ OUT = ROOT / "formats"
 # (tools/gridtab.py): по равномерной сетке, по расстояниям или из formats/rhythm/{slug}.txt.
 STD = "e4 b3 g3 d3 a2 e2"
 GRID_TABS = {
-    # ритм читается по сетке: 2 символа = восьмая, размер 12/8 (сверено по всему табу)
-    "undertale-home": {"tuning": "d4 a3 g3 d3 a2 d2", "cps": 2, "offset": 1, "ts": (12, 8), "tempo": 120},
     # экспорт Guitar Pro без строки длительностей: 3 символа на долю, доля = восьмая
     # ultimate-guitar (с 2026-10-21): 2 символа = восьмая, такт 8 восьмых; последняя
     # строка набрана шире (3 символа на восьмую) — приводим к общей сетке
@@ -45,7 +44,6 @@ GRID_TABS = {
     "traditional-greensleeves": {"tuning": STD, "rhythm": True, "tempo": 90, "prefer": (6, 8)},
 }
 GRID_NOTE = {
-    "undertale-home": "ритм по сетке таба",
     "minecraft-wet-hands": "ритм по сетке таба (в исходнике нет длительностей): восьмые, 4/4",
     "lil-gator-game-forest-main": "ритм приблизительный — по расстояниям между нотами",
     "traditional-greensleeves": "ритм размечен вручную по мелодии",
@@ -120,6 +118,19 @@ def main():
 
     for song in songs:
         slug = song["slug"]
+        ss = ROOT / "manual_assets" / "songsterr" / f"{slug}.json"
+        if ss.exists():
+            # songsterr: длительности точные, ритм не восстанавливаем — переносим
+            try:
+                part = json.loads(ss.read_text(encoding="utf-8"))
+                tex, events, tuning, warn = songsterr.to_alphatex(part, esc_tex(song["title"]), esc_tex(song["artist"]))
+            except Exception as e:
+                status[slug] = {"format": None, "reason": f"songsterr не разобран: {e}"}
+                continue
+            jobs.append({"id": slug, "tex": tex, "tuning": tuning, "events": events})
+            repair_notes[slug] = warn
+            pending[slug] = ("atex", tex)
+            continue
         src = RAW / f"{slug}.txt"
         if not src.exists():
             status[slug] = {"format": None, "reason": "нет текста"}

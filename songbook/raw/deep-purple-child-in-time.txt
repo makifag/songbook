@@ -1,0 +1,2 @@
+Таб с Songsterr: https://www.songsterr.com/a/wsa/unknown-artis-child-in-time-easy-fingerstyle-guitar-tutorial-tabs-tab-s6551887
+Ноты: manual_assets/songsterr/deep-purple-child-in-time.json (длительности точные, переведено в alphaTex).
