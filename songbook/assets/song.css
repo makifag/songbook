@@ -122,3 +122,43 @@ details.src pre { margin-top: .7rem; max-height: 30rem; }
   .sheet { border: 0; padding: 0; }
 }
 svg.tv .tsm { fill: var(--ink); font-weight: 700; }
+
+/* отметки хозяина (assets/owner.js): знакомство — фаза луны, сложность — столбики */
+.marks { display: inline-flex; align-items: center; gap: .25rem; vertical-align: middle; }
+.marks[hidden] { display: none; }
+.mk { display: inline-flex; align-items: center; justify-content: center; min-width: 1.9rem; height: 1.9rem;
+  padding: 0 .3rem; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font: 1.05rem/1 var(--f-mono); }
+button.mk { cursor: pointer; background: var(--chip); }
+.mk.fam.f0 .moon, .mk.diff.d0 .sig { opacity: .45; }
+.mk.fam:not(.f0) { color: var(--accent); }
+.sig { display: inline-flex; align-items: flex-end; gap: 2px; height: .95em; }
+.sig i { display: block; width: 3px; border-radius: 1px; background: var(--rule); }
+.sig i.on { background: var(--chord); }
+.head .marks { margin-top: .5rem; display: flex; }
+.head .marks[hidden] { display: none; }
+p.gone { background: var(--chip); padding: .6rem .8rem; border-radius: 6px; font: .85rem var(--f-mono); color: var(--muted); }
+.owner-foot { margin-top: 2.5rem; }
+.linkish { border: 0; background: none; padding: 0; font: .82rem var(--f-mono); color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.tuning-warn { font: 600 .82rem var(--f-mono); color: var(--chord); margin: 0 0 .6rem; }
+
+/* главная */
+ul.songs li { display: flex; align-items: center; gap: .4rem .6rem; }
+ul.songs li > a { flex: 1 1 auto; min-width: 0; display: block; }
+.tabs { display: flex; flex-wrap: wrap; gap: .3rem; flex-basis: 100%; }
+.tabs[hidden], .filters select[hidden] { display: none; }
+.tabs button { display: inline-flex; align-items: center; gap: .35rem; border: 0; border-radius: 6px; padding: .4rem .6rem;
+  background: transparent; color: var(--muted); font: 500 .78rem/1 var(--f-mono); cursor: pointer; }
+.tabs button[aria-selected=true] { background: var(--chip); color: var(--ink); }
+details.wish, details.gone-list { margin: 1rem 0 .25rem; }
+details.wish[hidden], details.gone-list[hidden] { display: none; }
+details.wish summary, details.gone-list summary { cursor: pointer; font: 600 .8rem var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+details .n { color: var(--muted); font-weight: 400; }
+#wishList, #goneList { list-style: none; margin: .5rem 0; padding: 0; }
+#wishList li, #goneList li { display: flex; justify-content: space-between; align-items: baseline; gap: .8rem; padding: .35rem 0; border-top: 1px solid var(--rule); }
+#wishList li a { font: .8rem var(--f-mono); overflow-wrap: anywhere; }
+#wishForm { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .4rem; }
+#wishForm[hidden] { display: none; }
+#wishForm input { flex: 1 1 12rem; min-width: 0; font: .95rem var(--f-text); padding: .5rem .65rem; border: 0; border-radius: 6px; background: var(--chip); color: var(--ink); }
+#wishForm button { border: 0; border-radius: 6px; padding: .5rem .8rem; background: var(--accent); color: var(--bg); font: 500 .82rem var(--f-mono); cursor: pointer; }
+.keyline { margin-top: 2rem; text-align: right; }
+.keyline .linkish { color: var(--muted); }

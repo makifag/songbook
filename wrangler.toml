@@ -1,5 +1,15 @@
 name = "songbook"
+main = "worker/index.js"
 compatibility_date = "2026-07-30"
 
+# статика песенника; в Worker попадает только /api/*
 [assets]
 directory = "./songbook"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+# что хозяин меняет с сайта: скрытые табы, отметки, «хочу найти» (схема — worker/schema.sql)
+[[d1_databases]]
+binding = "DB"
+database_name = "songbook"
+database_id = "c23c0b5c-2e76-4056-8ff8-9126650aa0a5"

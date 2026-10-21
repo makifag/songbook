@@ -86,6 +86,34 @@ alphaTab для проверки). Ноты проверяются всегда:
 сборка), отчёт не трогает. Порядок после правки форматов:
 `python tools/convert_all.py && python build.py --offline`.
 
+## Правки хозяина с сайта (Worker + D1)
+
+Воркер `songbook` — не только статика: `worker/index.js` отдаёт `songbook/` и
+маленький API на `/api/*` (`run_worker_first`), данные — в D1 `songbook`
+(схема `worker/schema.sql`, таблицы `hidden`, `marks`, `wish`).
+
+- Читать (`GET /api/state`) может любой; писать (`/api/hide`, `/api/mark`,
+  `/api/wish`) — только с заголовком `x-key` = секрет `OWNER_KEY`
+  (`wrangler secret put OWNER_KEY`). Хозяин задаёт ключ один раз ссылкой
+  `…/#key=XXXX` или кнопкой «ключ хозяина» внизу главной (`localStorage`).
+- `assets/owner.js` — клиент API (общий), значки отметок, на странице песни —
+  отметки под заголовком и «убрать из песенника» внизу.
+  `assets/index.js` — главная: «Хочу найти» (только хозяину), вкладки
+  сложности, фильтр знакомства, «Убранные» с «вернуть».
+- Отметки ставит только хозяин, касанием по значку: **знакомство** — фазы луны
+  ○ ◔ ◑ ◕ ● (не играл → разбираю → по табу → почти → наизусть), **сложность** —
+  столбики ▁▃▅▇ (легко / средне / трудно / вызов), 0 — не отмечено.
+- «Убрать» не удаляет файлы — только прячет из списка (D1 `hidden`).
+- «Хочу найти» — список хозяина (что + ссылка). Читать при заходе:
+  `npx wrangler d1 execute songbook --remote --command "SELECT * FROM wish"`.
+  Скрытые: `SELECT * FROM hidden`.
+- Локально: `.dev.vars` с `OWNER_KEY=…`, `npx wrangler d1 execute songbook
+  --local --file worker/schema.sql`, `npx wrangler dev`.
+- Без сети (zip) API молчит — страницы работают как раньше, без отметок.
+
+Таб показывает строй и капо в «ещё»; если строй не стандарт или есть капо —
+ещё и строкой над табом (`showTuning` в `assets/song.js`).
+
 ## Хендлеры (по `handler` в sources.json)
 
 | handler | домен | как достаём тело |
@@ -150,7 +178,8 @@ alphaTab для проверки). Ноты проверяются всегда:
   `wrangler` берёт токен из `CLOUDFLARE_API_TOKEN` (задан в окружении
   облачной сессии; `wrangler whoami` покажет `makifag@gmail.com`).
 - Автодеплоя по git push **нет**. Обновление —
-  `git push origin main && npx wrangler deploy`.
+  `git push origin main && npx wrangler deploy` (выкладывает и статику, и
+  `worker/index.js` с привязкой D1).
 
 ## Осознанно не делать (см. ТЗ.md)
 

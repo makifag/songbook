@@ -104,6 +104,28 @@
     draw();
   }
 
+  // строй и капо: всегда в «ещё», а если не стандарт или есть капо — ещё и над табом
+  var NOTE = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  function showTuning(score) {
+    var staff = score.tracks[0].staves[0], tun = (staff.stringTuning && staff.stringTuning.tunings) || [];
+    if (!tun.length) return;
+    var names = tun.slice().reverse().map(function (v) { return NOTE[v % 12]; }).join(" ");
+    var std = tun.join() === "64,59,55,50,45,40", drop = tun.join() === "64,59,55,50,45,38";
+    var capo = staff.capo || 0;
+    var text = "строй: " + (std ? "стандарт (" + names + ")" : names + (drop ? " — drop D" : "")) +
+      " · капо: " + (capo ? capo + " лад" : "нет");
+    var line = document.createElement("p");
+    line.className = "notes tuning"; line.textContent = text;
+    var info = $("#morepanel .info");
+    if (!info) { info = document.createElement("div"); info.className = "info"; $("#morepanel").appendChild(info); }
+    info.insertBefore(line, info.firstChild);
+    if (!std || capo) {
+      var warn = document.createElement("p");
+      warn.className = "tuning-warn"; warn.textContent = (std ? "" : (drop ? "Drop D: " : "Строй ") + names) + (std ? "" : " · ") + (capo ? "капо на " + capo + " ладу" : "без капо");
+      $("#tab-host").parentNode.insertBefore(warn, $("#tab-host"));
+    }
+  }
+
   // ---------- таб: рисует TabView (assets/tabview.js), alphaTab только разбирает и играет ----------
   function showAlphaTab(loadFn) {
     var notes = /^\/\*\n?([\s\S]*?)\n?\*\//.exec(src);
@@ -152,6 +174,7 @@
     var tv = null, TRACKS = new Set([0]);
     api.scoreLoaded.on(function (score) {
       var l = $("#at-loading"); if (l) l.remove();
+      showTuning(score);
       try {
         tv = new TabView($("#tab-host"), score, {
           scale: scale, letters: rhythm, barsPerRow: bpr,

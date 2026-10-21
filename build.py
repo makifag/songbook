@@ -452,6 +452,7 @@ SONG_TEMPLATE = """<!doctype html>
 <script type="text/plain" id="song-src" data-format="{fmt}" data-file="{file_attr}">
 {src_text}</script>
 {alphatab_tag}<script src="../assets/song.js"></script>
+<script src="../assets/owner.js"></script>
 </body></html>
 """
 
@@ -539,8 +540,7 @@ INDEX_TEMPLATE = """<!doctype html>
 h1 {{ margin: 0; font: 600 clamp(1.8rem, 5vw, 2.6rem)/1.1 var(--f-text); }}
 .bar {{ display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; }}
 .bar a {{ font: 500 .8rem var(--f-mono); text-decoration: none; }}
-.filters {{ display: flex; gap: .5rem; flex-wrap: wrap; position: sticky; top: env(safe-area-inset-top, 0px);
-  background: var(--bg); padding: .6rem 0; z-index: 2; }}
+.filters {{ display: flex; gap: .5rem; flex-wrap: wrap; padding: .6rem 0; }}
 .filters input, .filters select {{ font: 1rem var(--f-text); padding: .55rem .7rem; border-radius: 6px;
   border: 0; background: var(--chip); color: var(--ink); }}
 .filters input {{ flex: 1 1 14rem; min-width: 0; }}
@@ -560,51 +560,29 @@ ul.songs a:hover .t {{ color: var(--accent); }}
 </head><body>
 <div class="wrap">
 <div class="bar"><h1>Песенник</h1><a href="report.html">отчёт о сборке</a></div>
+<details class="wish" id="wish" hidden><summary>Хочу найти <span class="n" id="wishN"></span></summary>
+  <ul id="wishList"></ul>
+  <form id="wishForm" hidden>
+    <input id="wishText" placeholder="Что: песня, игра, мелодия…" aria-label="Что найти" maxlength="300">
+    <input id="wishUrl" placeholder="Ссылка, если есть" aria-label="Ссылка" inputmode="url" maxlength="600">
+    <button type="submit">добавить</button>
+  </form>
+</details>
 <div class="filters">
   <input type="search" id="q" placeholder="Название или исполнитель" aria-label="Поиск">
   <select id="kindFilter" aria-label="Вид"><option value="">все виды</option><option value="tab">табы</option><option value="chords">аккорды</option></select>
   <select id="artistFilter" aria-label="Исполнитель"><option value="">все исполнители</option></select>
+  <select id="famFilter" aria-label="Знакомство"><option value="">знакомство: любое</option></select>
+  <div class="tabs" id="diffTabs" role="tablist" aria-label="Сложность"></div>
 </div>
 <p class="count" id="count"></p>
 <ul class="songs" id="list"></ul>
+<details class="gone-list" id="goneBox" hidden><summary>Убранные <span class="n" id="goneN"></span></summary><ul id="goneList"></ul></details>
+<p class="keyline"><button type="button" class="linkish" id="keyBtn">ключ хозяина</button></p>
 </div>
-<script>
-var SONGS = {songs_json};
-var LABEL = {{ alphatex: "таб", gp: "таб", chordpro: "аккорды", text: "текст" }};
-var list = document.getElementById('list');
-var q = document.getElementById('q');
-var kindFilter = document.getElementById('kindFilter');
-var artistFilter = document.getElementById('artistFilter');
-var countEl = document.getElementById('count');
-Array.from(new Set(SONGS.map(function(s){{ return s.artist; }}))).filter(Boolean).sort().forEach(function(a){{
-  var opt = document.createElement('option'); opt.value = a; opt.textContent = a; artistFilter.appendChild(opt);
-}});
-function norm(s) {{ return (s || '').toLowerCase(); }}
-function render() {{
-  var query = norm(q.value), kind = kindFilter.value, artist = artistFilter.value;
-  var filtered = SONGS.filter(function(s) {{
-    if (kind && s.kind !== kind) return false;
-    if (artist && s.artist !== artist) return false;
-    return !query || norm(s.title).indexOf(query) !== -1 || norm(s.artist).indexOf(query) !== -1;
-  }});
-  list.innerHTML = '';
-  filtered.forEach(function(s) {{
-    var li = document.createElement('li'), a = document.createElement('a');
-    a.href = 'songs/' + s.slug + '.html';
-    var left = document.createElement('span');
-    var t = document.createElement('span'); t.className = 't'; t.textContent = s.title;
-    var ar = document.createElement('span'); ar.className = 'a'; ar.textContent = s.artist;
-    left.appendChild(t); left.appendChild(ar);
-    var f = document.createElement('span'); f.className = 'f ' + s.format; f.textContent = LABEL[s.format] || s.format;
-    a.appendChild(left); a.appendChild(f); li.appendChild(a); list.appendChild(li);
-  }});
-  countEl.textContent = filtered.length + ' из ' + SONGS.length;
-}}
-q.addEventListener('input', render);
-kindFilter.addEventListener('change', render);
-artistFilter.addEventListener('change', render);
-render();
-</script>
+<script>var SONGS = {songs_json};</script>
+<script src="assets/owner.js"></script>
+<script src="assets/index.js"></script>
 </body></html>
 """
 
