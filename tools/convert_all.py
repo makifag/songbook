@@ -35,7 +35,10 @@ GRID_TABS = {
     # ритм читается по сетке: 2 символа = восьмая, размер 12/8 (сверено по всему табу)
     "undertale-home": {"tuning": "d4 a3 g3 d3 a2 d2", "cps": 2, "offset": 1, "ts": (12, 8), "tempo": 120},
     # экспорт Guitar Pro без строки длительностей: 3 символа на долю, доля = восьмая
-    "minecraft-wet-hands": {"tuning": STD, "cps": 3, "offset": 2, "tempo": 70},
+    # ultimate-guitar (с 2026-10-21): 2 символа = восьмая, такт 8 восьмых; последняя
+    # строка набрана шире (3 символа на восьмую) — приводим к общей сетке
+    "minecraft-wet-hands": {"tuning": STD, "cps": 2, "offset": 1, "ts": (4, 4), "tempo": 70,
+                            "respace": {"from": (3, 2), "to": (2, 1), "width": 17}},
     # небрежный таб без сетки, сдвоенные цифры ("0-23-5") — отдельные ноты
     "lil-gator-game-forest-main": {"tuning": STD, "cps": None, "split_digits": True, "tempo": 100},
     # ритм размечен руками по мелодии (formats/rhythm/), 6/8
@@ -43,7 +46,7 @@ GRID_TABS = {
 }
 GRID_NOTE = {
     "undertale-home": "ритм по сетке таба",
-    "minecraft-wet-hands": "ритм по сетке таба (в исходнике нет длительностей)",
+    "minecraft-wet-hands": "ритм по сетке таба (в исходнике нет длительностей): восьмые, 4/4",
     "lil-gator-game-forest-main": "ритм приблизительный — по расстояниям между нотами",
     "traditional-greensleeves": "ритм размечен вручную по мелодии",
 }
@@ -64,8 +67,36 @@ def midi_of(name):
     return 12 * (int(m.group(3)) + 1) + idx[m.group(1)] + {"#": 1, "b": -1}.get(m.group(2), 0)
 
 
+def respace(text, rule):
+    """Такты, набранные с другим шагом сетки, переложить на общий: каждая цифра
+    обязана стоять ровно в узле старой сетки, иначе отказ (ничего не угадываем)."""
+    (fc, fo), (tc, to), width = rule["from"], rule["to"], rule["width"]
+    out = []
+    for line in text.splitlines():
+        m = re.match(r"^([eBGDAE]\|)(.*)$", line)
+        if not m:
+            out.append(line); continue
+        cells = m.group(2).rstrip("|").split("|")
+        fixed = []
+        for cell in cells:
+            if len(cell) == width:
+                fixed.append(cell); continue
+            new = ["-"] * width
+            for t in re.finditer(r"\d+", cell):
+                slot, rem = divmod(t.start() - fo, fc)
+                col = to + slot * tc
+                if rem or col + len(t.group()) > width:
+                    raise ValueError(f"цифра вне сетки при перекладке: {cell!r}")
+                new[col:col + len(t.group())] = t.group()
+            fixed.append("".join(new))
+        out.append(m.group(1) + "|".join(fixed) + "|")
+    return "\n".join(out)
+
+
 def convert_grid(text, song, cfg, slug):
     import gridtab
+    if cfg.get("respace"):
+        text = respace(text, cfg["respace"])
     rhythm = None
     if cfg.get("rhythm"):
         rhythm = [l for l in (OUT / "rhythm" / f"{slug}.txt").read_text(encoding="utf-8").splitlines() if l.strip()]

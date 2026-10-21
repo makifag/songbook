@@ -84,14 +84,11 @@
   "title": "Wet Hands",
   "artist": "Minecraft",
   "kind": "tab",
-  "domain": "gametabs.net",
+  "domain": "tabs.ultimate-guitar.com",
   "meta": {
-   "platform": "PC",
-   "composer": "Daniel Rosenfeld",
-   "style": "Arrangement, Fingerstyle, Natural harmonics, Artificial harmonics",
-   "instrument": "Guitar",
-   "tuning": "EADGBE",
-   "arranger": "guitarsvd"
+   "composer": "C418 (Daniel Rosenfeld)",
+   "difficulty": "intermediate",
+   "tuning": "EADGBE"
   },
   "format": "alphatex"
  },
