@@ -1,0 +1,2 @@
+Таб с Songsterr: https://www.songsterr.com/a/wsa/c418-sweden-fingerstyle-tab-s485431
+Ноты: manual_assets/songsterr/minecraft-sweden.json (длительности точные, переведено в alphaTex).

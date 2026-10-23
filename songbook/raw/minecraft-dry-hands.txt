@@ -1,0 +1,2 @@
+Таб с Songsterr: https://www.songsterr.com/a/wsa/c418-dry-hands-tab-s412713
+Ноты: manual_assets/songsterr/minecraft-dry-hands.json (длительности точные, переведено в alphaTex).

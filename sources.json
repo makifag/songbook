@@ -559,5 +559,16 @@
     "status": "live",
     "note": "добавлено 2026-10-21 по просьбе владельца",
     "url_norm": "https://tabs.ultimate-guitar.com/tab/misc-television/game-of-thrones-theme-tabs-1163779"
+  },
+  {
+    "title_raw": "Kefka's Theme (Final Fantasy VI)",
+    "url_raw": "https://gametabs.net/tabs/final-fantasy-vi/kefkas-theme-5",
+    "domain": "gametabs.net",
+    "artist": "final-fantasy-vi",
+    "work": "kefkas-theme-5",
+    "handler": "gametabs_ascii",
+    "status": "live",
+    "note": "добавлено 2026-10-23 из «Хочу найти» (замена kefkas-theme-1)",
+    "url_norm": "https://gametabs.net/tabs/final-fantasy-vi/kefkas-theme-5"
   }
 ]

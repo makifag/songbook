@@ -583,5 +583,21 @@
    "capo": "3"
   },
   "format": "alphatex"
+ },
+ {
+  "slug": "final-fantasy-vi-kefkas-theme-5",
+  "title": "Kefka's Theme",
+  "artist": "Final Fantasy VI",
+  "kind": "tab",
+  "domain": "gametabs.net",
+  "meta": {
+   "platform": "Super Nintendo",
+   "composer": "Nobuo Uematsu",
+   "style": "Arrangement, Fingerstyle, Trill",
+   "instrument": "Guitar",
+   "tuning": "DADGBE",
+   "arranger": "The-Ripper"
+  },
+  "format": "alphatex"
  }
 ]

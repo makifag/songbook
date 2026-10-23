@@ -74,6 +74,14 @@
   "folded": "повторы свёрнуты: 53 тактов → 45",
   "format": "alphatex"
  },
+ "final-fantasy-vi-kefkas-theme-5": {
+  "bars": 44,
+  "checked_notes": 310,
+  "format": "alphatex",
+  "notes": [
+   "в исходнике 1 нот стояли мимо своей доли — привязаны к соседней"
+  ]
+ },
  "final-fantasy-vi-lockes-theme": {
   "bars": 33,
   "checked_notes": 255,
@@ -178,6 +186,17 @@
   "notes": [
    "ритм приблизительный — по расстояниям между нотами"
   ]
+ },
+ "minecraft-dry-hands": {
+  "bars": 22,
+  "checked_notes": 97,
+  "format": "alphatex"
+ },
+ "minecraft-sweden": {
+  "bars": 36,
+  "checked_notes": 202,
+  "folded": "повторы свёрнуты: 44 тактов → 36",
+  "format": "alphatex"
  },
  "minecraft-wet-hands": {
   "bars": 23,

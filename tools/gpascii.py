@@ -201,6 +201,12 @@ def parse(text, n_strings=6, tolerance=0):
                             used.update((si, y) for y in range(c0, c1 + 1))
                             chain.append(cf)
                             x = c1
+                        # трель: 1(3) вплотную после ноты (над ней "tr") — 1 с трелью до 3-го лада
+                        if after == "(" and x1 + 2 < len(s) and s[x1 + 2].isdigit():
+                            t0, t1, tfret = number_at(s, x1 + 2)
+                            if t1 + 1 < len(s) and s[t1 + 1] == ")":
+                                used.update((si, y) for y in range(t0, t1 + 1))
+                                eff.append(f"tr {tfret} 16")
                         if chain:
                             eff.append("h")
                             chains.append((si + 1, chain))

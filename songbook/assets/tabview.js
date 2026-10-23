@@ -270,6 +270,8 @@
             bg.appendChild(el("line", { class: "fx", x1: r1(x1), x2: r1(x2), y1: r1(y + (up ? d : -d)), y2: r1(y + (up ? -d : d)) }));
           }
           if (n.vibrato) bg.appendChild(el("text", { class: "vib", x: r1(x + w / 2), y: r1(y - fs * 0.5), "font-size": r1(fs * 0.8) }, "~"));
+          if (n.trillValue >= 0) // трель: «tr» и лад, до которого
+            bg.appendChild(el("text", { class: "vib", x: r1(x), y: r1(y - fs * 0.62), "font-size": r1(M.small) }, "tr" + n.trillValue));
         });
         g.appendChild(bg);
       });

@@ -125,5 +125,37 @@
       "id": 2756301,
       "url": "https://www.songsterr.com/a/wsa/toby-fox-home-undertale-fingerstyle-tab-s2756301"
     }
+  },
+  {
+    "slug": "minecraft-dry-hands",
+    "title": "Dry Hands",
+    "artist": "Minecraft",
+    "kind": "tab",
+    "meta": {
+      "composer": "C418",
+      "arranger": "robbie daly",
+      "источник": "Songsterr (добавлено 2026-10-23 из «Хочу найти»): https://www.songsterr.com/a/wsa/c418-dry-hands-tab-s412713"
+    },
+    "body": "Таб с Songsterr: https://www.songsterr.com/a/wsa/c418-dry-hands-tab-s412713\nНоты: manual_assets/songsterr/minecraft-dry-hands.json (длительности точные, переведено в alphaTex).",
+    "songsterr": {
+      "id": 412713,
+      "url": "https://www.songsterr.com/a/wsa/c418-dry-hands-tab-s412713"
+    }
+  },
+  {
+    "slug": "minecraft-sweden",
+    "title": "Sweden (fingerstyle)",
+    "artist": "Minecraft",
+    "kind": "tab",
+    "meta": {
+      "composer": "C418",
+      "arranger": "Vector",
+      "источник": "Songsterr (добавлено 2026-10-23 из «Хочу найти»): https://www.songsterr.com/a/wsa/c418-sweden-fingerstyle-tab-s485431"
+    },
+    "body": "Таб с Songsterr: https://www.songsterr.com/a/wsa/c418-sweden-fingerstyle-tab-s485431\nНоты: manual_assets/songsterr/minecraft-sweden.json (длительности точные, переведено в alphaTex).",
+    "songsterr": {
+      "id": 485431,
+      "url": "https://www.songsterr.com/a/wsa/c418-sweden-fingerstyle-tab-s485431"
+    }
   }
 ]
